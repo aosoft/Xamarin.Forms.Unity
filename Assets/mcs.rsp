@@ -1,0 +1,5 @@
+-r:"C:/Program Files/Unity/2017.1.0f3/Editor/Data/MonoBleedingEdge/lib/mono/4.5-api/Facades/System.Runtime"
+-r:"C:/Program Files/Unity/2017.1.0f3/Editor/Data/MonoBleedingEdge/lib/mono/4.5-api/Facades/System.Reflection"
+-r:"C:/Program Files/Unity/2017.1.0f3/Editor/Data/MonoBleedingEdge/lib/mono/4.5-api/Facades/System.Threading"
+-r:"C:/Program Files/Unity/2017.1.0f3/Editor/Data/MonoBleedingEdge/lib/mono/4.5-api/Facades/System.Threading.Tasks"
+-r:"C:/Program Files/Unity/2017.1.0f3/Editor/Data/MonoBleedingEdge/lib/mono/4.5-api/Facades/System.IO"
