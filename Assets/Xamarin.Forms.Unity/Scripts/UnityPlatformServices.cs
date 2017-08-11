@@ -52,7 +52,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public Assembly[] GetAssemblies()
 		{
-			return null;// AppDomain.CurrentDomain.GetAssemblies();
+			return AppDomain.CurrentDomain.GetAssemblies();
 		}
 
 		public string GetMD5Hash(string input)
