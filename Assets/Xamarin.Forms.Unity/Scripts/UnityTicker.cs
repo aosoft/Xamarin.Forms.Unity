@@ -11,13 +11,26 @@ namespace Xamarin.Forms.Platform.Unity
 {
 	public class UnityTicker : Ticker
 	{
+		/*-----------------------------------------------------------------*/
+		#region Private Field
+
 		MonoBehaviour _behavior = null;
 		IEnumerator _coroutine = null;
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Constructor
 
 		public UnityTicker(MonoBehaviour mb)
 		{
 			_behavior = mb;
 		}
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Ticker
 
 		protected override void DisableTimer()
 		{
@@ -45,5 +58,8 @@ namespace Xamarin.Forms.Platform.Unity
 				SendSignals();
 			}
 		}
+
+		#endregion
+
 	}
 }
