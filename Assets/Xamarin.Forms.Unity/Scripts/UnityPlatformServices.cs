@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
@@ -68,12 +69,12 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public double GetNamedSize(NamedSize size, Type targetElementType, bool useOldSizes)
 		{
-			throw new NotImplementedException();
+			return 10.0;
 		}
 
 		public Task<Stream> GetStreamAsync(Uri uri, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 
 		public IIsolatedStorageFile GetUserStoreForApplication()
@@ -88,7 +89,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public void StartTimer(TimeSpan interval, Func<bool> callback)
 		{
-			throw new NotImplementedException();
+			//UnityEngine.GameObject.St
 		}
 
 		#endregion
