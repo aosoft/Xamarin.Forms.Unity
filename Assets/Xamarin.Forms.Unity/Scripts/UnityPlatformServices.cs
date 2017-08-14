@@ -18,8 +18,6 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		Forms _forms;
-
 		static readonly MD5CryptoServiceProvider _md5 = new MD5CryptoServiceProvider();
 
 		#endregion
@@ -27,9 +25,8 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor
 
-		public UnityPlatformServices(Forms forms)
+		public UnityPlatformServices()
 		{
-			_forms = forms;
 		}
 
 		#endregion
@@ -37,7 +34,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region IPlatformServices
 
-		public bool IsInvokeRequired => _forms.MainThread.ManagedThreadId == Thread.CurrentThread.ManagedThreadId;
+		public bool IsInvokeRequired => Forms.MainThread.ManagedThreadId == Thread.CurrentThread.ManagedThreadId;
 
 		public string RuntimePlatform => "Unity";
 
@@ -48,7 +45,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public Ticker CreateTicker()
 		{
-			return new UnityTicker(_forms);
+			return new UnityTicker();
 		}
 
 		public Assembly[] GetAssemblies()
@@ -89,7 +86,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public void StartTimer(TimeSpan interval, Func<bool> callback)
 		{
-			_forms.StartCoroutine(TimerCoroutine((float)interval.TotalSeconds, callback));
+			Forms.MonoBehaviour.StartCoroutine(TimerCoroutine((float)interval.TotalSeconds, callback));
 		}
 
 		IEnumerator TimerCoroutine(float seconds, Func<bool> callback)

@@ -14,7 +14,6 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		MonoBehaviour _behavior = null;
 		IEnumerator _coroutine = null;
 
 		#endregion
@@ -22,9 +21,8 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor
 
-		public UnityTicker(MonoBehaviour mb)
+		public UnityTicker()
 		{
-			_behavior = mb;
 		}
 
 		#endregion
@@ -36,7 +34,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			if (_coroutine != null)
 			{
-				_behavior.StopCoroutine(_coroutine);
+				Forms.MonoBehaviour.StopCoroutine(_coroutine);
 				_coroutine = null;
 			}
 		}
@@ -46,7 +44,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (_coroutine == null)
 			{
 				_coroutine = TimerCorutine();
-				_behavior.StartCoroutine(_coroutine);
+				Forms.MonoBehaviour.StartCoroutine(_coroutine);
 			}
 		}
 

@@ -8,38 +8,51 @@ namespace Xamarin.Forms.Platform.Unity
 {
 	/// <summary>
 	/// Xamarin.Forms の Forms 実装。
-	/// 通常の実装と異なり、どこかの UI EventSystem に AddComponent しておくことが Forms.Init 相当の処置になる。 
 	/// </summary>
-	public class Forms : MonoBehaviour
+	public class Forms
 	{
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		Thread _mainThread;
+		static bool _isInitialized = false;
+		static Thread _mainThread;
+		static MonoBehaviour _monoBehaviour;
 
 		#endregion
 
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
-		private void Awake()
+		static public void Init(MonoBehaviour behaviour)
 		{
-			_mainThread = Thread.CurrentThread;
+			if (_isInitialized)
+			{
+				return;
+			}
 
-			Device.PlatformServices = new UnityPlatformServices(this);
+			_mainThread = Thread.CurrentThread;
+			_monoBehaviour = behaviour;
+
+			Device.PlatformServices = new UnityPlatformServices();
 			Device.SetIdiom(TargetIdiom.Desktop);
 			Device.Info = new UnityDeviceInfo();
 
 			Registrar.RegisterAll(new[]
 				{ typeof(ExportRendererAttribute), typeof(ExportCellAttribute), typeof(ExportImageSourceHandlerAttribute) });
 			ExpressionSearch.Default = new UnityExpressionSearch();
+
+			_isInitialized = true;
 		}
 
-		private void OnDestroy()
+		static public void Uninit()
 		{
 			Device.PlatformServices = null;
 			Device.SetIdiom(TargetIdiom.Unsupported);
 			Device.Info = null;
+
+			_mainThread = null;
+			_monoBehaviour = null;
+			_isInitialized = false;
 		}
 
 		#endregion
@@ -47,7 +60,8 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Property
 
-		public Thread MainThread => _mainThread;
+		static public Thread MainThread => _mainThread;
+		static public MonoBehaviour MonoBehaviour => _monoBehaviour;
 
 		#endregion
 	}
