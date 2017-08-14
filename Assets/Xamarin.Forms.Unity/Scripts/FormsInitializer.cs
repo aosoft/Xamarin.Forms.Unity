@@ -10,6 +10,7 @@ namespace Xamarin.Forms.Platform.Unity
 	/// Xamarin.Forms の初期化をする MonoBehavior。
 	/// どこかの UI EventSystem に AddComponent しておくことが Forms.Init 相当の処置になる。 
 	/// </summary>
+	[DisallowMultipleComponent]
 	public class FormsInitializer : MonoBehaviour
 	{
 		/*-----------------------------------------------------------------*/
