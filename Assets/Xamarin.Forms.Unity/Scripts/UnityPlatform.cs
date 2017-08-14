@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Internals;
 
-
 namespace Xamarin.Forms.Platform.Unity
 {
 	public class UnityPlatform : IPlatform, IDisposable

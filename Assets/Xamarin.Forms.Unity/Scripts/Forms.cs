@@ -8,7 +8,7 @@ namespace Xamarin.Forms.Platform.Unity
 {
 	/// <summary>
 	/// Xamarin.Forms の Forms 実装。
-	/// 通常の実装と異なり、どこかの GameObject に AddComponent しておくことが Forms.Init 相当の処置になる。 
+	/// 通常の実装と異なり、どこかの UI EventSystem に AddComponent しておくことが Forms.Init 相当の処置になる。 
 	/// </summary>
 	public class Forms : MonoBehaviour
 	{
