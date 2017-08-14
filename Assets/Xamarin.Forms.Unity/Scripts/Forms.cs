@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -24,6 +25,19 @@ namespace Xamarin.Forms.Platform.Unity
 		private void Awake()
 		{
 			_mainThread = Thread.CurrentThread;
+
+			Device.PlatformServices = new UnityPlatformServices(this);
+			Device.SetIdiom(TargetIdiom.Desktop);
+			Device.Info = new UnityDeviceInfo();
+
+			Registrar.RegisterAll(new[]
+				{ typeof(ExportRendererAttribute), typeof(ExportCellAttribute), typeof(ExportImageSourceHandlerAttribute) });
+			ExpressionSearch.Default = new UnityExpressionSearch();
+		}
+
+		private void OnDestroy()
+		{
+			
 		}
 
 		#endregion
