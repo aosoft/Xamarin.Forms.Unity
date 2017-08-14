@@ -37,7 +37,9 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void OnDestroy()
 		{
-			
+			Device.PlatformServices = null;
+			Device.SetIdiom(TargetIdiom.Unsupported);
+			Device.Info = null;
 		}
 
 		#endregion
