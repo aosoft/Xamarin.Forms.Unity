@@ -15,9 +15,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		internal UnityDeviceInfo()
 		{
-			var bounds = new Size();
-			_pixelScreenSize = new Size(bounds.Width, bounds.Height);
-			_scaledScreenSize = _pixelScreenSize;
+			UpdateProperties();
 		}
 
 		public override Size PixelScreenSize => _pixelScreenSize;
@@ -25,5 +23,42 @@ namespace Xamarin.Forms.Platform.Unity
 		public override Size ScaledScreenSize => _scaledScreenSize;
 
 		public override double ScalingFactor => _scalingFactor;
+
+		void SetPixelScreenSize(Size value)
+		{
+			if (value != _pixelScreenSize)
+			{
+				_pixelScreenSize = value;
+				OnPropertyChanged(nameof(PixelScreenSize));
+			}
+		}
+
+		void SetScaledScreenSize(Size value)
+		{
+			if (value != _scaledScreenSize)
+			{
+				_scaledScreenSize = value;
+				OnPropertyChanged(nameof(ScaledScreenSize));
+			}
+		}
+
+		void SetScalingFactor(double value)
+		{
+			if (value != _scalingFactor)
+			{
+				_scalingFactor = value;
+				OnPropertyChanged(nameof(ScalingFactor));
+			}
+		}
+
+		void UpdateProperties()
+		{
+			var current = UnityEngine.Screen.currentResolution;
+			var dpi = UnityEngine.Screen.dpi;
+
+			SetPixelScreenSize(new Size(current.width, current.height));
+			SetScaledScreenSize(new Size(current.width * dpi, current.height * dpi));
+			SetScalingFactor(dpi);
+		}
 	}
 }
