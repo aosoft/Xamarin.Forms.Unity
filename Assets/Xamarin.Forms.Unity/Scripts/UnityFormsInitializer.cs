@@ -11,7 +11,7 @@ namespace Xamarin.Forms.Platform.Unity
 	/// どこかの UI EventSystem に AddComponent しておくことが Forms.Init 相当の処置になる。 
 	/// </summary>
 	[DisallowMultipleComponent]
-	public class FormsInitializer<T> : MonoBehaviour
+	public class UnityFormsInitializer<T> : MonoBehaviour
 		where T : Application, new()
 	{
 		/*-----------------------------------------------------------------*/
