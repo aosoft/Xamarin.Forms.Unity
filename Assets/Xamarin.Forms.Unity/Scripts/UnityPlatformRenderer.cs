@@ -5,19 +5,21 @@ using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
 {
+	/// <summary>
+	/// Xamarin.Forms の PlatformRenderer 実装。
+	/// 通常の実装と異なり、ルートの UI Canvas に AddComponent する想定。
+	/// </summary>
 	public class UnityPlatformRenderer : MonoBehaviour
 	{
+		/*-----------------------------------------------------------------*/
+		#region Private Field
 
-		// Use this for initialization
-		void Start()
-		{
+		#endregion
 
-		}
+		/*-----------------------------------------------------------------*/
+		#region MonoBehavior
 
-		// Update is called once per frame
-		void Update()
-		{
 
-		}
+		#endregion
 	}
 }
