@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms.Internals;
 
-namespace Xamarin.Forms.Platform.WinForms
+namespace Xamarin.Forms.Platform.Unity
 {
 	internal class WinFormsIsolatedStorage : IIsolatedStorageFile
 	{

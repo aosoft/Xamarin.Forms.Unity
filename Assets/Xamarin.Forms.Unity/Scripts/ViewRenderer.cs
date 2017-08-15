@@ -6,7 +6,7 @@ namespace Xamarin.Forms.Platform.Unity
 	public class ViewRenderer<TElement, TNativeElement> :
 		VisualElementRenderer<TElement, TNativeElement>
 		where TElement : View
-		where TNativeElement : GameObject
+		where TNativeElement : MonoBehaviour
 	{
 		protected override void OnElementChanged(ElementChangedEventArgs<TElement> e)
 		{
