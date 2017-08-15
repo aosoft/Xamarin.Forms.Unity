@@ -2,24 +2,47 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
 {
 	/// <summary>
-	/// Xamarin.Forms の初期化をする MonoBehavior。
-	/// どこかの UI EventSystem に AddComponent しておくことが Forms.Init 相当の処置になる。 
+	/// Xamarin.Forms の初期化をする MonoBehavior のベースクラス。
+	/// UI の生成元となる Prefab をここで管理する。
 	/// </summary>
 	[DisallowMultipleComponent]
-	public class UnityFormsInitializer<T> : MonoBehaviour
+	public abstract class UnityFormsInitializer : MonoBehaviour
+	{
+	}
+
+	/// <summary>
+	/// Xamarin.Forms の初期化をする MonoBehavior。
+	/// どこかの UI EventSystem にこれの継承クラスを AddComponent しておくことが Forms.Init 相当の処置になる。 
+	/// </summary>
+	[DisallowMultipleComponent]
+	public class UnityFormsInitializer<T> : UnityFormsInitializer
 		where T : Application, new()
 	{
+		/*-----------------------------------------------------------------*/
+		#region Field
+
+		public UnityPlatformRenderer _platformRenderer;
+
+
+		#endregion
+
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
 		private void Awake()
 		{
 			Forms.Init(this);
+		}
+
+		private void Start()
+		{
+			_platformRenderer.LoadApplication(new App());
 		}
 
 		private void OnDestroy()

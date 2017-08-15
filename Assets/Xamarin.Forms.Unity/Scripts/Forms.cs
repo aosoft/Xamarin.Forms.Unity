@@ -4,6 +4,9 @@ using System.Threading;
 using UnityEngine;
 using Xamarin.Forms.Internals;
 
+[assembly: Xamarin.Forms.Dependency(typeof(Xamarin.Forms.Platform.Unity.UnitySystemResourcesProvider))]
+
+
 namespace Xamarin.Forms.Platform.Unity
 {
 	/// <summary>
