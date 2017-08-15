@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class UnityPlatform : IPlatform, IDisposable
+	public class UnityPlatform : IPlatform, IDisposable, INavigation
 	{
 		/*-----------------------------------------------------------------*/
 		#region Private Field
@@ -39,7 +39,12 @@ namespace Xamarin.Forms.Platform.Unity
 		internal static readonly BindableProperty RendererProperty = BindableProperty.CreateAttached("Renderer",
 			typeof(IVisualElementRenderer), typeof(UnityPlatform), default(IVisualElementRenderer));
 
-
+		//	TODO: Unity Canvas から確定する必要がある
+		internal Rectangle ContainerBounds
+		{
+			get;
+			set;
+		}
 
 		#endregion
 
@@ -90,8 +95,8 @@ namespace Xamarin.Forms.Platform.Unity
 			if (_currentPage != null)
 			{
 				Page previousPage = _currentPage;
-				IVisualElementRenderer previousRenderer = GetRenderer(previousPage);
-				_container.Controls.Remove(previousRenderer.ContainerElement);
+				var previousRenderer = GetRenderer(previousPage);
+				previousRenderer.ContainerElement.transform.parent = null;
 
 				if (popping)
 					previousPage.Cleanup();
@@ -99,8 +104,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 			newPage.Layout(ContainerBounds);
 
-			IVisualElementRenderer pageRenderer = newPage.GetOrCreateRenderer();
-			_container.Controls.Add(pageRenderer.ContainerElement);
+			var pageRenderer = newPage.GetOrCreateRenderer();
+			pageRenderer.ContainerElement.transform.parent = _container.transform;
 
 			pageRenderer.ContainerElement.Width = _container.Width;
 			pageRenderer.ContainerElement.Height = _container.Height;
@@ -123,7 +128,88 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			throw new NotImplementedException();
 		}
-		
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region INavigation
+
+		public IReadOnlyList<Page> ModalStack
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public IReadOnlyList<Page> NavigationStack
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public void InsertPageBefore(Page page, Page before)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Page> PopAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Page> PopAsync(bool animated)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Page> PopModalAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Page> PopModalAsync(bool animated)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task PopToRootAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task PopToRootAsync(bool animated)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task PushAsync(Page page)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task PushAsync(Page page, bool animated)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task PushModalAsync(Page page)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task PushModalAsync(Page page, bool animated)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void RemovePage(Page page)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }
