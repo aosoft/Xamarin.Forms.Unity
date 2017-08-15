@@ -10,7 +10,7 @@ using Xamarin.Forms.Internals;
 namespace Xamarin.Forms.Platform.Unity
 {
 	public class VisualElementRenderer<TElement, TNativeElement> :
-		Canvas, IVisualElementRenderer, IDisposable, IEffectControlProvider
+		MonoBehaviour, IVisualElementRenderer, IDisposable, IEffectControlProvider
 		where TElement : VisualElement
 		where TNativeElement : MonoBehaviour
 	{
