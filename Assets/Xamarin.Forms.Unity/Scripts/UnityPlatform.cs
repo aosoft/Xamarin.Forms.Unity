@@ -42,8 +42,15 @@ namespace Xamarin.Forms.Platform.Unity
 		//	TODO: Unity Canvas から確定する必要がある
 		internal Rectangle ContainerBounds
 		{
-			get;
-			set;
+			get
+			{
+				var rt = _container?.GetComponent<RectTransform>();
+				if (rt != null)
+				{
+					return new Rectangle(0.0, 0.0, rt.rect.width, rt.rect.height);
+				}
+				return new Rectangle();
+			}
 		}
 
 		#endregion
