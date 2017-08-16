@@ -39,7 +39,6 @@ namespace Xamarin.Forms.Platform.Unity
 		internal static readonly BindableProperty RendererProperty = BindableProperty.CreateAttached("Renderer",
 			typeof(IVisualElementRenderer), typeof(UnityPlatform), default(IVisualElementRenderer));
 
-		//	TODO: Unity Canvas から確定する必要がある
 		internal Rectangle ContainerBounds
 		{
 			get

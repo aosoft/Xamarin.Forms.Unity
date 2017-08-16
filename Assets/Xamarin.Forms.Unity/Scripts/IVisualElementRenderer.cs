@@ -6,7 +6,7 @@ namespace Xamarin.Forms.Platform.Unity
 {
 	public interface IVisualElementRenderer : IRegisterable, IDisposable
 	{
-		GameObject ContainerElement { get; }
+		Component ContainerElement { get; }
 
 		VisualElement Element { get; }
 
@@ -16,6 +16,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void SetElement(VisualElement element);
 
-		GameObject GetNativeElement();
+		Component GetNativeElement();
 	}
 }

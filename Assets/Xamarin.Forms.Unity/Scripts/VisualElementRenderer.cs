@@ -90,11 +90,11 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (oldControl != null)
 			{
-				Controls.Remove(oldControl);
+				oldControl.transform.parent = null;
 
 				//oldControl.Loaded -= OnControlLoaded;
-				oldControl.GotFocus -= OnControlGotFocus;
-				oldControl.LostFocus -= OnControlLostFocus;
+				//oldControl.GotFocus -= OnControlGotFocus;
+				//oldControl.LostFocus -= OnControlLostFocus;
 			}
 
 			UpdateTracker();
@@ -105,7 +105,7 @@ namespace Xamarin.Forms.Platform.Unity
 			//Control.HorizontalAlignment = HorizontalAlignment.Stretch;
 			//Control.VerticalAlignment = VerticalAlignment.Stretch;
 
-			Controls.Add(control);
+			control.transform.parent = this.transform;
 
 			if (Element == null)
 				throw new InvalidOperationException(
@@ -115,8 +115,8 @@ namespace Xamarin.Forms.Platform.Unity
 			Element.IsNativeStateConsistent = false;
 			//control.Loaded += OnControlLoaded;
 
-			control.GotFocus += OnControlGotFocus;
-			control.LostFocus += OnControlLostFocus;
+			//control.GotFocus += OnControlGotFocus;
+			//control.LostFocus += OnControlLostFocus;
 
 			UpdateBackgroundColor();
 
@@ -126,6 +126,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected virtual void UpdateBackgroundColor()
 		{
+			/*
 			Color backgroundColor = Element.BackgroundColor;
 			var control = Control as Control;
 			if (control != null)
@@ -150,6 +151,7 @@ namespace Xamarin.Forms.Platform.Unity
 					BackColor = System.Drawing.SystemColors.Window;
 				}
 			}
+			*/
 		}
 
 		protected virtual void UpdateNativeControl()
@@ -180,11 +182,11 @@ namespace Xamarin.Forms.Platform.Unity
 
 		internal virtual void OnElementFocusChangeRequested(object sender, VisualElement.FocusRequestArgs args)
 		{
+			/*
 			var control = Control as Control;
 			if (control == null)
 				return;
 
-			/*
 			if (args.Focus)
 				args.Result = control.Focus(FocusState.Programmatic);
 			else
@@ -202,9 +204,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateEnabled()
 		{
-			var control = Control as Control;
-			if (control != null)
-				control.Enabled = Element.IsEnabled;
+			if (Control != null)
+				Control.enabled = Element.IsEnabled;
 			/*else
 				IsHitTestVisible = Element.IsEnabled && !Element.InputTransparent;*/
 		}
@@ -223,7 +224,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		#region IVisualElementRenderer
 
-		public Control ContainerElement => this;
+		public UnityEngine.Component ContainerElement => this;
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
@@ -234,7 +235,7 @@ namespace Xamarin.Forms.Platform.Unity
 			throw new NotImplementedException();
 		}
 
-		public Control GetNativeElement()
+		public UnityEngine.Component GetNativeElement()
 		{
 			return Control;
 		}
@@ -275,7 +276,7 @@ namespace Xamarin.Forms.Platform.Unity
 			OnElementChanged(new ElementChangedEventArgs<TElement>(oldElement, Element));
 
 			var controller = (IElementController)oldElement;
-			if (controller != null && controller.EffectControlProvider == this)
+			if (controller != null && controller.EffectControlProvider == (IEffectControlProvider)this)
 			{
 				controller.EffectControlProvider = null;
 			}
