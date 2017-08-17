@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
 using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
@@ -14,6 +13,10 @@ namespace Xamarin.Forms.Platform.Unity
 	[DisallowMultipleComponent]
 	public abstract class UnityFormsInitializer : MonoBehaviour
 	{
+		public UnityEngine.UI.Button _prefabButton;
+		public UnityEngine.UI.Text _prefabText;
+		public UnityEngine.UI.Slider _prefbSlider;
+		public UnityEngine.CanvasRenderer _prefabPanel;
 	}
 
 	/// <summary>
