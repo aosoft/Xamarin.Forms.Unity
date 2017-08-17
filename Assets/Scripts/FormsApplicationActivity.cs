@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [DisallowMultipleComponent]
-public class FormsInitializer :
+public class FormsApplicationActivity :
 	Xamarin.Forms.Platform.Unity.UnityFormsApplicationActivity<App>
 {
 }

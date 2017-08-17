@@ -2,7 +2,7 @@
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	internal sealed class DefaultRenderer : ViewRenderer<View, Control>
+	internal sealed class DefaultRenderer : ViewRenderer<View, MonoBehaviour>
 	{
 	}
 }

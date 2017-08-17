@@ -224,7 +224,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		#region IVisualElementRenderer
 
-		public UnityEngine.Component ContainerElement => this;
+		public UnityEngine.MonoBehaviour ContainerElement => this;
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
@@ -235,7 +235,7 @@ namespace Xamarin.Forms.Platform.Unity
 			throw new NotImplementedException();
 		}
 
-		public UnityEngine.Component GetNativeElement()
+		public UnityEngine.MonoBehaviour GetNativeElement()
 		{
 			return Control;
 		}

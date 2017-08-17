@@ -9,7 +9,7 @@ namespace Xamarin.Forms.Platform.Unity
 		readonly int _column;
 		readonly int _columnSpan;
 
-		readonly Panel _panel;
+		readonly MonoBehaviour _monoBehaviour;
 		readonly IVisualElementRenderer _renderer;
 		readonly int _row;
 		readonly int _rowSpan;
@@ -23,8 +23,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 			_renderer = renderer;
 
-			_panel = renderer.ContainerElement as Panel;
-			if (_panel == null)
+			_monoBehaviour = renderer.ContainerElement as MonoBehaviour;
+			if (_monoBehaviour == null)
 				throw new ArgumentException("Renderer's container element must be a Panel");
 		}
 
@@ -120,7 +120,7 @@ namespace Xamarin.Forms.Platform.Unity
 				Windows.UI.Xaml.Controls.Grid.SetColumnSpan(childRenderer.ContainerElement, _columnSpan);
 			*/
 
-			_panel.Controls.Add(childRenderer.ContainerElement);
+			_monoBehaviour.Controls.Add(childRenderer.ContainerElement);
 
 			EnsureZIndex();
 		}
@@ -145,7 +145,7 @@ namespace Xamarin.Forms.Platform.Unity
 				if (_columnSpan > 0)
 					childRenderer.ContainerElement.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnSpanProperty);
 				*/
-				_panel.Controls.Remove(childRenderer.ContainerElement);
+				_monoBehaviour.Controls.Remove(childRenderer.ContainerElement);
 
 				view.Cleanup();
 			}
