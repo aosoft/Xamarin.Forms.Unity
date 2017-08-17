@@ -11,7 +11,7 @@ namespace Xamarin.Forms.Platform.Unity
 	/// UI の生成元となる Prefab をここで管理する。
 	/// </summary>
 	[DisallowMultipleComponent]
-	public abstract class UnityFormsInitializer : MonoBehaviour
+	public abstract class UnityFormsApplicationActivity : MonoBehaviour
 	{
 		public UnityEngine.UI.Button _prefabButton;
 		public UnityEngine.UI.Text _prefabText;
@@ -24,7 +24,7 @@ namespace Xamarin.Forms.Platform.Unity
 	/// どこかの UI EventSystem にこれの継承クラスを AddComponent しておくことが Forms.Init 相当の処置になる。 
 	/// </summary>
 	[DisallowMultipleComponent]
-	public class UnityFormsInitializer<T> : UnityFormsInitializer
+	public class UnityFormsApplicationActivity<T> : UnityFormsApplicationActivity
 		where T : Application, new()
 	{
 		/*-----------------------------------------------------------------*/
