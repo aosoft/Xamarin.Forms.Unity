@@ -35,6 +35,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		UnityPlatform _platform;
 		Canvas _canvas;
+		T _app;
 
 		#endregion
 
@@ -52,7 +53,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void Start()
 		{
-			LoadApplication(new App());
+			LoadApplication(new T());
 		}
 
 		private void OnDestroy()
@@ -66,13 +67,13 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Protected Method
 
-		public void LoadApplication(Application app)
+		public void LoadApplication(T app)
 		{
 
 			Application.SetCurrentApplication(app);
 			_platform.SetPage(Application.Current.MainPage);
 			app.PropertyChanged += OnApplicationPropertyChanged;
-
+			_app = app;
 			Application.Current.SendStart();
 		}
 
