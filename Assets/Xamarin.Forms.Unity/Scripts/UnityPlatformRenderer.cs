@@ -17,8 +17,6 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		UnityPlatform _platform;
-
 		#endregion
 
 		/*-----------------------------------------------------------------*/
@@ -26,12 +24,10 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void Awake()
 		{
-			_platform = new UnityPlatform(GetComponent<Canvas>());
 		}
 
 		private void OnDestroy()
 		{
-			_platform = null;
 		}
 
 		#endregion
@@ -39,26 +35,10 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Public Method
 
-		public void LoadApplication(Application app)
-		{
-
-			Application.SetCurrentApplication(app);
-			_platform.SetPage(Application.Current.MainPage);
-			app.PropertyChanged += OnApplicationPropertyChanged;
-
-			Application.Current.SendStart();
-		}
-
 		#endregion
 
 		/*-----------------------------------------------------------------*/
 		#region Event Handler
-
-		void OnApplicationPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == "MainPage")
-				_platform.SetPage(Application.Current.MainPage);
-		}
 
 		#endregion
 	}

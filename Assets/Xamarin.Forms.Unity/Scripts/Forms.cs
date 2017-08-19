@@ -19,14 +19,14 @@ namespace Xamarin.Forms.Platform.Unity
 
 		static bool _isInitialized = false;
 		static Thread _mainThread;
-		static MonoBehaviour _monoBehaviour;
+		static UnityFormsApplicationActivity _activity;
 
 		#endregion
 
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
-		static public void Init(MonoBehaviour behaviour)
+		static public void Init(UnityFormsApplicationActivity activity)
 		{
 			if (_isInitialized)
 			{
@@ -34,7 +34,7 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 
 			_mainThread = Thread.CurrentThread;
-			_monoBehaviour = behaviour;
+			_activity = activity;
 
 			Device.PlatformServices = new UnityPlatformServices();
 			Device.SetIdiom(TargetIdiom.Desktop);
@@ -54,7 +54,7 @@ namespace Xamarin.Forms.Platform.Unity
 			Device.Info = null;
 
 			_mainThread = null;
-			_monoBehaviour = null;
+			_activity = null;
 			_isInitialized = false;
 		}
 
@@ -64,7 +64,7 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Property
 
 		static public Thread MainThread => _mainThread;
-		static public MonoBehaviour MonoBehaviour => _monoBehaviour;
+		static public UnityFormsApplicationActivity Activity => _activity;
 
 		#endregion
 	}

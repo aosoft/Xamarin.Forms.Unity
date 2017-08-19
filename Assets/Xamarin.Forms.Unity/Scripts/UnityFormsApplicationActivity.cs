@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using UnityEngine;
 using Xamarin.Forms.Internals;
@@ -28,9 +29,9 @@ namespace Xamarin.Forms.Platform.Unity
 		where T : Application, new()
 	{
 		/*-----------------------------------------------------------------*/
-		#region Field
+		#region Private Field
 
-		public UnityPlatformRenderer _platformRenderer;
+		UnityPlatform _platform;
 
 
 		#endregion
@@ -41,19 +42,46 @@ namespace Xamarin.Forms.Platform.Unity
 		private void Awake()
 		{
 			Forms.Init(this);
+			_platform = new UnityPlatform(GetComponent<Canvas>());
 		}
 
 		private void Start()
 		{
-			_platformRenderer.LoadApplication(new App());
+			LoadApplication(new App());
 		}
 
 		private void OnDestroy()
 		{
+			_platform = null;
 			Forms.Uninit();
 		}
 
 		#endregion
 
+		/*-----------------------------------------------------------------*/
+		#region Protected Method
+
+		public void LoadApplication(Application app)
+		{
+
+			Application.SetCurrentApplication(app);
+			_platform.SetPage(Application.Current.MainPage);
+			app.PropertyChanged += OnApplicationPropertyChanged;
+
+			Application.Current.SendStart();
+		}
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Event Handler
+
+		void OnApplicationPropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "MainPage")
+				_platform.SetPage(Application.Current.MainPage);
+		}
+
+		#endregion
 	}
 }
