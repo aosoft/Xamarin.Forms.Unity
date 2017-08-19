@@ -17,6 +17,8 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
+		Canvas _canvas;
+
 		#endregion
 
 		/*-----------------------------------------------------------------*/
@@ -24,6 +26,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void Awake()
 		{
+			_canvas = GetComponent<Canvas>();
 		}
 
 		private void OnDestroy()

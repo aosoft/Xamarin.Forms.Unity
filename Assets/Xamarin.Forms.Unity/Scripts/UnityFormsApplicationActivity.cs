@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
@@ -25,6 +26,7 @@ namespace Xamarin.Forms.Platform.Unity
 	/// どこかの UI EventSystem にこれの継承クラスを AddComponent しておくことが Forms.Init 相当の処置になる。 
 	/// </summary>
 	[DisallowMultipleComponent]
+	[RequireComponent(typeof(EventSystem))]
 	public class UnityFormsApplicationActivity<T> : UnityFormsApplicationActivity
 		where T : Application, new()
 	{
@@ -32,7 +34,7 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Private Field
 
 		UnityPlatform _platform;
-
+		Canvas _canvas;
 
 		#endregion
 
@@ -42,7 +44,10 @@ namespace Xamarin.Forms.Platform.Unity
 		private void Awake()
 		{
 			Forms.Init(this);
-			_platform = new UnityPlatform(GetComponent<Canvas>());
+			_canvas = gameObject.AddComponent<Canvas>();
+			_canvas.transform.parent.parent = null;
+			_canvas.name = "Xamarin.Forms Platform";
+			_platform = new UnityPlatform(_canvas);
 		}
 
 		private void Start()

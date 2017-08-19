@@ -13,7 +13,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		Canvas _container;
+		UnityPlatformRenderer _renderer;
 		Page _currentPage;
 		readonly NavigationModel _navModel = new NavigationModel();
 
@@ -22,9 +22,9 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor / Dispose
 
-		internal UnityPlatform(Canvas container)
+		internal UnityPlatform(Canvas canvas)
 		{
-			_container = container;
+			_renderer = canvas.gameObject.AddComponent<UnityPlatformRenderer>();
 		}
 
 		public void Dispose()
@@ -43,7 +43,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			get
 			{
-				var rt = _container?.GetComponent<RectTransform>();
+				var rt = _canvas?.GetComponent<RectTransform>();
 				if (rt != null)
 				{
 					return new Rectangle(0.0, 0.0, rt.rect.width, rt.rect.height);
@@ -111,10 +111,10 @@ namespace Xamarin.Forms.Platform.Unity
 			newPage.Layout(ContainerBounds);
 
 			var pageRenderer = newPage.GetOrCreateRenderer();
-			pageRenderer.ContainerElement.transform.parent = _container.transform;
+			pageRenderer.ContainerElement.transform.parent = _canvas.transform;
 
-			pageRenderer.ContainerElement.Width = _container.Width;
-			pageRenderer.ContainerElement.Height = _container.Height;
+			pageRenderer.ContainerElement.Width = _canvas.Width;
+			pageRenderer.ContainerElement.Height = _canvas.Height;
 
 			completedCallback?.Invoke();
 
