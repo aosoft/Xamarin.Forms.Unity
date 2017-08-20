@@ -34,7 +34,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			if (_coroutine != null)
 			{
-				Forms.MonoBehaviour.StopCoroutine(_coroutine);
+				Forms.Activity.StopCoroutine(_coroutine);
 				_coroutine = null;
 			}
 		}
@@ -44,7 +44,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (_coroutine == null)
 			{
 				_coroutine = TimerCorutine();
-				Forms.MonoBehaviour.StartCoroutine(_coroutine);
+				Forms.Activity.StartCoroutine(_coroutine);
 			}
 		}
 

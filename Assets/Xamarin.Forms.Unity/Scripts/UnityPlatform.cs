@@ -14,6 +14,8 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Private Field
 
 		UnityPlatformRenderer _renderer;
+		Canvas _canvas;
+
 		Page _currentPage;
 		readonly NavigationModel _navModel = new NavigationModel();
 
@@ -25,6 +27,7 @@ namespace Xamarin.Forms.Platform.Unity
 		internal UnityPlatform(Canvas canvas)
 		{
 			_renderer = canvas.gameObject.AddComponent<UnityPlatformRenderer>();
+			_canvas = canvas;
 		}
 
 		public void Dispose()
@@ -102,7 +105,7 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				Page previousPage = _currentPage;
 				var previousRenderer = GetRenderer(previousPage);
-				previousRenderer.ContainerElement.transform.parent = null;
+				previousRenderer.Component.transform.parent = null;
 
 				if (popping)
 					previousPage.Cleanup();
@@ -111,10 +114,10 @@ namespace Xamarin.Forms.Platform.Unity
 			newPage.Layout(ContainerBounds);
 
 			var pageRenderer = newPage.GetOrCreateRenderer();
-			pageRenderer.ContainerElement.transform.parent = _canvas.transform;
+			pageRenderer.Component.transform.parent = _canvas.transform;
 
-			pageRenderer.ContainerElement.Width = _canvas.Width;
-			pageRenderer.ContainerElement.Height = _canvas.Height;
+			//pageRenderer.ContainerElement.Width = _canvas.Width;
+			//pageRenderer.ContainerElement.Height = _canvas.Height;
 
 			completedCallback?.Invoke();
 

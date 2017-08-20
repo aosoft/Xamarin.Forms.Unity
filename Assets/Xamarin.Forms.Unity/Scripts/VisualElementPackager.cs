@@ -23,7 +23,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 			_renderer = renderer;
 
-			_monoBehaviour = renderer.ContainerElement as MonoBehaviour;
+			_monoBehaviour = renderer.Component as MonoBehaviour;
 			if (_monoBehaviour == null)
 				throw new ArgumentException("Renderer's container element must be a Panel");
 		}
@@ -95,7 +95,7 @@ namespace Xamarin.Forms.Platform.Unity
 					continue;
 				}
 
-				Canvas.SetZIndex(childRenderer.ContainerElement, z + 1);
+				Canvas.SetZIndex(childRenderer.Component, z + 1);
 			}*/
 		}
 
@@ -111,16 +111,16 @@ namespace Xamarin.Forms.Platform.Unity
 
 			/*
 			if (_row > 0)
-				Windows.UI.Xaml.Controls.Grid.SetRow(childRenderer.ContainerElement, _row);
+				Windows.UI.Xaml.Controls.Grid.SetRow(childRenderer.Component, _row);
 			if (_rowSpan > 0)
-				Windows.UI.Xaml.Controls.Grid.SetRowSpan(childRenderer.ContainerElement, _rowSpan);
+				Windows.UI.Xaml.Controls.Grid.SetRowSpan(childRenderer.Component, _rowSpan);
 			if (_column > 0)
-				Windows.UI.Xaml.Controls.Grid.SetColumn(childRenderer.ContainerElement, _column);
+				Windows.UI.Xaml.Controls.Grid.SetColumn(childRenderer.Component, _column);
 			if (_columnSpan > 0)
-				Windows.UI.Xaml.Controls.Grid.SetColumnSpan(childRenderer.ContainerElement, _columnSpan);
+				Windows.UI.Xaml.Controls.Grid.SetColumnSpan(childRenderer.Component, _columnSpan);
 			*/
 
-			_monoBehaviour.Controls.Add(childRenderer.ContainerElement);
+			_monoBehaviour.Controls.Add(childRenderer.Component);
 
 			EnsureZIndex();
 		}
@@ -137,15 +137,15 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				/*
 				if (_row > 0)
-					childRenderer.ContainerElement.ClearValue(Windows.UI.Xaml.Controls.Grid.RowProperty);
+					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.RowProperty);
 				if (_rowSpan > 0)
-					childRenderer.ContainerElement.ClearValue(Windows.UI.Xaml.Controls.Grid.RowSpanProperty);
+					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.RowSpanProperty);
 				if (_column > 0)
-					childRenderer.ContainerElement.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty);
+					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty);
 				if (_columnSpan > 0)
-					childRenderer.ContainerElement.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnSpanProperty);
+					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnSpanProperty);
 				*/
-				_monoBehaviour.Controls.Remove(childRenderer.ContainerElement);
+				_monoBehaviour.Controls.Remove(childRenderer.Component);
 
 				view.Cleanup();
 			}

@@ -86,7 +86,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public void StartTimer(TimeSpan interval, Func<bool> callback)
 		{
-			Forms.MonoBehaviour.StartCoroutine(TimerCoroutine((float)interval.TotalSeconds, callback));
+			Forms.Activity.StartCoroutine(TimerCoroutine((float)interval.TotalSeconds, callback));
 		}
 
 		IEnumerator TimerCoroutine(float seconds, Func<bool> callback)
