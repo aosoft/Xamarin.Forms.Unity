@@ -218,26 +218,21 @@ namespace Xamarin.Forms.Platform.Unity
 			//_tracker.PreventGestureBubbling = PreventGestureBubbling;
 			_tracker.Component = Control;
 			_tracker.Element = Element;
-			_tracker.Container = ContainerElement;
 		}
 
 
 		#region IVisualElementRenderer
 
-		public UnityEngine.MonoBehaviour ContainerElement => this;
 
 		VisualElement IVisualElementRenderer.Element => Element;
+
+		public UnityEngine.Component Component => this; 
 
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
 		public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
 		{
 			throw new NotImplementedException();
-		}
-
-		public UnityEngine.MonoBehaviour GetNativeElement()
-		{
-			return Control;
 		}
 
 		public void SetElement(VisualElement element)

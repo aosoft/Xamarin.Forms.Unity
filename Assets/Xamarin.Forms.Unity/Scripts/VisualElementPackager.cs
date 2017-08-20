@@ -9,7 +9,7 @@ namespace Xamarin.Forms.Platform.Unity
 		readonly int _column;
 		readonly int _columnSpan;
 
-		readonly MonoBehaviour _monoBehaviour;
+		readonly Component _component;
 		readonly IVisualElementRenderer _renderer;
 		readonly int _row;
 		readonly int _rowSpan;
@@ -23,9 +23,9 @@ namespace Xamarin.Forms.Platform.Unity
 
 			_renderer = renderer;
 
-			_monoBehaviour = renderer.Component as MonoBehaviour;
-			if (_monoBehaviour == null)
-				throw new ArgumentException("Renderer's container element must be a Panel");
+			_component = renderer.Component;
+			if (_component == null)
+				throw new ArgumentException("renderer.Component");
 		}
 
 		public VisualElementPackager(IVisualElementRenderer renderer, int row = 0, int rowSpan = 0, int column = 0, int columnSpan = 0) : this(renderer)
@@ -88,7 +88,7 @@ namespace Xamarin.Forms.Platform.Unity
 				if (child == null)
 					continue;
 
-				IVisualElementRenderer childRenderer = WinFormsPlatform.GetRenderer(child);
+				IVisualElementRenderer childRenderer = UnityPlatform.GetRenderer(child);
 
 				if (childRenderer == null)
 				{
@@ -106,8 +106,8 @@ namespace Xamarin.Forms.Platform.Unity
 			if (view == null)
 				return;
 
-			IVisualElementRenderer childRenderer = WinFormsPlatform.CreateRenderer(view);
-			WinFormsPlatform.SetRenderer(view, childRenderer);
+			IVisualElementRenderer childRenderer = UnityPlatform.CreateRenderer(view);
+			UnityPlatform.SetRenderer(view, childRenderer);
 
 			/*
 			if (_row > 0)
@@ -120,7 +120,7 @@ namespace Xamarin.Forms.Platform.Unity
 				Windows.UI.Xaml.Controls.Grid.SetColumnSpan(childRenderer.Component, _columnSpan);
 			*/
 
-			_monoBehaviour.Controls.Add(childRenderer.Component);
+			childRenderer.Component.transform.parent = _component.transform;
 
 			EnsureZIndex();
 		}
@@ -132,7 +132,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (view == null)
 				return;
 
-			IVisualElementRenderer childRenderer = WinFormsPlatform.GetRenderer(view);
+			IVisualElementRenderer childRenderer = UnityPlatform.GetRenderer(view);
 			if (childRenderer != null)
 			{
 				/*
@@ -145,7 +145,7 @@ namespace Xamarin.Forms.Platform.Unity
 				if (_columnSpan > 0)
 					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnSpanProperty);
 				*/
-				_monoBehaviour.Controls.Remove(childRenderer.Component);
+				childRenderer.Component.transform.parent = null;
 
 				view.Cleanup();
 			}
