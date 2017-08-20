@@ -216,7 +216,7 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 
 			//_tracker.PreventGestureBubbling = PreventGestureBubbling;
-			_tracker.Control = Control;
+			_tracker.Component = Control;
 			_tracker.Element = Element;
 			_tracker.Container = ContainerElement;
 		}

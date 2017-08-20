@@ -6,16 +6,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
 	public class VisualElementTracker<TElement, TNativeElement> : IDisposable
 		where TElement : VisualElement
-		where TNativeElement : MonoBehaviour
+		where TNativeElement : UnityEngine.Component
 	{
-		Control _container;
-		TNativeElement _control;
+		TNativeElement _component;
 		TElement _element;
 
 		bool _invalidateArrangeNeeded;
@@ -49,44 +47,16 @@ namespace Xamarin.Forms.Platform.Unity
 		#endregion
 
 
-		public Control Container
+
+		public TNativeElement Component
 		{
-			get { return _container; }
+			get { return _component; }
 			set
 			{
-				if (_container == value)
+				if (_component == value)
 					return;
 
-				if (_container != null)
-				{
-					/*
-					_container.Tapped -= OnTap;
-					_container.DoubleTapped -= OnDoubleTap;
-					_container.ManipulationDelta -= OnManipulationDelta;
-					_container.ManipulationStarted -= OnManipulationStarted;
-					_container.ManipulationCompleted -= OnManipulationCompleted;
-					_container.PointerPressed -= OnPointerPressed;
-					_container.PointerExited -= OnPointerExited;
-					_container.PointerReleased -= OnPointerReleased;
-					_container.PointerCanceled -= OnPointerCanceled;
-					*/
-				}
-
-				_container = value;
-
-				UpdateNativeControl();
-			}
-		}
-
-		public TNativeElement Control
-		{
-			get { return _control; }
-			set
-			{
-				if (_control == value)
-					return;
-
-				if (_control != null)
+				if (_component != null)
 				{
 					/*
 					_control.Tapped -= HandleTapped;
@@ -94,7 +64,7 @@ namespace Xamarin.Forms.Platform.Unity
 					*/
 				}
 
-				_control = value;
+				_component = value;
 				UpdateNativeControl();
 			}
 		}
@@ -147,40 +117,40 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 			else if (e.PropertyName == VisualElement.AnchorXProperty.PropertyName || e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
 			{
-				UpdateScaleAndRotation(Element, Container);
+				UpdateScaleAndRotation(Element, Component);
 			}
 			else if (e.PropertyName == VisualElement.ScaleProperty.PropertyName)
 			{
-				UpdateScaleAndRotation(Element, Container);
+				UpdateScaleAndRotation(Element, Component);
 			}
 			else if (e.PropertyName == VisualElement.TranslationXProperty.PropertyName || e.PropertyName == VisualElement.TranslationYProperty.PropertyName ||
 					 e.PropertyName == VisualElement.RotationProperty.PropertyName || e.PropertyName == VisualElement.RotationXProperty.PropertyName || e.PropertyName == VisualElement.RotationYProperty.PropertyName)
 			{
-				UpdateRotation(Element, Container);
+				UpdateRotation(Element, Component);
 			}
 			else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName)
 			{
-				UpdateVisibility(Element, Container);
+				UpdateVisibility(Element, Component);
 			}
 			else if (e.PropertyName == VisualElement.OpacityProperty.PropertyName)
 			{
-				UpdateOpacity(Element, Container);
+				UpdateOpacity(Element, Component);
 			}
 			else if (e.PropertyName == VisualElement.InputTransparentProperty.PropertyName)
 			{
-				UpdateInputTransparent(Element, Container);
+				UpdateInputTransparent(Element, Component);
 			}
 		}
 
 		protected virtual void UpdateNativeControl()
 		{
-			if (Element == null || Container == null)
+			if (Element == null || Component == null)
 				return;
 
-			UpdateVisibility(Element, Container);
-			UpdateOpacity(Element, Container);
-			UpdateScaleAndRotation(Element, Container);
-			UpdateInputTransparent(Element, Container);
+			UpdateVisibility(Element, Component);
+			UpdateOpacity(Element, Component);
+			UpdateScaleAndRotation(Element, Component);
+			UpdateInputTransparent(Element, Component);
 
 			if (_invalidateArrangeNeeded)
 			{
@@ -206,22 +176,22 @@ namespace Xamarin.Forms.Platform.Unity
 			if (Element.IsInNativeLayout)
 				return;
 
-			var parent = (Control)Container.Parent;
+			//var parent = (Control)Container.Parent;
 			//parent?.InvalidateMeasure();
 			//Container.InvalidateMeasure();
 		}
 
-		static void UpdateInputTransparent(VisualElement view, Control control)
+		static void UpdateInputTransparent(VisualElement view, UnityEngine.Component component)
 		{
-			control.Enabled = view.IsEnabled && !view.InputTransparent;
+			component.gameObject.SetActive(view.IsEnabled && view.IsVisible && !view.InputTransparent);
 		}
 
-		static void UpdateOpacity(VisualElement view, Control control)
+		static void UpdateOpacity(VisualElement view, UnityEngine.Component component)
 		{
 			//control.Opacity = view.Opacity;
 		}
 
-		static void UpdateRotation(VisualElement view, Control control)
+		static void UpdateRotation(VisualElement view, UnityEngine.Component component)
 		{
 			/*
 			double anchorX = view.AnchorX;
@@ -253,7 +223,7 @@ namespace Xamarin.Forms.Platform.Unity
 			*/
 		}
 
-		static void UpdateScaleAndRotation(VisualElement view, Control control)
+		static void UpdateScaleAndRotation(VisualElement view, UnityEngine.Component component)
 		{
 			double anchorX = view.AnchorX;
 			double anchorY = view.AnchorY;
@@ -261,12 +231,12 @@ namespace Xamarin.Forms.Platform.Unity
 			//control.RenderTransformOrigin = new Windows.Foundation.Point(anchorX, anchorY);
 			//control.RenderTransform = new ScaleTransform { ScaleX = scale, ScaleY = scale };
 
-			UpdateRotation(view, control);
+			UpdateRotation(view, component);
 		}
 
-		static void UpdateVisibility(VisualElement view, Control control)
+		static void UpdateVisibility(VisualElement view, UnityEngine.Component component)
 		{
-			control.Visible = view.IsVisible;
+			UpdateInputTransparent(view, component);
 		}
 
 	}
