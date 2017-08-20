@@ -35,7 +35,6 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Field
 
 		UnityPlatform _platform;
-		T _app;
 
 		//	Platform / PlatformRenderer が使用する Root Canvas
 		public Canvas _xamarinFormsPlatformCanvas;
@@ -85,7 +84,6 @@ namespace Xamarin.Forms.Platform.Unity
 			Application.SetCurrentApplication(app);
 			_platform.SetPage(Application.Current.MainPage);
 			app.PropertyChanged += OnApplicationPropertyChanged;
-			_app = app;
 			Application.Current.SendStart();
 		}
 

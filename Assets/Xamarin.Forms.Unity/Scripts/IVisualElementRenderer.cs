@@ -8,7 +8,7 @@ namespace Xamarin.Forms.Platform.Unity
 	{
 		VisualElement Element { get; }
 
-		Component Component { get; }
+		MonoBehaviour Behaviour { get; }
 
 		event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 

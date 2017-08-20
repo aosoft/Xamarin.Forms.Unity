@@ -12,7 +12,7 @@ namespace Xamarin.Forms.Platform.Unity
 	public class VisualElementRenderer<TElement, TNativeElement> :
 		MonoBehaviour, IVisualElementRenderer, IDisposable, IEffectControlProvider
 		where TElement : VisualElement
-		where TNativeElement : MonoBehaviour
+		where TNativeElement : UnityEngine.Component
 	{
 		VisualElementTracker<TElement, TNativeElement> _tracker;
 
@@ -50,7 +50,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElementPackager Packager { get; set; }
 
-		public TNativeElement Control { get; private set; }
+		public TNativeElement Component { get; private set; }
 
 		public TElement Element { get; private set; }
 
@@ -85,8 +85,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected void SetNativeControl(TNativeElement control)
 		{
-			TNativeElement oldControl = Control;
-			Control = control;
+			TNativeElement oldControl = this.Component;
+			this.Component = control;
 
 			if (oldControl != null)
 			{
@@ -204,8 +204,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateEnabled()
 		{
-			if (Control != null)
-				Control.enabled = Element.IsEnabled;
+			if (Component != null)
+				Component.gameObject.SetActive(Element.IsEnabled);
 			/*else
 				IsHitTestVisible = Element.IsEnabled && !Element.InputTransparent;*/
 		}
@@ -216,7 +216,7 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 
 			//_tracker.PreventGestureBubbling = PreventGestureBubbling;
-			_tracker.Component = Control;
+			_tracker.Component = Component;
 			_tracker.Element = Element;
 		}
 
@@ -226,7 +226,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
-		public UnityEngine.Component Component => this; 
+		public UnityEngine.MonoBehaviour Behaviour => this; 
 
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
