@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
@@ -15,10 +16,10 @@ namespace Xamarin.Forms.Platform.Unity
 	[DisallowMultipleComponent]
 	public abstract class UnityFormsApplicationActivity : MonoBehaviour
 	{
-		public UnityEngine.UI.Button _prefabButton;
-		public UnityEngine.UI.Text _prefabText;
-		public UnityEngine.UI.Slider _prefbSlider;
-		public UnityEngine.CanvasRenderer _prefabPanel;
+		public Button _prefabButton;
+		public Text _prefabText;
+		public Slider _prefbSlider;
+		public CanvasRenderer _prefabPanel;
 	}
 
 	/// <summary>
@@ -31,11 +32,13 @@ namespace Xamarin.Forms.Platform.Unity
 		where T : Application, new()
 	{
 		/*-----------------------------------------------------------------*/
-		#region Private Field
+		#region Field
 
 		UnityPlatform _platform;
-		Canvas _canvas;
 		T _app;
+
+		//	Platform / PlatformRenderer が使用する Root Canvas
+		public Canvas _xamarinFormsPlatformCanvas;
 
 		#endregion
 
@@ -45,10 +48,7 @@ namespace Xamarin.Forms.Platform.Unity
 		private void Awake()
 		{
 			Forms.Init(this);
-			_canvas = gameObject.AddComponent<Canvas>();
-			_canvas.transform.parent.parent = null;
-			_canvas.name = "Xamarin.Forms Platform";
-			_platform = new UnityPlatform(_canvas);
+			_platform = new UnityPlatform(_xamarinFormsPlatformCanvas);
 		}
 
 		private void Start()
@@ -62,12 +62,24 @@ namespace Xamarin.Forms.Platform.Unity
 			Forms.Uninit();
 		}
 
+		private void OnApplicationFocus(bool focus)
+		{
+			
+		}
+
+		private void OnApplicationPause(bool pause)
+		{
+			
+		}
+
+
+
 		#endregion
 
 		/*-----------------------------------------------------------------*/
 		#region Protected Method
 
-		public void LoadApplication(T app)
+		protected void LoadApplication(T app)
 		{
 
 			Application.SetCurrentApplication(app);

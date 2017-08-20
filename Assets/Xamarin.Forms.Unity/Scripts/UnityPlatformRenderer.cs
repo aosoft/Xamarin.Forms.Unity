@@ -9,6 +9,7 @@ namespace Xamarin.Forms.Platform.Unity
 	/// <summary>
 	/// Xamarin.Forms の PlatformRenderer 実装。
 	/// 通常の実装と異なり、ルートの Canvas に AddComponent する想定。
+	/// Root Canvas は UnityFormsApplicationActivity に指定しておく。
 	/// </summary>
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(Canvas))]
@@ -24,7 +25,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
-		private void Awake()
+		private void Start()
 		{
 			_canvas = GetComponent<Canvas>();
 		}
