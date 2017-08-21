@@ -20,6 +20,24 @@ namespace Xamarin.Forms.Platform.Unity
 		public Text _prefabText;
 		public Slider _prefbSlider;
 		public CanvasRenderer _prefabPanel;
+
+		/// <summary>
+		/// 指定の VisualElement に対応する VisualElementRenderer のインスタンスを取得する。
+		/// </summary>
+		/// <remarks>
+		/// Unity の構造上、Registrar.GetHandler 経由でのインスタンス取得ができないので。
+		/// </remarks>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public IVisualElementRenderer GetVisualElementRenderer(System.Type type)
+		{
+			if (type == typeof(Label))
+			{
+				var newInstance = UnityEngine.Object.Instantiate(_prefabText);
+				return newInstance.gameObject.AddComponent<LabelRenderer>();
+			}
+			return null;
+		}
 	}
 
 	/// <summary>

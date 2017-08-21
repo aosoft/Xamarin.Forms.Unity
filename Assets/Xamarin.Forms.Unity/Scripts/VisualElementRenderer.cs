@@ -226,7 +226,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
-		public UnityEngine.MonoBehaviour Behaviour => this; 
+		UnityEngine.Component IVisualElementRenderer.Component => this.Component; 
 
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
