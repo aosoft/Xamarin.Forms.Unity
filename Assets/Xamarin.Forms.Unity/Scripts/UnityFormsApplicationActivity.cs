@@ -31,6 +31,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/// <returns></returns>
 		public IVisualElementRenderer GetVisualElementRenderer(System.Type type)
 		{
+			//	最終的にはもうちょっと頭のいい実装にする
 			if (type == typeof(Label))
 			{
 				var newInstance = UnityEngine.Object.Instantiate(_prefabText);
@@ -65,7 +66,7 @@ namespace Xamarin.Forms.Platform.Unity
 		private void Awake()
 		{
 			Forms.Init(this);
-			_platform = new UnityPlatform(_xamarinFormsPlatformCanvas);
+			_platform = new UnityPlatform(this, _xamarinFormsPlatformCanvas);
 		}
 
 		private void Start()

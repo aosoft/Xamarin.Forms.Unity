@@ -14,6 +14,7 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Private Field
 
 		UnityPlatformRenderer _renderer;
+		UnityFormsApplicationActivity _activity;
 		Canvas _canvas;
 
 		Page _currentPage;
@@ -24,9 +25,10 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor / Dispose
 
-		internal UnityPlatform(Canvas canvas)
+		internal UnityPlatform(UnityFormsApplicationActivity activity, Canvas canvas)
 		{
 			_renderer = canvas.gameObject.AddComponent<UnityPlatformRenderer>();
+			_activity = activity;
 			_canvas = canvas;
 		}
 
