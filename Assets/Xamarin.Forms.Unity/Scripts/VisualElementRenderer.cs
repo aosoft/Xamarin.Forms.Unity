@@ -26,6 +26,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void Start()
 		{
+			Component = GetComponent<TNativeElement>();
 		}
 
 		private void OnDestroy()

@@ -21,7 +21,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
-				if (Control == null)
+				if (Component == null)
 				{
 					var elem = new System.Windows.Forms.Label();
 					elem.Anchor =
@@ -34,7 +34,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				//_isInitiallyDefault = Element.IsDefault();
 
-				UpdateText(Control);
+				UpdateText(Component);
 				/*UpdateColor(Control);
 				UpdateAlign(Control);
 				UpdateFont(Control);
@@ -45,12 +45,12 @@ namespace Xamarin.Forms.Platform.Unity
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == Label.TextProperty.PropertyName || e.PropertyName == Label.FormattedTextProperty.PropertyName)
-				UpdateText(Control);
+				UpdateText(Component);
 
 			base.OnElementPropertyChanged(sender, e);
 		}
 
-		void UpdateText(System.Windows.Forms.Label nativeElement)
+		void UpdateText(UnityEngine.UI.Text nativeElement)
 		{
 			//_perfectSizeValid = false;
 
@@ -60,7 +60,7 @@ namespace Xamarin.Forms.Platform.Unity
 			Label label = Element;
 			if (label != null)
 			{
-				nativeElement.Text = label.Text;
+				nativeElement.text = label.Text;
 			}
 		}
 	}

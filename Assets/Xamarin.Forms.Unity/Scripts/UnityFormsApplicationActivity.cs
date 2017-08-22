@@ -43,10 +43,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 	/// <summary>
 	/// Xamarin.Forms の初期化をする MonoBehavior。
-	/// どこかの UI EventSystem にこれの継承クラスを AddComponent しておくことが Forms.Init 相当の処置になる。 
 	/// </summary>
 	[DisallowMultipleComponent]
-	[RequireComponent(typeof(EventSystem))]
 	public class UnityFormsApplicationActivity<T> : UnityFormsApplicationActivity
 		where T : Application, new()
 	{
@@ -89,8 +87,6 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			
 		}
-
-
 
 		#endregion
 

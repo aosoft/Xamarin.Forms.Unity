@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public interface IVisualElementRenderer : IRegisterable, IDisposable
+	public interface IVisualElementRenderer : IRegisterable
 	{
 		VisualElement Element { get; }
 
