@@ -149,24 +149,12 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
-		protected void SetNativeControl(TNativeElement control)
+		void SetNativeControl(TNativeElement control)
 		{
-			TNativeElement oldControl = this.Component;
 			this.Component = control;
-
-			if (oldControl != null)
-			{
-				oldControl.transform.parent = null;
-
-				//oldControl.Loaded -= OnControlLoaded;
-				//oldControl.GotFocus -= OnControlGotFocus;
-				//oldControl.LostFocus -= OnControlLostFocus;
-			}
 
 			UpdateTracker();
 
-			if (control == null)
-				return;
 
 			//Control.HorizontalAlignment = HorizontalAlignment.Stretch;
 			//Control.VerticalAlignment = VerticalAlignment.Stretch;
