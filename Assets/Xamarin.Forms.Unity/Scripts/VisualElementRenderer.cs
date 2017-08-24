@@ -18,6 +18,7 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Private Field
 
 		VisualElementTracker<TElement, TNativeElement> _tracker;
+		TNativeElement _component;
 
 		#endregion
 
@@ -26,7 +27,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void Start()
 		{
-			Component = GetComponent<TNativeElement>();
 		}
 
 		private void OnDestroy()
@@ -40,7 +40,17 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElementPackager Packager { get; set; }
 
-		public TNativeElement Component { get; private set; }
+		public TNativeElement Component
+		{
+			get
+			{
+				if (_component == null)
+				{
+					_component = GetComponent<TNativeElement>();
+				}
+				return _component;
+			}
+		}
 
 		public TElement Element { get; private set; }
 
@@ -147,35 +157,6 @@ namespace Xamarin.Forms.Platform.Unity
 					UpdateTracker();
 				}
 			}
-		}
-
-		void SetNativeControl(TNativeElement control)
-		{
-			this.Component = control;
-
-			UpdateTracker();
-
-
-			//Control.HorizontalAlignment = HorizontalAlignment.Stretch;
-			//Control.VerticalAlignment = VerticalAlignment.Stretch;
-
-			control.transform.parent = this.transform;
-
-			if (Element == null)
-				throw new InvalidOperationException(
-					"Cannot assign a native control without an Element; Renderer unbound and/or disposed. " +
-					"Please consult Xamarin.Forms renderers for reference implementation of OnElementChanged.");
-
-			Element.IsNativeStateConsistent = false;
-			//control.Loaded += OnControlLoaded;
-
-			//control.GotFocus += OnControlGotFocus;
-			//control.LostFocus += OnControlLostFocus;
-
-			UpdateBackgroundColor();
-
-			//if (Element != null && !string.IsNullOrEmpty(Element.AutomationId))
-			//	SetAutomationId(Element.AutomationId);
 		}
 
 		protected virtual void UpdateBackgroundColor()

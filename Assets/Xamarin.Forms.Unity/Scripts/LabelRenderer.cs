@@ -21,17 +21,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
-				if (Component == null)
-				{
-					var elem = new System.Windows.Forms.Label();
-					elem.Anchor =
-						System.Windows.Forms.AnchorStyles.Left |
-						System.Windows.Forms.AnchorStyles.Top |
-						System.Windows.Forms.AnchorStyles.Right |
-						System.Windows.Forms.AnchorStyles.Bottom;
-					SetNativeControl(elem);
-				}
-
 				//_isInitiallyDefault = Element.IsDefault();
 
 				UpdateText(Component);
