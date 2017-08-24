@@ -9,64 +9,44 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class VisualElementTracker<TElement, TNativeElement> : IDisposable
+	public class VisualElementTracker<TElement, TNativeElement>
 		where TElement : VisualElement
 		where TNativeElement : UnityEngine.Component
 	{
+		/*-----------------------------------------------------------------*/
+		#region Private Field
+
 		TNativeElement _component;
 		TElement _element;
 
 		bool _invalidateArrangeNeeded;
 
-		public VisualElementTracker()
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Constructor
+
+		public VisualElementTracker(TNativeElement component)
 		{
-		}
+			//	Unity の仕組み上、 VisualElementRenderer と Component は不可分
+			//	なので Tracker のコンストラクト時で確定できる。
 
-		#region IDisposable Support
+			_component = component;
 
-		private bool disposedValue = false;
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-				}
-
-				disposedValue = true;
-			}
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
+			/*
+			_control.Tapped -= HandleTapped;
+			_control.DoubleTapped -= HandleDoubleTapped;
+			*/
 		}
 
 		#endregion
 
-
+		/*-----------------------------------------------------------------*/
+		#region Property
 
 		public TNativeElement Component
 		{
 			get { return _component; }
-			set
-			{
-				if (_component == value)
-					return;
-
-				if (_component != null)
-				{
-					/*
-					_control.Tapped -= HandleTapped;
-					_control.DoubleTapped -= HandleDoubleTapped;
-					*/
-				}
-
-				_component = value;
-				UpdateNativeControl();
-			}
 		}
 
 		public TElement Element
@@ -97,12 +77,18 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public event EventHandler Updated;
 
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Event Handler
 
 		protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (Element.Batched)
 			{
-				if (e.PropertyName == VisualElement.XProperty.PropertyName || e.PropertyName == VisualElement.YProperty.PropertyName || e.PropertyName == VisualElement.WidthProperty.PropertyName ||
+				if (e.PropertyName == VisualElement.XProperty.PropertyName ||
+					e.PropertyName == VisualElement.YProperty.PropertyName ||
+					e.PropertyName == VisualElement.WidthProperty.PropertyName ||
 					e.PropertyName == VisualElement.HeightProperty.PropertyName)
 				{
 					_invalidateArrangeNeeded = true;
@@ -110,12 +96,15 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 			}
 
-			if (e.PropertyName == VisualElement.XProperty.PropertyName || e.PropertyName == VisualElement.YProperty.PropertyName || e.PropertyName == VisualElement.WidthProperty.PropertyName ||
+			if (e.PropertyName == VisualElement.XProperty.PropertyName ||
+				e.PropertyName == VisualElement.YProperty.PropertyName ||
+				e.PropertyName == VisualElement.WidthProperty.PropertyName ||
 				e.PropertyName == VisualElement.HeightProperty.PropertyName)
 			{
 				MaybeInvalidate();
 			}
-			else if (e.PropertyName == VisualElement.AnchorXProperty.PropertyName || e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
+			else if (e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
+					 e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
 			{
 				UpdateScaleAndRotation(Element, Component);
 			}
@@ -123,8 +112,11 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				UpdateScaleAndRotation(Element, Component);
 			}
-			else if (e.PropertyName == VisualElement.TranslationXProperty.PropertyName || e.PropertyName == VisualElement.TranslationYProperty.PropertyName ||
-					 e.PropertyName == VisualElement.RotationProperty.PropertyName || e.PropertyName == VisualElement.RotationXProperty.PropertyName || e.PropertyName == VisualElement.RotationYProperty.PropertyName)
+			else if (e.PropertyName == VisualElement.TranslationXProperty.PropertyName ||
+					 e.PropertyName == VisualElement.TranslationYProperty.PropertyName ||
+					 e.PropertyName == VisualElement.RotationProperty.PropertyName ||
+					 e.PropertyName == VisualElement.RotationXProperty.PropertyName ||
+					 e.PropertyName == VisualElement.RotationYProperty.PropertyName)
 			{
 				UpdateRotation(Element, Component);
 			}
@@ -141,6 +133,11 @@ namespace Xamarin.Forms.Platform.Unity
 				UpdateInputTransparent(Element, Component);
 			}
 		}
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Internals
 
 		protected virtual void UpdateNativeControl()
 		{
@@ -239,5 +236,6 @@ namespace Xamarin.Forms.Platform.Unity
 			UpdateInputTransparent(view, component);
 		}
 
+		#endregion
 	}
 }

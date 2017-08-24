@@ -54,10 +54,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public TElement Element { get; private set; }
 
-		protected bool AutoPackage { get; set; } = true;
-
-		protected bool AutoTrack { get; set; } = true;
-
 		#endregion
 
 		/*-----------------------------------------------------------------*/
@@ -95,7 +91,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				if (AutoTrack && Tracker == null)
 				{
-					Tracker = new VisualElementTracker<TElement, TNativeElement>();
+					Tracker = new VisualElementTracker<TElement, TNativeElement>(Component);
 				}
 
 				// Disabled until reason for crashes with unhandled exceptions is discovered
@@ -135,6 +131,10 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Internals
 
+		protected bool AutoPackage { get; set; } = true;
+
+		protected bool AutoTrack { get; set; } = true;
+
 		protected VisualElementTracker<TElement, TNativeElement> Tracker
 		{
 			get { return _tracker; }
@@ -145,7 +145,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 				if (_tracker != null)
 				{
-					_tracker.Dispose();
 					_tracker.Updated -= OnTrackerUpdated;
 				}
 
@@ -215,7 +214,6 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 
 			//_tracker.PreventGestureBubbling = PreventGestureBubbling;
-			_tracker.Component = Component;
 			_tracker.Element = Element;
 		}
 
