@@ -137,8 +137,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9245912550a797a4eb8b4724cb0d8a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefabText: {fileID: 0}
+  _prefabText: {fileID: 114404184064878468, guid: ee3ddc11f5e084f41a6875c91a5b4339,
+    type: 2}
   _prefabPanel: {fileID: 0}
+  _prefabCanvas: {fileID: 223918758982005614, guid: 1d28a995901909844bb2312cf60937e9,
+    type: 2}
   _xamarinFormsPlatformCanvas: {fileID: 1376985421}
 --- !u!114 &12793935
 MonoBehaviour:
