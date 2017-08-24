@@ -20,6 +20,7 @@ namespace Xamarin.Forms.Platform.Unity
 		public Text _prefabText;
 		public Slider _prefbSlider;
 		public CanvasRenderer _prefabPanel;
+		public Canvas _prefabCanvas;
 
 		/// <summary>
 		/// 指定の VisualElement に対応する VisualElementRenderer のインスタンスを取得する。
@@ -36,6 +37,11 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				var newInstance = UnityEngine.Object.Instantiate(_prefabText);
 				return newInstance.gameObject.AddComponent<LabelRenderer>();
+			}
+			if (type == typeof(Page))
+			{
+				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
+				return newInstance.gameObject.AddComponent<PageRenderer>();
 			}
 			return null;
 		}
