@@ -43,6 +43,13 @@ namespace Xamarin.Forms.Platform.Unity
 				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
 				return newInstance.gameObject.AddComponent<PageRenderer>();
 			}
+			else
+			{
+				//	暫定で DefaultRenderer = PageRenderer としてまわす
+				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
+				return newInstance.gameObject.AddComponent<PageRenderer>();
+			}
+
 			return null;
 		}
 	}
