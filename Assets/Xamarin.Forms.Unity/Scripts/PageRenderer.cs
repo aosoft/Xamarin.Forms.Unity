@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class PageRenderer : VisualElementRenderer<Label, UnityEngine.Canvas>
+	public class PageRenderer : VisualElementRenderer<Page, UnityEngine.Canvas>
 	{
 		public PageRenderer()
 		{

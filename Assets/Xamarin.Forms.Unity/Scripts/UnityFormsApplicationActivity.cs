@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
+﻿using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Xamarin.Forms.Internals;
 
@@ -33,24 +29,29 @@ namespace Xamarin.Forms.Platform.Unity
 		public IVisualElementRenderer GetVisualElementRenderer(System.Type type)
 		{
 			//	最終的にはもうちょっと頭のいい実装にする
-			if (type == typeof(Label))
+			if (IsCompatibleType(type, typeof(Label)))
 			{
 				var newInstance = UnityEngine.Object.Instantiate(_prefabText);
 				return newInstance.gameObject.AddComponent<LabelRenderer>();
 			}
-			if (type == typeof(Page))
+			if (IsCompatibleType(type, typeof(Page)))
 			{
 				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
 				return newInstance.gameObject.AddComponent<PageRenderer>();
 			}
 			else
 			{
-				//	暫定で DefaultRenderer = PageRenderer としてまわす
+				//	Default Renderer は Canvas コンポーネントに適用して返す
 				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
-				return newInstance.gameObject.AddComponent<PageRenderer>();
+				return newInstance.gameObject.AddComponent<DefaultRenderer>();
 			}
 
 			return null;
+		}
+
+		static bool IsCompatibleType(System.Type target, System.Type baseType)
+		{
+			return target == baseType || target.IsSubclassOf(baseType);
 		}
 	}
 
