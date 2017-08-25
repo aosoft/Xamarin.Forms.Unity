@@ -4,13 +4,14 @@ public class App : Application
 {
 	public App()
 	{
-		var page = new ContentPage();
+		/*var page = new ContentPage();
 		var label = new Label();
 		label.Text = "Hello, Xaramin.Forms!!";
 
 		page.Content = label;
 
-		MainPage = page;
+		MainPage = page;*/
+		MainPage = new Page1();
 	}
 
 	protected override void OnStart()
