@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using UnityEngine;
 using Xamarin.Forms;
 
 public partial class Page1 : ContentPage
@@ -15,7 +16,9 @@ public partial class Page1 : ContentPage
 
 	void InitializeComponent()
 	{
-		Xamarin.Forms.Xaml.Extensions.LoadFromXaml(this, typeof(Page1));
+		var path = System.IO.Path.Combine(UnityEngine.Application.streamingAssetsPath, "Page1.xaml");
+		var xaml = System.IO.File.ReadAllText(path);
+		Xamarin.Forms.Platform.Unity.XamlLoader.LoadXaml(this, xaml);
 	}
 }
 
