@@ -33,11 +33,16 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Label.TextProperty.PropertyName || e.PropertyName == Label.FormattedTextProperty.PropertyName)
+			if (e.PropertyName == Label.TextProperty.PropertyName ||
+				e.PropertyName == Label.FormattedTextProperty.PropertyName)
+			{
 				UpdateText(Component);
-			else if (e.PropertyName == Label.HorizontalTextAlignmentProperty.PropertyName || e.PropertyName == Label.VerticalTextAlignmentProperty.PropertyName)
+			}
+			else if (e.PropertyName == Label.HorizontalTextAlignmentProperty.PropertyName ||
+				e.PropertyName == Label.VerticalTextAlignmentProperty.PropertyName)
+			{
 				UpdateAlign(Component);
-
+			}
 			base.OnElementPropertyChanged(sender, e);
 		}
 

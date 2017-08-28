@@ -25,11 +25,11 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
-		private void Start()
+		protected void Start()
 		{
 		}
 
-		private void OnDestroy()
+		protected void OnDestroy()
 		{
 		}
 
