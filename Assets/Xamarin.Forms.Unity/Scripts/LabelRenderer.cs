@@ -51,83 +51,77 @@ namespace Xamarin.Forms.Platform.Unity
 			//_perfectSizeValid = false;
 
 			var nativeElement = Component;
-			if (nativeElement == null)
+			var label = Element;
+			if (nativeElement == null || label == null)
 			{
 				return;
 			}
 
-			Label label = Element;
-			if (label != null)
-			{
-				nativeElement.text = label.Text;
-			}
+			nativeElement.text = label.Text;
 		}
 
 		void UpdateAlign()
 		{
 			var nativeElement = Component;
-			if (nativeElement == null)
+			var label = Element;
+			if (nativeElement == null || label == null)
 			{
 				return;
 			}
 
-			Label label = Element;
-			if (label != null)
+			switch (label.HorizontalTextAlignment)
 			{
-				switch (label.HorizontalTextAlignment)
-				{
-					case TextAlignment.Start:
-						switch (label.VerticalTextAlignment)
-						{
-							case TextAlignment.Start:
-								nativeElement.alignment = TextAnchor.UpperLeft;
-								break;
+				case TextAlignment.Start:
+					switch (label.VerticalTextAlignment)
+					{
+						case TextAlignment.Start:
+							nativeElement.alignment = TextAnchor.UpperLeft;
+							break;
 
-							case TextAlignment.Center:
-								nativeElement.alignment = TextAnchor.MiddleLeft;
-								break;
+						case TextAlignment.Center:
+							nativeElement.alignment = TextAnchor.MiddleLeft;
+							break;
 
-							case TextAlignment.End:
-								nativeElement.alignment = TextAnchor.LowerLeft;
-								break;
-						}
-						break;
+						case TextAlignment.End:
+							nativeElement.alignment = TextAnchor.LowerLeft;
+							break;
+					}
+					break;
 
-					case TextAlignment.Center:
-						switch (label.VerticalTextAlignment)
-						{
-							case TextAlignment.Start:
-								nativeElement.alignment = TextAnchor.UpperCenter;
-								break;
+				case TextAlignment.Center:
+					switch (label.VerticalTextAlignment)
+					{
+						case TextAlignment.Start:
+							nativeElement.alignment = TextAnchor.UpperCenter;
+							break;
 
-							case TextAlignment.Center:
-								nativeElement.alignment = TextAnchor.MiddleCenter;
-								break;
+						case TextAlignment.Center:
+							nativeElement.alignment = TextAnchor.MiddleCenter;
+							break;
 
-							case TextAlignment.End:
-								nativeElement.alignment = TextAnchor.LowerCenter;
-								break;
-						}
-						break;
+						case TextAlignment.End:
+							nativeElement.alignment = TextAnchor.LowerCenter;
+							break;
+					}
+					break;
 
-					case TextAlignment.End:
-						switch (label.VerticalTextAlignment)
-						{
-							case TextAlignment.Start:
-								nativeElement.alignment = TextAnchor.UpperRight;
-								break;
+				case TextAlignment.End:
+					switch (label.VerticalTextAlignment)
+					{
+						case TextAlignment.Start:
+							nativeElement.alignment = TextAnchor.UpperRight;
+							break;
 
-							case TextAlignment.Center:
-								nativeElement.alignment = TextAnchor.MiddleRight;
-								break;
+						case TextAlignment.Center:
+							nativeElement.alignment = TextAnchor.MiddleRight;
+							break;
 
-							case TextAlignment.End:
-								nativeElement.alignment = TextAnchor.LowerRight;
-								break;
-						}
-						break;
+						case TextAlignment.End:
+							nativeElement.alignment = TextAnchor.LowerRight;
+							break;
+					}
+					break;
 
-				}
 			}
 		}
 	}

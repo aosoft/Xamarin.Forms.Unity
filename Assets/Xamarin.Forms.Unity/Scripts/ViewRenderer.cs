@@ -56,6 +56,13 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateLayout()
 		{
+			var nativeElement = Component;
+			var view = Element;
+			if (nativeElement == null || view == null)
+			{
+				return;
+			}
+
 		}
 
 		#endregion
