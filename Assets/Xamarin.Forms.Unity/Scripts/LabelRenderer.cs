@@ -23,9 +23,9 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				//_isInitiallyDefault = Element.IsDefault();
 
-				UpdateText(Component);
+				UpdateText();
 				//UpdateColor(Component);
-				UpdateAlign(Component);
+				UpdateAlign();
 				//UpdateFont(Component);
 				//UpdateLineBreakMode(Component);
 			}
@@ -36,22 +36,25 @@ namespace Xamarin.Forms.Platform.Unity
 			if (e.PropertyName == Label.TextProperty.PropertyName ||
 				e.PropertyName == Label.FormattedTextProperty.PropertyName)
 			{
-				UpdateText(Component);
+				UpdateText();
 			}
 			else if (e.PropertyName == Label.HorizontalTextAlignmentProperty.PropertyName ||
 				e.PropertyName == Label.VerticalTextAlignmentProperty.PropertyName)
 			{
-				UpdateAlign(Component);
+				UpdateAlign();
 			}
 			base.OnElementPropertyChanged(sender, e);
 		}
 
-		void UpdateText(UnityEngine.UI.Text nativeElement)
+		void UpdateText()
 		{
 			//_perfectSizeValid = false;
 
+			var nativeElement = Component;
 			if (nativeElement == null)
+			{
 				return;
+			}
 
 			Label label = Element;
 			if (label != null)
@@ -60,10 +63,13 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
-		void UpdateAlign(UnityEngine.UI.Text nativeElement)
+		void UpdateAlign()
 		{
+			var nativeElement = Component;
 			if (nativeElement == null)
+			{
 				return;
+			}
 
 			Label label = Element;
 			if (label != null)
