@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class LabelRenderer : VisualElementRenderer<Label, UnityEngine.UI.Text>
+	public class LabelRenderer : ViewRenderer<Label, UnityEngine.UI.Text>
 	{
 		public LabelRenderer()
 		{

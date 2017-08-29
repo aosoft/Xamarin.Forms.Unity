@@ -12,7 +12,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		UnityEngine.UI.LayoutElement _layoutElement;		
+		RectTransform _rectTransform;		
 
 
 		#endregion
@@ -22,10 +22,10 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected void Awake()
 		{
-			_layoutElement = GetComponent<UnityEngine.UI.LayoutElement>();
-			if (_layoutElement == null)
+			_rectTransform = GetComponent<RectTransform>();
+			if (_rectTransform == null)
 			{
-				_layoutElement = this.gameObject.AddComponent<UnityEngine.UI.LayoutElement>();
+				_rectTransform = this.gameObject.AddComponent<RectTransform>();
 			}
 		}
 
@@ -36,6 +36,12 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			if (e.PropertyName == View.HorizontalOptionsProperty.PropertyName ||
+				e.PropertyName == View.VerticalOptionsProperty.PropertyName)
+			{
+				UpdateLayout();
+			}
+
 			base.OnElementPropertyChanged(sender, e);
 		}
 
@@ -45,6 +51,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
+				UpdateLayout();
 				UpdateBackgroundColor();
 			}
 		}
@@ -56,13 +63,80 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateLayout()
 		{
-			var nativeElement = Component;
 			var view = Element;
-			if (nativeElement == null || view == null)
+			if (_rectTransform == null || view == null)
 			{
 				return;
 			}
 
+			var anchorMax = new Vector2();
+			var anchorMin = new Vector2();
+
+			switch (view.HorizontalOptions.Alignment)
+			{
+				case LayoutAlignment.Start:
+					{
+						anchorMin.x = 1.0f;
+						anchorMax.x = 1.0f;
+					}
+					break;
+
+				case LayoutAlignment.Center:
+					{
+						anchorMin.x = 0.5f;
+						anchorMax.x = 0.5f;
+					}
+					break;
+
+				case LayoutAlignment.End:
+					{
+						anchorMin.x = 0.0f;
+						anchorMax.x = 0.0f;
+					}
+					break;
+
+				case LayoutAlignment.Fill:
+					{
+						anchorMin.x = 0.0f;
+						anchorMax.x = 1.0f;
+					}
+					break;
+			}
+
+			switch (view.VerticalOptions.Alignment)
+			{
+				case LayoutAlignment.Start:
+					{
+						anchorMin.y = 1.0f;
+						anchorMax.y = 1.0f;
+					}
+					break;
+
+				case LayoutAlignment.Center:
+					{
+						anchorMin.y = 0.5f;
+						anchorMax.y = 0.5f;
+					}
+					break;
+
+				case LayoutAlignment.End:
+					{
+						anchorMin.y = 0.0f;
+						anchorMax.y = 0.0f;
+					}
+					break;
+
+				case LayoutAlignment.Fill:
+					{
+						anchorMin.y = 0.0f;
+						anchorMax.y = 1.0f;
+					}
+					break;
+			}
+
+			_rectTransform.anchorMin = anchorMin;
+			_rectTransform.anchorMax = anchorMax;
+			_rectTransform.position = new Vector3();
 		}
 
 		#endregion
