@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class UnityPlatform : IPlatform, IDisposable, INavigation
+	public class Platform : IPlatform, IDisposable, INavigation
 	{
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		UnityPlatformRenderer _renderer;
+		PlatformRenderer _renderer;
 		UnityFormsApplicationActivity _activity;
 		Canvas _canvas;
 
@@ -25,9 +25,9 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor / Dispose
 
-		internal UnityPlatform(UnityFormsApplicationActivity activity, Canvas canvas)
+		internal Platform(UnityFormsApplicationActivity activity, Canvas canvas)
 		{
-			_renderer = canvas.gameObject.AddComponent<UnityPlatformRenderer>();
+			_renderer = canvas.gameObject.AddComponent<PlatformRenderer>();
 			_activity = activity;
 			_canvas = canvas;
 		}
@@ -42,7 +42,7 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Property
 
 		internal static readonly BindableProperty RendererProperty = BindableProperty.CreateAttached("Renderer",
-			typeof(IVisualElementRenderer), typeof(UnityPlatform), default(IVisualElementRenderer));
+			typeof(IVisualElementRenderer), typeof(Platform), default(IVisualElementRenderer));
 
 		internal Rectangle ContainerBounds
 		{

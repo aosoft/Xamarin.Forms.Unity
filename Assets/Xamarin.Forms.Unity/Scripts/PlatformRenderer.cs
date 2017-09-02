@@ -13,7 +13,7 @@ namespace Xamarin.Forms.Platform.Unity
 	/// </summary>
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(Canvas))]
-	public class UnityPlatformRenderer : MonoBehaviour
+	public class PlatformRenderer : MonoBehaviour
 	{
 		/*-----------------------------------------------------------------*/
 		#region Private Field

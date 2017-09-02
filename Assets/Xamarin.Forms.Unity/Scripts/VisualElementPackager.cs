@@ -106,8 +106,8 @@ namespace Xamarin.Forms.Platform.Unity
 			if (view == null)
 				return;
 
-			IVisualElementRenderer childRenderer = UnityPlatform.CreateRenderer(view);
-			UnityPlatform.SetRenderer(view, childRenderer);
+			IVisualElementRenderer childRenderer = Platform.CreateRenderer(view);
+			Platform.SetRenderer(view, childRenderer);
 
 			/*
 			if (_row > 0)
@@ -132,7 +132,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (view == null)
 				return;
 
-			IVisualElementRenderer childRenderer = UnityPlatform.GetRenderer(view);
+			IVisualElementRenderer childRenderer = Platform.GetRenderer(view);
 			if (childRenderer != null)
 			{
 				/*

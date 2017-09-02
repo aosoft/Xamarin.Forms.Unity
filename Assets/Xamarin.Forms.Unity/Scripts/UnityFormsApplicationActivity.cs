@@ -65,7 +65,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Field
 
-		UnityPlatform _platform;
+		Platform _platform;
 
 		//	Platform / PlatformRenderer が使用する Root Canvas
 		public Canvas _xamarinFormsPlatformCanvas;
@@ -78,7 +78,7 @@ namespace Xamarin.Forms.Platform.Unity
 		private void Awake()
 		{
 			Forms.Init(this);
-			_platform = new UnityPlatform(this, _xamarinFormsPlatformCanvas);
+			_platform = new Platform(this, _xamarinFormsPlatformCanvas);
 		}
 
 		private void Start()

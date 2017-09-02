@@ -10,11 +10,11 @@ namespace Xamarin.Forms.Platform.Unity
 			if (self == null)
 				throw new ArgumentNullException("self");
 
-			IVisualElementRenderer renderer = UnityPlatform.GetRenderer(self);
+			IVisualElementRenderer renderer = Platform.GetRenderer(self);
 			if (renderer == null)
 			{
-				renderer = UnityPlatform.CreateRenderer(self);
-				UnityPlatform.SetRenderer(self, renderer);
+				renderer = Platform.CreateRenderer(self);
+				Platform.SetRenderer(self, renderer);
 			}
 
 			return renderer;
@@ -25,7 +25,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (self == null)
 				throw new ArgumentNullException("self");
 
-			IVisualElementRenderer renderer = UnityPlatform.GetRenderer(self);
+			IVisualElementRenderer renderer = Platform.GetRenderer(self);
 
 			foreach (Element element in self.Descendants())
 			{
@@ -33,7 +33,7 @@ namespace Xamarin.Forms.Platform.Unity
 				if (visual == null)
 					continue;
 
-				IVisualElementRenderer childRenderer = UnityPlatform.GetRenderer(visual);
+				IVisualElementRenderer childRenderer = Platform.GetRenderer(visual);
 				if (childRenderer != null)
 				{
 					var go = childRenderer.Component?.gameObject;
@@ -41,7 +41,7 @@ namespace Xamarin.Forms.Platform.Unity
 					{
 						UnityEngine.Object.Destroy(go);
 					}
-					UnityPlatform.SetRenderer(visual, null);
+					Platform.SetRenderer(visual, null);
 				}
 			}
 
@@ -52,7 +52,7 @@ namespace Xamarin.Forms.Platform.Unity
 				{
 					UnityEngine.Object.Destroy(go);
 				}
-				UnityPlatform.SetRenderer(self, null);
+				Platform.SetRenderer(self, null);
 			}
 		}
 	}
