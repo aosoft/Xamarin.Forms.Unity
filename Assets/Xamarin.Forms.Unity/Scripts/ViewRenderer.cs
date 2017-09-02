@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using UnityEngine;
 using Xamarin.Forms.Internals;
 
@@ -39,7 +40,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (e.PropertyName == View.HorizontalOptionsProperty.PropertyName ||
 				e.PropertyName == View.VerticalOptionsProperty.PropertyName)
 			{
-				UpdateLayout();
+				UpdateNativeControl();
 			}
 
 			base.OnElementPropertyChanged(sender, e);
@@ -51,7 +52,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
-				UpdateLayout();
 				UpdateBackgroundColor();
 			}
 		}
@@ -61,8 +61,10 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Internals
 
-		void UpdateLayout()
+		protected override void UpdateNativeControl()
 		{
+			base.UpdateNativeControl();
+
 			var view = Element;
 			if (_rectTransform == null || view == null)
 			{
@@ -137,6 +139,9 @@ namespace Xamarin.Forms.Platform.Unity
 			_rectTransform.anchorMin = anchorMin;
 			_rectTransform.anchorMax = anchorMax;
 			_rectTransform.position = new Vector3();
+
+			_rectTransform.anchoredPosition = new Vector2((float)Element.X, (float)Element.Y);
+			_rectTransform.sizeDelta = new Vector2((float)Element.Width, (float)Element.Height);
 		}
 
 		#endregion
