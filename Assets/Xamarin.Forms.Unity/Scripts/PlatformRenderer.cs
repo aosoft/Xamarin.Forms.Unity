@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using Xamarin.Forms.Internals;
+using UniRx;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -19,15 +20,17 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Private Field
 
 		Canvas _canvas;
+		RectTransform _rectTransform;
 
 		#endregion
 
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
-		private void Start()
+		private void Awake()
 		{
 			_canvas = GetComponent<Canvas>();
+			_rectTransform = GetComponent<RectTransform>();
 		}
 
 		private void OnDestroy()

@@ -88,6 +88,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void OnDestroy()
 		{
+			_platform?.Dispose();
 			_platform = null;
 			Forms.Uninit();
 		}
