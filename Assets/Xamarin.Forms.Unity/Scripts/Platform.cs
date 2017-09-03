@@ -107,7 +107,7 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				Page previousPage = _currentPage;
 				var previousRenderer = GetRenderer(previousPage);
-				previousRenderer.Component.transform.parent = null;
+				previousRenderer.Component.transform.SetParent(null);
 
 				if (popping)
 					previousPage.Cleanup();
@@ -116,7 +116,7 @@ namespace Xamarin.Forms.Platform.Unity
 			newPage.Layout(ContainerBounds);
 
 			var pageRenderer = newPage.GetOrCreateRenderer();
-			pageRenderer.Component.transform.parent = _canvas.transform;
+			pageRenderer.Component.transform.SetParent(_canvas.transform);
 
 			//pageRenderer.ContainerElement.Width = _canvas.Width;
 			//pageRenderer.ContainerElement.Height = _canvas.Height;

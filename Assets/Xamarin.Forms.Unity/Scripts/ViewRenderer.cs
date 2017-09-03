@@ -140,12 +140,13 @@ namespace Xamarin.Forms.Platform.Unity
 			_rectTransform.anchorMax = anchorMax;
 			_rectTransform.position = new Vector3();
 
-			if (_rectTransform.parent != null)
+			var parent = view.Parent as VisualElement;
+			if (parent != null && _rectTransform.parent != null)
 			{
 				var pivot = _rectTransform.pivot;
 				var size = new Vector2((float)view.Width, (float)view.Height);
 				_rectTransform.sizeDelta = size;
-				_rectTransform.anchoredPosition = new Vector2((float)view.X + size.x * pivot.x, (float)view.Y + size.y * pivot.y);
+				_rectTransform.anchoredPosition = new Vector2((float)view.X + size.x * pivot.x, (float)(parent.Height - view.Y) - size.y * pivot.y);
 			}
 			else
 			{
