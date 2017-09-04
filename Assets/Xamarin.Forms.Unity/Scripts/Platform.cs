@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Internals;
 using UnityEngine;
+using UniRx;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -30,6 +31,15 @@ namespace Xamarin.Forms.Platform.Unity
 			_renderer = canvas.gameObject.AddComponent<PlatformRenderer>();
 			_activity = activity;
 			_canvas = canvas;
+
+			var rectTransform = _canvas.GetComponent<RectTransform>();
+
+			rectTransform.ObserveEveryValueChanged(x => new UniRx.Tuple<float, float>(x.rect.width, x.rect.height))
+				.Subscribe(_ =>
+				{
+					_currentPage?.Layout(ContainerBounds);
+				})
+				.AddTo(_canvas);
 		}
 
 		public void Dispose()
