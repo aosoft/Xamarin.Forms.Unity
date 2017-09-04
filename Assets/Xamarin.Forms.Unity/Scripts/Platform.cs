@@ -137,7 +137,21 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public SizeRequest GetNativeSize(VisualElement view, double widthConstraint, double heightConstraint)
 		{
-			throw new NotImplementedException();
+			//	暫定
+			var viewRenderer = GetRenderer(view);
+			if (viewRenderer == null)
+			{
+				return new SizeRequest();
+			}
+
+			widthConstraint = widthConstraint < 0 ? double.PositiveInfinity : widthConstraint;
+			heightConstraint = heightConstraint < 0 ? double.PositiveInfinity : heightConstraint;
+			var rawResult = viewRenderer.GetDesiredSize(widthConstraint, heightConstraint);
+			if (rawResult.Minimum == Size.Zero)
+			{
+				rawResult.Minimum = rawResult.Request;
+			}
+			return rawResult;
 		}
 
 		#endregion

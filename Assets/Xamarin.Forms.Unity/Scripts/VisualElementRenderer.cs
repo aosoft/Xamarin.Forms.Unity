@@ -15,15 +15,26 @@ namespace Xamarin.Forms.Platform.Unity
 		where TNativeElement : UnityEngine.Component
 	{
 		/*-----------------------------------------------------------------*/
-		#region Private Field
+		#region Field
 
 		VisualElementTracker<TElement, TNativeElement> _tracker;
 		TNativeElement _component;
+
+		protected RectTransform _rectTransform;
 
 		#endregion
 
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
+
+		protected void Awake()
+		{
+			_rectTransform = GetComponent<RectTransform>();
+			if (_rectTransform == null)
+			{
+				_rectTransform = this.gameObject.AddComponent<RectTransform>();
+			}
+		}
 
 		protected void Start()
 		{
@@ -67,7 +78,15 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
 		{
-			throw new NotImplementedException();
+			//	暫定
+			if (_rectTransform != null)
+			{
+				return new SizeRequest(
+					new Size(
+						Math.Min(_rectTransform.rect.width, widthConstraint),
+						Math.Min(_rectTransform.rect.height, heightConstraint)));
+			}
+			return new SizeRequest(new Size(widthConstraint, heightConstraint));
 		}
 
 		public void SetElement(VisualElement element)

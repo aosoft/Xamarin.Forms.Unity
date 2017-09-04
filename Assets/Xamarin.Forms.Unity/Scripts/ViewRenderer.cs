@@ -11,24 +11,14 @@ namespace Xamarin.Forms.Platform.Unity
 		where TNativeElement : MonoBehaviour
 	{
 		/*-----------------------------------------------------------------*/
-		#region Private Field
+		#region Field
 
-		RectTransform _rectTransform;		
 
 
 		#endregion
 
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
-
-		protected void Awake()
-		{
-			_rectTransform = GetComponent<RectTransform>();
-			if (_rectTransform == null)
-			{
-				_rectTransform = this.gameObject.AddComponent<RectTransform>();
-			}
-		}
 
 		#endregion
 
