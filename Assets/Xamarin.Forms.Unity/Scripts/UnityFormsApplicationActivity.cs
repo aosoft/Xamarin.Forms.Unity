@@ -27,35 +27,38 @@ namespace Xamarin.Forms.Platform.Unity
 		/// </remarks>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public IVisualElementRenderer GetVisualElementRenderer(System.Type type)
+		public IVisualElementRenderer GetVisualElementRenderer(System.Type type, GameObject target = null)
 		{
-			//	最終的にはもうちょっと頭のいい実装にする
 			if (IsCompatibleType(type, typeof(Label)))
 			{
-				var newInstance = UnityEngine.Object.Instantiate(_prefabText);
-				return newInstance.gameObject.AddComponent<LabelRenderer>();
+				return GetGameObject(target, _prefabText).AddComponent<LabelRenderer>();
 			}
 			else if (IsCompatibleType(type, typeof(Button)))
 			{
-				var newInstance = UnityEngine.Object.Instantiate(_prefabButton);
-				return newInstance.gameObject.AddComponent<ButtonRenderer>();
+				return GetGameObject(target, _prefabButton).gameObject.AddComponent<ButtonRenderer>();
 			}
 			else if (IsCompatibleType(type, typeof(Page)))
 			{
-				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
-				return newInstance.gameObject.AddComponent<PageRenderer>();
+				return GetGameObject(target, _prefabCanvas).AddComponent<PageRenderer>();
 			}
 			else if (IsCompatibleType(type, typeof(Layout)))
 			{
-				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
-				return newInstance.gameObject.AddComponent<LayoutRenderer>();
+				return GetGameObject(target, _prefabCanvas).AddComponent<LayoutRenderer>();
 			}
 			else
 			{
 				//	Default Renderer は Canvas コンポーネントに適用して返す
-				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
-				return newInstance.gameObject.AddComponent<DefaultRenderer>();
+				return GetGameObject(target, _prefabCanvas).AddComponent<DefaultRenderer>();
 			}
+		}
+
+		static GameObject GetGameObject<T>(GameObject target, T original) where T : UnityEngine.Component
+		{
+			if (target == null)
+			{
+				target = UnityEngine.Object.Instantiate<T>(original).gameObject;
+			}
+			return target;
 		}
 
 		static bool IsCompatibleType(System.Type target, System.Type baseType)
