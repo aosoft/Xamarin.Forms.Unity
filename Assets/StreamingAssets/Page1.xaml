@@ -15,9 +15,9 @@
       <ColumnDefinition />
     </Grid.ColumnDefinitions>
 
-    <Label Text="UpperLeft" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" />
-    <Label Text="MiddleLeft" Grid.Column="0" Grid.Row="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
-    <Label Text="LowLeft" Grid.Column="0" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="End" />
+    <Label Text="UpperLeft" TextColor="Red" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" />
+    <Label Text="MiddleLeft" TextColor="Green" Grid.Column="0" Grid.Row="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+    <Label Text="LowLeft" TextColor="Blue" Grid.Column="0" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="End" />
 
     <Label Text="UpperCenter" Grid.Column="1" Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Start" />
     <Label Text="MiddleCenter" Grid.Column="1" Grid.Row="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />

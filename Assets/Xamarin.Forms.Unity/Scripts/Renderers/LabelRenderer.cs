@@ -24,7 +24,7 @@ namespace Xamarin.Forms.Platform.Unity
 				//_isInitiallyDefault = Element.IsDefault();
 
 				UpdateText();
-				//UpdateColor(Component);
+				UpdateColor();
 				UpdateAlign();
 				//UpdateFont(Component);
 				//UpdateLineBreakMode(Component);
@@ -58,6 +58,18 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 
 			nativeElement.text = label.Text;
+		}
+
+		void UpdateColor()
+		{
+			var nativeElement = Component;
+			var label = Element;
+			if (nativeElement == null || label == null)
+			{
+				return;
+			}
+
+			nativeElement.color = label.TextColor.ToUnityColor();
 		}
 
 		void UpdateAlign()
