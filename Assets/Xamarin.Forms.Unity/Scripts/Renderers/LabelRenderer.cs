@@ -41,7 +41,7 @@ namespace Xamarin.Forms.Platform.Unity
 				UpdateColor();
 				UpdateAlign();
 				UpdateFont();
-				//UpdateLineBreakMode(Component);
+				UpdateLineBreakMode();
 			}
 		}
 
@@ -52,11 +52,25 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				UpdateText();
 			}
+			else if (e.PropertyName == Label.TextColorProperty.PropertyName)
+			{
+				UpdateColor();
+			}
 			else if (e.PropertyName == Label.HorizontalTextAlignmentProperty.PropertyName ||
 				e.PropertyName == Label.VerticalTextAlignmentProperty.PropertyName)
 			{
 				UpdateAlign();
 			}
+			else if (e.PropertyName == Label.FontSizeProperty.PropertyName ||
+				e.PropertyName == Label.FontAttributesProperty.PropertyName)
+			{
+				UpdateFont();
+			}
+			else if (e.PropertyName == Label.LineBreakModeProperty.PropertyName)
+			{
+				UpdateLineBreakMode();
+			}
+
 			base.OnElementPropertyChanged(sender, e);
 		}
 
@@ -104,6 +118,17 @@ namespace Xamarin.Forms.Platform.Unity
 
 			nativeElement.fontSize = (int)label.FontSize;
 			nativeElement.fontStyle = label.FontAttributes.ToUnityFontStyle();
+		}
+
+		void UpdateLineBreakMode()
+		{
+			var nativeElement = Component;
+			var label = Element;
+			if (nativeElement == null || label == null)
+			{
+				return;
+			}
+
 			nativeElement.horizontalOverflow =
 				label.LineBreakMode == LineBreakMode.CharacterWrap || label.LineBreakMode == LineBreakMode.WordWrap ?
 					HorizontalWrapMode.Wrap : HorizontalWrapMode.Overflow;
