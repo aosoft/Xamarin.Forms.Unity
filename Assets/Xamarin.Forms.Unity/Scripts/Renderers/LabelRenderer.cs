@@ -40,7 +40,7 @@ namespace Xamarin.Forms.Platform.Unity
 				UpdateText();
 				UpdateColor();
 				UpdateAlign();
-				//UpdateFont(Component);
+				UpdateFont();
 				//UpdateLineBreakMode(Component);
 			}
 		}
@@ -91,6 +91,22 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				nativeElement.color = _defaultTextColor;
 			}
+		}
+
+		void UpdateFont()
+		{
+			var nativeElement = Component;
+			var label = Element;
+			if (nativeElement == null || label == null)
+			{
+				return;
+			}
+
+			nativeElement.fontSize = (int)label.FontSize;
+			nativeElement.fontStyle = label.FontAttributes.ToUnityFontStyle();
+			nativeElement.horizontalOverflow =
+				label.LineBreakMode == LineBreakMode.CharacterWrap || label.LineBreakMode == LineBreakMode.WordWrap ?
+					HorizontalWrapMode.Wrap : HorizontalWrapMode.Overflow;
 		}
 
 		void UpdateAlign()
