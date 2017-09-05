@@ -12,7 +12,7 @@ namespace Xamarin.Forms.Platform.Unity
 	[DisallowMultipleComponent]
 	public abstract class UnityFormsApplicationActivity : MonoBehaviour
 	{
-		public Button _prefabButton;
+		public UnityEngine.UI.Button _prefabButton;
 		public Text _prefabText;
 		public Slider _prefbSlider;
 		public CanvasRenderer _prefabPanel;
@@ -34,6 +34,11 @@ namespace Xamarin.Forms.Platform.Unity
 				var newInstance = UnityEngine.Object.Instantiate(_prefabText);
 				return newInstance.gameObject.AddComponent<LabelRenderer>();
 			}
+			else if (IsCompatibleType(type, typeof(Button)))
+			{
+				var newInstance = UnityEngine.Object.Instantiate(_prefabButton);
+				return newInstance.gameObject.AddComponent<ButtonRenderer>();
+			}
 			else if (IsCompatibleType(type, typeof(Page)))
 			{
 				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
@@ -50,8 +55,6 @@ namespace Xamarin.Forms.Platform.Unity
 				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
 				return newInstance.gameObject.AddComponent<DefaultRenderer>();
 			}
-
-			return null;
 		}
 
 		static bool IsCompatibleType(System.Type target, System.Type baseType)
