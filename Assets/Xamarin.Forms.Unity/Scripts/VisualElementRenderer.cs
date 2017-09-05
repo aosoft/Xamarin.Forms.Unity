@@ -27,7 +27,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
-		protected void Awake()
+		protected virtual void Awake()
 		{
 			_rectTransform = GetComponent<RectTransform>();
 			if (_rectTransform == null)

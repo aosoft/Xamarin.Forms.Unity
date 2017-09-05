@@ -11,8 +11,22 @@ namespace Xamarin.Forms.Platform.Unity
 {
 	public class LabelRenderer : ViewRenderer<Label, UnityEngine.UI.Text>
 	{
+		UnityEngine.Color _defaultTextColor;
+
 		public LabelRenderer()
 		{
+		}
+
+		protected override void Awake()
+		{
+			base.Awake();
+
+			var label = Component;
+			if (label != null)
+			{
+				//	Prefab の設定値がデフォルトカラー
+				_defaultTextColor = label.color;
+			}
 		}
 
 		protected override void OnElementChanged(ElementChangedEventArgs<Label> e)
@@ -69,7 +83,14 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 			}
 
-			nativeElement.color = label.TextColor.ToUnityColor();
+			if (label.TextColor != Color.Default)
+			{
+				nativeElement.color = label.TextColor.ToUnityColor();
+			}
+			else
+			{
+				nativeElement.color = _defaultTextColor;
+			}
 		}
 
 		void UpdateAlign()
