@@ -34,10 +34,15 @@ namespace Xamarin.Forms.Platform.Unity
 				var newInstance = UnityEngine.Object.Instantiate(_prefabText);
 				return newInstance.gameObject.AddComponent<LabelRenderer>();
 			}
-			if (IsCompatibleType(type, typeof(Page)))
+			else if (IsCompatibleType(type, typeof(Page)))
 			{
 				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
 				return newInstance.gameObject.AddComponent<PageRenderer>();
+			}
+			else if (IsCompatibleType(type, typeof(Layout)))
+			{
+				var newInstance = UnityEngine.Object.Instantiate(_prefabCanvas);
+				return newInstance.gameObject.AddComponent<LayoutRenderer>();
 			}
 			else
 			{

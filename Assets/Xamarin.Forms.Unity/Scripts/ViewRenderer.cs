@@ -8,7 +8,7 @@ namespace Xamarin.Forms.Platform.Unity
 	public class ViewRenderer<TElement, TNativeElement> :
 		VisualElementRenderer<TElement, TNativeElement>
 		where TElement : View
-		where TNativeElement : MonoBehaviour
+		where TNativeElement : UnityEngine.Component
 	{
 		/*-----------------------------------------------------------------*/
 		#region Field
@@ -55,6 +55,11 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.UpdateNativeControl();
 
+			UpdateLayout();
+		}
+
+		protected virtual void UpdateLayout()
+		{
 			var view = Element;
 			if (_rectTransform == null || view == null)
 			{

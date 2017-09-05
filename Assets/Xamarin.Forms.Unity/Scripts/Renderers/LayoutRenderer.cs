@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	class LayoutRenderer
+	public class LayoutRenderer : ViewRenderer<Layout, UnityEngine.Canvas>
 	{
+		protected override void UpdateLayout()
+		{
+			if (_rectTransform != null)
+			{
+				_rectTransform.sizeDelta = new Vector2();
+				_rectTransform.anchoredPosition = new Vector2();
+			}
+		}
 	}
 }
