@@ -36,14 +36,6 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
-		protected void Start()
-		{
-		}
-
-		protected void OnDestroy()
-		{
-		}
-
 		#endregion
 
 		/*-----------------------------------------------------------------*/
