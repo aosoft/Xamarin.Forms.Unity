@@ -11,11 +11,15 @@ namespace Xamarin.Forms.Platform.Unity
 {
 	public class LabelRenderer : ViewRenderer<Label, UnityEngine.UI.Text>
 	{
+		/*-----------------------------------------------------------------*/
+		#region Field
+
 		UnityEngine.Color _defaultTextColor;
 
-		public LabelRenderer()
-		{
-		}
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region MonoBehavior
 
 		protected override void Awake()
 		{
@@ -28,6 +32,11 @@ namespace Xamarin.Forms.Platform.Unity
 				_defaultTextColor = label.color;
 			}
 		}
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Event Handler
 
 		protected override void OnElementChanged(ElementChangedEventArgs<Label> e)
 		{
@@ -73,6 +82,11 @@ namespace Xamarin.Forms.Platform.Unity
 
 			base.OnElementPropertyChanged(sender, e);
 		}
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Internals
 
 		void UpdateText()
 		{
@@ -198,5 +212,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 			}
 		}
+
+		#endregion
 	}
 }

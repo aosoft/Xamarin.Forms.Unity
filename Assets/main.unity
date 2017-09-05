@@ -141,6 +141,8 @@ MonoBehaviour:
     type: 2}
   _prefabText: {fileID: 114404184064878468, guid: ee3ddc11f5e084f41a6875c91a5b4339,
     type: 2}
+  _prefabInputField: {fileID: 114317585450461346, guid: bdba72af33f86a845b4f44425e1c9736,
+    type: 2}
   _prefabPanel: {fileID: 0}
   _prefabCanvas: {fileID: 223918758982005614, guid: 1d28a995901909844bb2312cf60937e9,
     type: 2}

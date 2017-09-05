@@ -15,6 +15,7 @@ namespace Xamarin.Forms.Platform.Unity
 		public UnityEngine.UI.Button _prefabButton;
 		public Text _prefabText;
 		public Slider _prefbSlider;
+		public InputField _prefabInputField;
 		public CanvasRenderer _prefabPanel;
 		public Canvas _prefabCanvas;
 
