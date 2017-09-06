@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
-
+/*
 [assembly: AssemblyTitle("Xamarin.Forms.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
@@ -60,3 +60,4 @@ using Xamarin.Forms.Internals;
 [assembly: Preserve]
 
 [assembly: XmlnsDefinition("http://xamarin.com/schemas/2014/forms", "Xamarin.Forms")]
+*/

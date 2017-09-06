@@ -150,7 +150,7 @@ namespace Xamarin.Forms
 					int backoff;
 					try
 					{
-						Stream result = await Store.OpenFileAsync(Path.Combine(CacheName, key), FileMode.Open, FileAccess.Read).ConfigureAwait(false);
+						Stream result = await Store.OpenFileAsync(Path.Combine(CacheName, key), Xamarin.Forms.Internals.FileMode.Open, Xamarin.Forms.Internals.FileAccess.Read).ConfigureAwait(false);
 						return result;
 					}
 					catch (IOException)
@@ -181,14 +181,14 @@ namespace Xamarin.Forms
 				return null;
 			}
 
-			Stream writeStream = await Store.OpenFileAsync(Path.Combine(CacheName, key), FileMode.Create, FileAccess.Write).ConfigureAwait(false);
+			Stream writeStream = await Store.OpenFileAsync(Path.Combine(CacheName, key), Xamarin.Forms.Internals.FileMode.Create, Xamarin.Forms.Internals.FileAccess.Write).ConfigureAwait(false);
 			await stream.CopyToAsync(writeStream, 16384, cancellationToken).ConfigureAwait(false);
 			if (writeStream != null)
 				writeStream.Dispose();
 
 			stream.Dispose();
 
-			return await Store.OpenFileAsync(Path.Combine(CacheName, key), FileMode.Open, FileAccess.Read).ConfigureAwait(false);
+			return await Store.OpenFileAsync(Path.Combine(CacheName, key), Xamarin.Forms.Internals.FileMode.Open, Xamarin.Forms.Internals.FileAccess.Read).ConfigureAwait(false);
 		}
 
 		async Task<Stream> GetStreamFromCacheAsync(Uri uri, CancellationToken cancellationToken)
