@@ -36,6 +36,8 @@ public class InternalReactiveProperty<T> : ReactiveProperty<T>, INotifyPropertyC
 
 public class SampleBindingContext
 {
+	System.Random _rnd = new System.Random();
+
 	public SampleBindingContext(MonoBehaviour disposer)
 	{
 		var cmd = new InternalReactiveCommand(disposer);
@@ -43,6 +45,11 @@ public class SampleBindingContext
 		{
 			var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 			UnityEngine.Object.Destroy(go, 5.0f);
+
+			go.transform.position = new Vector3((float)(_rnd.NextDouble() * 2.0 - 1.0), 5.0f, (float)(_rnd.NextDouble() * 2.0 - 1.0));
+
+			var rb = go.AddComponent<Rigidbody>();
+			rb.useGravity = true;
 
 			Counter.Value++;
 		}).AddTo(disposer);
