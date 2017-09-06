@@ -14,7 +14,7 @@
         <ColumnDefinition />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
-      <Label Grid.Column="0" Text="{Binding Counter.Value}" />
+      <Label Grid.Column="0" Text="{Binding Counter.Value}" HorizontalTextAlignment="Center" FontSize="20"/>
       <Button Grid.Column="1" Command="{Binding InstantiateCommand}" />
     </Grid>
   </Grid>
