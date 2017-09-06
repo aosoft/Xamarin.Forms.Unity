@@ -34,16 +34,17 @@ public class InternalReactiveProperty<T> : ReactiveProperty<T>, INotifyPropertyC
 	public event PropertyChangedEventHandler PropertyChanged;
 }
 
-public class SampleDataContext
+public class SampleBindingContext
 {
-	public SampleDataContext(MonoBehaviour disposer)
+	public SampleBindingContext(MonoBehaviour disposer)
 	{
 		var cmd = new InternalReactiveCommand(disposer);
 		cmd.Subscribe(_ =>
 		{
 			var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-
 			UnityEngine.Object.Destroy(go, 5.0f);
+
+			Counter.Value++;
 		}).AddTo(disposer);
 		InstantiateCommand = cmd;
 
