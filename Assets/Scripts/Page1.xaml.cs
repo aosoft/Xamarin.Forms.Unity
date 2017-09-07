@@ -52,10 +52,20 @@ public partial class Page1 : ContentPage
 
 		grid.Children.Add(grid2, 0, 1);
 
-		var label = new Label { HorizontalTextAlignment = Xamarin.Forms.TextAlignment.Center, FontSize = 20 };
+		var label = new Label
+		{
+			HorizontalTextAlignment = Xamarin.Forms.TextAlignment.Center,
+			FontSize = 20,
+			TextColor = Xamarin.Forms.Color.White
+		};
 		label.SetBinding(Label.TextProperty, new Binding { Path = "Counter.Value" });
 		var button = new Button();
 		button.SetBinding(Button.CommandProperty, new Binding { Path = "InstantiateCommand" });
+		button.Clicked += (s, e) =>
+		{
+			label.Scale = 5.0;
+			label.ScaleTo(1.0);
+		};
 
 		grid2.Children.Add(label, 0, 0);
 		grid2.Children.Add(button, 1, 0);
