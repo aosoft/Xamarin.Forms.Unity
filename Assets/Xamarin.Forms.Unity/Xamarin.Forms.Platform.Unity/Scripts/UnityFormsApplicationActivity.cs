@@ -27,7 +27,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/// </remarks>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public IVisualElementRenderer GetVisualElementRenderer(System.Type type, GameObject target = null)
+		public IVisualElementRenderer CreateVisualElementRenderer(System.Type type, GameObject target = null)
 		{
 			if (IsCompatibleType(type, typeof(Label)))
 			{

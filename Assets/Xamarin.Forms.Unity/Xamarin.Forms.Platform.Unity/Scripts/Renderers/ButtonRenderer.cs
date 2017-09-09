@@ -13,7 +13,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Field
 
-		LabelRenderer _labelRenderer;
+		UnityEngine.UI.Text _componentText;
 
 		#endregion
 
@@ -31,6 +31,8 @@ namespace Xamarin.Forms.Platform.Unity
 					.Subscribe(_ => (Element as IButtonController)?.SendClicked())
 					.AddTo(this);
 			}
+
+			_componentText = this.GetComponentInChildren<UnityEngine.UI.Text>();
 		}
 
 		#endregion

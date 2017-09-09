@@ -143,9 +143,7 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 			}
 
-			nativeElement.horizontalOverflow =
-				label.LineBreakMode == LineBreakMode.CharacterWrap || label.LineBreakMode == LineBreakMode.WordWrap ?
-					HorizontalWrapMode.Wrap : HorizontalWrapMode.Overflow;
+			nativeElement.horizontalOverflow = label.LineBreakMode.ToUnityHorizontalWrapMode();
 		}
 
 		void UpdateAlign()
@@ -157,60 +155,7 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 			}
 
-			switch (label.HorizontalTextAlignment)
-			{
-				case TextAlignment.Start:
-					switch (label.VerticalTextAlignment)
-					{
-						case TextAlignment.Start:
-							nativeElement.alignment = TextAnchor.UpperLeft;
-							break;
-
-						case TextAlignment.Center:
-							nativeElement.alignment = TextAnchor.MiddleLeft;
-							break;
-
-						case TextAlignment.End:
-							nativeElement.alignment = TextAnchor.LowerLeft;
-							break;
-					}
-					break;
-
-				case TextAlignment.Center:
-					switch (label.VerticalTextAlignment)
-					{
-						case TextAlignment.Start:
-							nativeElement.alignment = TextAnchor.UpperCenter;
-							break;
-
-						case TextAlignment.Center:
-							nativeElement.alignment = TextAnchor.MiddleCenter;
-							break;
-
-						case TextAlignment.End:
-							nativeElement.alignment = TextAnchor.LowerCenter;
-							break;
-					}
-					break;
-
-				case TextAlignment.End:
-					switch (label.VerticalTextAlignment)
-					{
-						case TextAlignment.Start:
-							nativeElement.alignment = TextAnchor.UpperRight;
-							break;
-
-						case TextAlignment.Center:
-							nativeElement.alignment = TextAnchor.MiddleRight;
-							break;
-
-						case TextAlignment.End:
-							nativeElement.alignment = TextAnchor.LowerRight;
-							break;
-					}
-					break;
-
-			}
+			nativeElement.alignment = Platform.ToUnityTextAnchor(label.HorizontalTextAlignment, label.VerticalTextAlignment);
 		}
 
 		#endregion

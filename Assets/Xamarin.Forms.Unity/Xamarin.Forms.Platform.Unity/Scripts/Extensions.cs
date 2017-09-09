@@ -24,5 +24,11 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 			return UnityEngine.FontStyle.Normal;
 		}
+
+		static public UnityEngine.HorizontalWrapMode ToUnityHorizontalWrapMode(this LineBreakMode mode)
+		{
+			return mode == LineBreakMode.CharacterWrap || mode == LineBreakMode.WordWrap ?
+					UnityEngine.HorizontalWrapMode.Wrap : UnityEngine.HorizontalWrapMode.Overflow;
+		}
 	}
 }

@@ -77,7 +77,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (element == null)
 				throw new ArgumentNullException(nameof(element));
 
-			IVisualElementRenderer renderer = Forms.Activity.GetVisualElementRenderer(element.GetType());
+			IVisualElementRenderer renderer = Forms.Activity.CreateVisualElementRenderer(element.GetType());
 			renderer.SetElement(element);
 			return renderer;
 		}
@@ -137,6 +137,40 @@ namespace Xamarin.Forms.Platform.Unity
 
 			//UpdateToolbarTracker();
 			//await UpdateToolbarItems();
+		}
+
+		static public UnityEngine.TextAnchor ToUnityTextAnchor(TextAlignment horizonatal, TextAlignment vertical)
+		{
+			switch (horizonatal)
+			{
+				case TextAlignment.Start:
+					switch (vertical)
+					{
+						case TextAlignment.Start: return TextAnchor.UpperLeft;
+						case TextAlignment.Center: return TextAnchor.MiddleLeft;
+						case TextAlignment.End: return TextAnchor.LowerLeft;
+					}
+					break;
+
+				case TextAlignment.Center:
+					switch (vertical)
+					{
+						case TextAlignment.Start: return TextAnchor.UpperCenter;
+						case TextAlignment.Center: return TextAnchor.MiddleCenter;
+						case TextAlignment.End: return TextAnchor.LowerCenter;
+					}
+					break;
+
+				case TextAlignment.End:
+					switch (vertical)
+					{
+						case TextAlignment.Start: return TextAnchor.UpperRight;
+						case TextAlignment.Center: return TextAnchor.MiddleRight;
+						case TextAlignment.End: return TextAnchor.LowerRight;
+					}
+					break;
+			}
+			return TextAnchor.MiddleCenter;
 		}
 
 
