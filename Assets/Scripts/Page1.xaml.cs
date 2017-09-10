@@ -36,7 +36,7 @@ public partial class Page1 : ContentPage
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
       <Label Grid.Column=""0"" Text=""{Binding Counter.Value}"" HorizontalTextAlignment=""Center"" FontSize=""20""/>
-      <Button Grid.Column=""1"" Command=""{Binding InstantiateCommand}"" />
+      <Button Grid.Column=""1"" Text=""Button"" Command=""{Binding InstantiateCommand}"" />
     </Grid>
   </Grid>
 </ContentPage>
@@ -59,7 +59,10 @@ public partial class Page1 : ContentPage
 			TextColor = Xamarin.Forms.Color.White
 		};
 		label.SetBinding(Label.TextProperty, new Binding { Path = "Counter.Value" });
-		var button = new Button();
+		var button = new Button
+		{
+			Text = "Button"
+		};
 		button.SetBinding(Button.CommandProperty, new Binding { Path = "InstantiateCommand" });
 		button.Clicked += (s, e) =>
 		{
