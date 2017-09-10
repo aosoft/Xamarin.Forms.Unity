@@ -25,7 +25,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var label = Component;
+			var label = UnityComponent;
 			if (label != null)
 			{
 				//	Prefab の設定値がデフォルトカラー
@@ -91,71 +91,56 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateText()
 		{
 			//_perfectSizeValid = false;
-
-			var nativeElement = Component;
-			var label = Element;
-			if (nativeElement == null || label == null)
+			var pair = Pair;
+			if (pair.IsAvailable)
 			{
-				return;
+				pair.UnityComponent.text = pair.Element.Text;
 			}
-
-			nativeElement.text = label.Text;
 		}
 
 		void UpdateColor()
 		{
-			var nativeElement = Component;
-			var label = Element;
-			if (nativeElement == null || label == null)
+			var pair = Pair;
+			if (pair.IsAvailable)
 			{
-				return;
-			}
-
-			if (label.TextColor != Color.Default)
-			{
-				nativeElement.color = label.TextColor.ToUnityColor();
-			}
-			else
-			{
-				nativeElement.color = _defaultTextColor;
+				if (pair.Element.TextColor != Color.Default)
+				{
+					pair.UnityComponent.color = pair.Element.TextColor.ToUnityColor();
+				}
+				else
+				{
+					pair.UnityComponent.color = _defaultTextColor;
+				}
 			}
 		}
 
 		void UpdateFont()
 		{
-			var nativeElement = Component;
-			var label = Element;
-			if (nativeElement == null || label == null)
+			var pair = Pair;
+			if (pair.IsAvailable)
 			{
-				return;
+				pair.UnityComponent.fontSize = (int)pair.Element.FontSize;
+				pair.UnityComponent.fontStyle = pair.Element.FontAttributes.ToUnityFontStyle();
 			}
-
-			nativeElement.fontSize = (int)label.FontSize;
-			nativeElement.fontStyle = label.FontAttributes.ToUnityFontStyle();
 		}
 
 		void UpdateLineBreakMode()
 		{
-			var nativeElement = Component;
-			var label = Element;
-			if (nativeElement == null || label == null)
+			var pair = Pair;
+			if (pair.IsAvailable)
 			{
-				return;
+				pair.UnityComponent.horizontalOverflow = pair.Element.LineBreakMode.ToUnityHorizontalWrapMode();
 			}
-
-			nativeElement.horizontalOverflow = label.LineBreakMode.ToUnityHorizontalWrapMode();
 		}
 
 		void UpdateAlign()
 		{
-			var nativeElement = Component;
-			var label = Element;
-			if (nativeElement == null || label == null)
+			var pair = Pair;
+			if (pair.IsAvailable)
 			{
-				return;
+				pair.UnityComponent.alignment =
+					Platform.ToUnityTextAnchor(pair.Element.HorizontalTextAlignment, pair.Element.VerticalTextAlignment);
 			}
-
-			nativeElement.alignment = Platform.ToUnityTextAnchor(label.HorizontalTextAlignment, label.VerticalTextAlignment);
 		}
 
 		#endregion

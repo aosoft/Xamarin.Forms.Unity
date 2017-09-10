@@ -43,7 +43,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElementPackager Packager { get; set; }
 
-		public TNativeElement Component
+		public TNativeElement UnityComponent
 		{
 			get
 			{
@@ -64,7 +64,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
-		UnityEngine.Component IVisualElementRenderer.UnityComponent => this.Component;
+		UnityEngine.Component IVisualElementRenderer.UnityComponent => this.UnityComponent;
 
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
@@ -102,7 +102,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				if (AutoTrack && Tracker == null)
 				{
-					Tracker = new VisualElementTracker<TElement, TNativeElement>(Component);
+					Tracker = new VisualElementTracker<TElement, TNativeElement>(UnityComponent);
 				}
 
 				// Disabled until reason for crashes with unhandled exceptions is discovered
@@ -169,6 +169,27 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
+		protected struct PairType
+		{
+			public TElement Element { get; }
+			public TNativeElement UnityComponent { get; }
+			public bool IsAvailable { get { return Element != null && UnityComponent != null; } }
+
+			public PairType(TElement element, TNativeElement unityComponent)
+			{
+				Element = element;
+				UnityComponent = unityComponent;
+			}
+		}
+
+		protected PairType Pair
+		{
+			get
+			{
+				return new PairType(Element, UnityComponent);
+			}
+		}
+
 		protected virtual void UpdateBackgroundColor()
 		{
 			/*
@@ -213,8 +234,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateEnabled()
 		{
-			if (Component != null)
-				Component.gameObject.SetActive(Element.IsEnabled);
+			if (UnityComponent != null)
+				UnityComponent.gameObject.SetActive(Element.IsEnabled);
 			/*else
 				IsHitTestVisible = Element.IsEnabled && !Element.InputTransparent;*/
 		}

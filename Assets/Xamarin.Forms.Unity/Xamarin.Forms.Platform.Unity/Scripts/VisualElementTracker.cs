@@ -50,7 +50,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Property
 
-		public TNativeElement Component
+		public TNativeElement UnityComponent
 		{
 			get { return _component; }
 		}

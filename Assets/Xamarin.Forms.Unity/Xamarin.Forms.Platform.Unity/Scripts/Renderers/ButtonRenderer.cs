@@ -24,7 +24,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var button = Component;
+			var button = UnityComponent;
 			if (button != null)
 			{
 				button.OnClickAsObservable()
