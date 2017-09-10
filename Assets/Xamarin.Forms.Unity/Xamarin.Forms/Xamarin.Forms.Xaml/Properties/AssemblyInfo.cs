@@ -7,6 +7,9 @@ using Xamarin.Forms.Internals;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
+#if UNITY_2017
+#else
+
 [assembly: AssemblyTitle("Xamarin.Forms.Xaml")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
@@ -26,6 +29,8 @@ using Xamarin.Forms.Internals;
 [assembly: InternalsVisibleTo("Xamarin.Forms.Build.Tasks")]
 [assembly: InternalsVisibleTo("Xamarin.Forms.Xaml.Design")]
 [assembly: Preserve]
+
+#endif
 
 [assembly: XmlnsDefinition("http://xamarin.com/schemas/2014/forms", "Xamarin.Forms.Xaml")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml", "Xamarin.Forms.Xaml")]
