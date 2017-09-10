@@ -36,7 +36,7 @@ namespace Xamarin.Forms.Platform.Unity
 				IVisualElementRenderer childRenderer = Platform.GetRenderer(visual);
 				if (childRenderer != null)
 				{
-					var go = childRenderer.Component?.gameObject;
+					var go = childRenderer.UnityComponent?.gameObject;
 					if (go != null)
 					{
 						UnityEngine.Object.Destroy(go);
@@ -47,7 +47,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (renderer != null)
 			{
-				var go = renderer.Component?.gameObject;
+				var go = renderer.UnityComponent?.gameObject;
 				if (go != null)
 				{
 					UnityEngine.Object.Destroy(go);

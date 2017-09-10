@@ -64,7 +64,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
-		UnityEngine.Component IVisualElementRenderer.Component => this.Component;
+		UnityEngine.Component IVisualElementRenderer.UnityComponent => this.Component;
 
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
