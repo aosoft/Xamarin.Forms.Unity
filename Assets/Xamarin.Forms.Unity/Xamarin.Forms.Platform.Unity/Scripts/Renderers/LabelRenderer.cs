@@ -14,7 +14,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Field
 
-		UnityEngine.Color _defaultTextColor;
+		TextTracker _componentText;
 
 		#endregion
 
@@ -25,12 +25,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var label = UnityComponent;
-			if (label != null)
-			{
-				//	Prefab の設定値がデフォルトカラー
-				_defaultTextColor = label.color;
-			}
+			_componentText = new TextTracker(UnityComponent);
 		}
 
 		#endregion
@@ -91,17 +86,17 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateText()
 		{
 			//_perfectSizeValid = false;
-			UnityComponent.text = Element.Text;
+			_componentText.UpdateText(Element.Text);
 		}
 
 		void UpdateColor()
 		{
-			UnityComponent.SetTextColor(Element.TextColor, _defaultTextColor);
+			_componentText.UpdateTextColor(Element.TextColor);
 		}
 
 		void UpdateFont()
 		{
-			UnityComponent.SetFont(Element);
+			_componentText.UpdateFont(Element);
 		}
 
 		void UpdateLineBreakMode()
