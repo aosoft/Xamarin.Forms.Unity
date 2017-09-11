@@ -169,27 +169,6 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
-		protected struct PairType
-		{
-			public TElement Element { get; }
-			public TNativeElement UnityComponent { get; }
-			public bool IsAvailable { get { return Element != null && UnityComponent != null; } }
-
-			public PairType(TElement element, TNativeElement unityComponent)
-			{
-				Element = element;
-				UnityComponent = unityComponent;
-			}
-		}
-
-		protected PairType Pair
-		{
-			get
-			{
-				return new PairType(Element, UnityComponent);
-			}
-		}
-
 		protected virtual void UpdateBackgroundColor()
 		{
 			/*

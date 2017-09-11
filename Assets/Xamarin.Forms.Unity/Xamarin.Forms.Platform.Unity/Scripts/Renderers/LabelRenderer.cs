@@ -91,56 +91,27 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateText()
 		{
 			//_perfectSizeValid = false;
-			var pair = Pair;
-			if (pair.IsAvailable)
-			{
-				pair.UnityComponent.text = pair.Element.Text;
-			}
+			UnityComponent.text = Element.Text;
 		}
 
 		void UpdateColor()
 		{
-			var pair = Pair;
-			if (pair.IsAvailable)
-			{
-				if (pair.Element.TextColor != Color.Default)
-				{
-					pair.UnityComponent.color = pair.Element.TextColor.ToUnityColor();
-				}
-				else
-				{
-					pair.UnityComponent.color = _defaultTextColor;
-				}
-			}
+			UnityComponent.SetTextColor(Element.TextColor, _defaultTextColor);
 		}
 
 		void UpdateFont()
 		{
-			var pair = Pair;
-			if (pair.IsAvailable)
-			{
-				pair.UnityComponent.fontSize = (int)pair.Element.FontSize;
-				pair.UnityComponent.fontStyle = pair.Element.FontAttributes.ToUnityFontStyle();
-			}
+			UnityComponent.SetFont(Element);
 		}
 
 		void UpdateLineBreakMode()
 		{
-			var pair = Pair;
-			if (pair.IsAvailable)
-			{
-				pair.UnityComponent.horizontalOverflow = pair.Element.LineBreakMode.ToUnityHorizontalWrapMode();
-			}
+			UnityComponent.horizontalOverflow = Element.LineBreakMode.ToUnityHorizontalWrapMode();
 		}
 
 		void UpdateAlign()
 		{
-			var pair = Pair;
-			if (pair.IsAvailable)
-			{
-				pair.UnityComponent.alignment =
-					Platform.ToUnityTextAnchor(pair.Element.HorizontalTextAlignment, pair.Element.VerticalTextAlignment);
-			}
+			UnityComponent?.SetTextAlign(Element);
 		}
 
 		#endregion

@@ -86,38 +86,20 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateText()
 		{
-			//_perfectSizeValid = false;
-			var pair = Pair;
-			if (pair.IsAvailable && _componentText != null)
+			if (_componentText != null)
 			{
-				_componentText.text = pair.Element.Text;
+				_componentText.text = Element.Text;
 			}
 		}
 
 		void UpdateTextColor()
 		{
-			var pair = Pair;
-			if (pair.IsAvailable && _componentText != null)
-			{
-				if (pair.Element.TextColor != Color.Default)
-				{
-					_componentText.color = pair.Element.TextColor.ToUnityColor();
-				}
-				else
-				{
-					_componentText.color = _defaultTextColor;
-				}
-			}
+			_componentText?.SetTextColor(Element.TextColor, _defaultTextColor);
 		}
 
 		void UpdateFont()
 		{
-			var pair = Pair;
-			if (pair.IsAvailable && _componentText != null)
-			{
-				_componentText.fontSize = (int)pair.Element.FontSize;
-				_componentText.fontStyle = pair.Element.FontAttributes.ToUnityFontStyle();
-			}
+			_componentText?.SetFont(Element);
 		}
 
 		#endregion

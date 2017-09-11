@@ -14,13 +14,16 @@ namespace Xamarin.Forms.Platform.Unity
 			Color color,
 			UnityEngine.Color defaultColor)
 		{
-			if (color != Color.Default)
+			if (self != null)
 			{
-				self.color = color.ToUnityColor();
-			}
-			else
-			{
-				self.color = defaultColor;
+				if (color != Color.Default)
+				{
+					self.color = color.ToUnityColor();
+				}
+				else
+				{
+					self.color = defaultColor;
+				}
 			}
 		}
 
@@ -28,15 +31,21 @@ namespace Xamarin.Forms.Platform.Unity
 			this UnityEngine.UI.Text self,
 			IFontElement element)
 		{
-			self.fontSize = (int)element.FontSize;
-			self.fontStyle = element.FontAttributes.ToUnityFontStyle();
+			if (self != null)
+			{
+				self.fontSize = (int)element.FontSize;
+				self.fontStyle = element.FontAttributes.ToUnityFontStyle();
+			}
 		}
 
 		static public void SetTextAlign(
 			this UnityEngine.UI.Text self,
-			TextAlignment horizonatal, TextAlignment vertical)
+			Label label)
 		{
-			self.alignment = Platform.ToUnityTextAnchor(horizonatal, vertical);
+			if (self != null && label != null)
+			{
+				self.alignment = Platform.ToUnityTextAnchor(label.HorizontalTextAlignment, label.VerticalTextAlignment);
+			}
 		}
 	}
 }
