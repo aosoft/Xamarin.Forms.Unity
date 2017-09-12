@@ -46,33 +46,55 @@ public partial class Page1 : ContentPage
 		grid.RowDefinitions.Add(new RowDefinition());
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
 
-		var grid2 = new Grid();
-		grid2.ColumnDefinitions.Add(new ColumnDefinition());
-		grid2.ColumnDefinitions.Add(new ColumnDefinition());
-
-		grid.Children.Add(grid2, 0, 1);
-
-		var label = new Label
 		{
-			HorizontalTextAlignment = Xamarin.Forms.TextAlignment.Center,
-			FontSize = 20,
-			TextColor = Xamarin.Forms.Color.White
-		};
-		label.SetBinding(Label.TextProperty, new Binding { Path = "Counter.Value" });
-		var button = new Button
-		{
-			Text = "Button"
-		};
-		button.SetBinding(Button.CommandProperty, new Binding { Path = "InstantiateCommand" });
-		button.Clicked += (s, e) =>
-		{
-			label.Scale = 5.0;
-			label.ScaleTo(1.0);
-		};
+			var grid2 = new Grid();
+			grid2.ColumnDefinitions.Add(new ColumnDefinition());
+			grid2.ColumnDefinitions.Add(new ColumnDefinition());
 
-		grid2.Children.Add(label, 0, 0);
-		grid2.Children.Add(button, 1, 0);
+			grid.Children.Add(grid2, 0, 1);
 
+			var label = new Label
+			{
+				HorizontalTextAlignment = Xamarin.Forms.TextAlignment.Center,
+				FontSize = 20,
+				TextColor = Xamarin.Forms.Color.White,
+				Text = "Default"
+			};
+
+			var entry = new Entry();
+
+			grid2.Children.Add(label, 0, 0);
+			grid2.Children.Add(entry, 1, 0);
+		}
+
+		{
+			var grid2 = new Grid();
+			grid2.ColumnDefinitions.Add(new ColumnDefinition());
+			grid2.ColumnDefinitions.Add(new ColumnDefinition());
+
+			grid.Children.Add(grid2, 0, 2);
+
+			var label = new Label
+			{
+				HorizontalTextAlignment = Xamarin.Forms.TextAlignment.Center,
+				FontSize = 20,
+				TextColor = Xamarin.Forms.Color.White
+			};
+			label.SetBinding(Label.TextProperty, new Binding { Path = "Counter.Value" });
+			var button = new Button
+			{
+				Text = "Button"
+			};
+			button.SetBinding(Button.CommandProperty, new Binding { Path = "InstantiateCommand" });
+			button.Clicked += (s, e) =>
+			{
+				label.Scale = 5.0;
+				label.ScaleTo(1.0);
+			};
+
+			grid2.Children.Add(label, 0, 0);
+			grid2.Children.Add(button, 1, 0);
+		}
 		this.Content = grid;
 #endif
 	}

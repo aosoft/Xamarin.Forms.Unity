@@ -26,6 +26,7 @@ namespace Xamarin.Forms.Platform.Unity
 			var inputField = UnityComponent;
 			if (inputField != null)
 			{
+				inputField.lineType = UnityEngine.UI.InputField.LineType.SingleLine;
 				_componentText = new TextTracker(inputField.textComponent);
 			}
 		}
