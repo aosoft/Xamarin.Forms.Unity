@@ -68,13 +68,15 @@ namespace Xamarin.Forms.Platform.Unity
 
 			var anchorMax = new Vector2();
 			var anchorMin = new Vector2();
+			var sizeScale = new Vector2();
 
 			switch (view.HorizontalOptions.Alignment)
 			{
 				case LayoutAlignment.Start:
 					{
-						anchorMin.x = 1.0f;
-						anchorMax.x = 1.0f;
+						anchorMin.x = 0.0f;
+						anchorMax.x = 0.0f;
+						sizeScale.x = 1.0f;
 					}
 					break;
 
@@ -82,13 +84,15 @@ namespace Xamarin.Forms.Platform.Unity
 					{
 						anchorMin.x = 0.5f;
 						anchorMax.x = 0.5f;
+						sizeScale.x = 1.0f;
 					}
 					break;
 
 				case LayoutAlignment.End:
 					{
-						anchorMin.x = 0.0f;
-						anchorMax.x = 0.0f;
+						anchorMin.x = 1.0f;
+						anchorMax.x = 1.0f;
+						sizeScale.x = 1.0f;
 					}
 					break;
 
@@ -96,6 +100,7 @@ namespace Xamarin.Forms.Platform.Unity
 					{
 						anchorMin.x = 0.0f;
 						anchorMax.x = 1.0f;
+						sizeScale.x = 0.0f;
 					}
 					break;
 			}
@@ -106,6 +111,7 @@ namespace Xamarin.Forms.Platform.Unity
 					{
 						anchorMin.y = 1.0f;
 						anchorMax.y = 1.0f;
+						sizeScale.x = 1.0f;
 					}
 					break;
 
@@ -113,6 +119,7 @@ namespace Xamarin.Forms.Platform.Unity
 					{
 						anchorMin.y = 0.5f;
 						anchorMax.y = 0.5f;
+						sizeScale.x = 1.0f;
 					}
 					break;
 
@@ -120,6 +127,7 @@ namespace Xamarin.Forms.Platform.Unity
 					{
 						anchorMin.y = 0.0f;
 						anchorMax.y = 0.0f;
+						sizeScale.x = 1.0f;
 					}
 					break;
 
@@ -127,6 +135,7 @@ namespace Xamarin.Forms.Platform.Unity
 					{
 						anchorMin.y = 0.0f;
 						anchorMax.y = 1.0f;
+						sizeScale.x = 0.0f;
 					}
 					break;
 			}

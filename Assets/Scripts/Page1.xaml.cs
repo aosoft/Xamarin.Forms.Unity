@@ -45,6 +45,7 @@ public partial class Page1 : ContentPage
 		var grid = new Grid();
 		grid.RowDefinitions.Add(new RowDefinition());
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
+		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
 
 		{
 			var grid2 = new Grid();
