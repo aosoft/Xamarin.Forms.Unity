@@ -66,97 +66,29 @@ namespace Xamarin.Forms.Platform.Unity
 				return;
 			}
 
-			var anchorMax = new Vector2();
-			var anchorMin = new Vector2();
-			var sizeScale = new Vector2();
-
-			switch (view.HorizontalOptions.Alignment)
-			{
-				case LayoutAlignment.Start:
-					{
-						anchorMin.x = 0.0f;
-						anchorMax.x = 0.0f;
-						sizeScale.x = 1.0f;
-					}
-					break;
-
-				case LayoutAlignment.Center:
-					{
-						anchorMin.x = 0.5f;
-						anchorMax.x = 0.5f;
-						sizeScale.x = 1.0f;
-					}
-					break;
-
-				case LayoutAlignment.End:
-					{
-						anchorMin.x = 1.0f;
-						anchorMax.x = 1.0f;
-						sizeScale.x = 1.0f;
-					}
-					break;
-
-				case LayoutAlignment.Fill:
-					{
-						anchorMin.x = 0.0f;
-						anchorMax.x = 1.0f;
-						sizeScale.x = 0.0f;
-					}
-					break;
-			}
-
-			switch (view.VerticalOptions.Alignment)
-			{
-				case LayoutAlignment.Start:
-					{
-						anchorMin.y = 1.0f;
-						anchorMax.y = 1.0f;
-						sizeScale.x = 1.0f;
-					}
-					break;
-
-				case LayoutAlignment.Center:
-					{
-						anchorMin.y = 0.5f;
-						anchorMax.y = 0.5f;
-						sizeScale.x = 1.0f;
-					}
-					break;
-
-				case LayoutAlignment.End:
-					{
-						anchorMin.y = 0.0f;
-						anchorMax.y = 0.0f;
-						sizeScale.x = 1.0f;
-					}
-					break;
-
-				case LayoutAlignment.Fill:
-					{
-						anchorMin.y = 0.0f;
-						anchorMax.y = 1.0f;
-						sizeScale.x = 0.0f;
-					}
-					break;
-			}
-
-			_rectTransform.anchorMin = anchorMin;
-			_rectTransform.anchorMax = anchorMax;
-			_rectTransform.position = new Vector3();
-
 			var parent = view.Parent as VisualElement;
-			if (parent != null && _rectTransform.parent != null)
+			float parentHeight = 0.0f;
+			if (parent != null)
 			{
-				var pivot = _rectTransform.pivot;
-				var size = new Vector2((float)view.Width, (float)view.Height);
-				_rectTransform.sizeDelta = size;
-				_rectTransform.anchoredPosition = new Vector2((float)view.X + size.x * pivot.x, (float)(parent.Height - view.Y) - size.y * pivot.y);
+				parentHeight = Mathf.Max((float)parent.Height, 0.0f);
 			}
-			else
-			{
-				_rectTransform.sizeDelta = new Vector2();
-				_rectTransform.anchoredPosition = new Vector2();
-			}
+
+			var position = new Vector2((float)view.X, (float)view.Y);
+			var size = new Vector2((float)view.Width, (float)view.Height);
+
+			//	サイズ不定時のみ、一応 Unity の Layout System にのる
+			var anchorMax = new Vector2(size.x < 0.0f ? 1.0f : 0.0f, size.y < 0.0f ? 1.0f : 0.0f);
+			size = new Vector2(Mathf.Max(size.x, 0.0f), Mathf.Max(size.y, 0.0f));
+
+			var pivot = _rectTransform.pivot;
+
+			_rectTransform.anchorMin = new Vector2();
+			_rectTransform.anchorMax = anchorMax;
+			_rectTransform.anchoredPosition =
+				new Vector2(
+					position.x + size.x * pivot.x,
+					parentHeight - (position.y + size.y * pivot.y));
+			_rectTransform.sizeDelta = size;
 		}
 
 		#endregion
