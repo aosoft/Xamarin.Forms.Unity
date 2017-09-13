@@ -30,9 +30,10 @@ namespace Xamarin.Forms.Platform.Unity
 				inputField.lineType = UnityEngine.UI.InputField.LineType.SingleLine;
 				inputField.OnValueChangedAsObservable().Subscribe(value =>
 				{
-					if (Element != null && Element.Text != value)
+					var element = Element;
+					if (element != null && element.Text != value)
 					{
-						Element.Text = value;
+						element.Text = value;
 					}
 				}).AddTo(this);
 
