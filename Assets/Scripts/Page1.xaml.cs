@@ -64,6 +64,8 @@ public partial class Page1 : ContentPage
 
 			var entry = new Entry();
 
+			label.SetBinding(Label.TextProperty, new Binding { Path = "Text", Source = entry });
+
 			grid2.Children.Add(label, 0, 0);
 			grid2.Children.Add(entry, 1, 0);
 		}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using UniRx;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -27,6 +28,14 @@ namespace Xamarin.Forms.Platform.Unity
 			if (inputField != null)
 			{
 				inputField.lineType = UnityEngine.UI.InputField.LineType.SingleLine;
+				inputField.OnValueChangedAsObservable().Subscribe(value =>
+				{
+					if (Element != null && Element.Text != value)
+					{
+						Element.Text = value;
+					}
+				}).AddTo(this);
+
 				_componentText = new TextTracker(inputField.textComponent);
 			}
 		}
