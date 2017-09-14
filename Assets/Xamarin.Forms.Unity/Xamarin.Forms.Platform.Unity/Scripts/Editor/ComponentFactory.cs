@@ -17,6 +17,8 @@ namespace Xamarin.Forms.Platform.Unity
 					var go = new GameObject();
 					go.name = string.Format("Xamarin.Forms Activity({0})", t.Name);
 					go.AddComponent(t);
+
+					return;
 				}
 			}
 		}

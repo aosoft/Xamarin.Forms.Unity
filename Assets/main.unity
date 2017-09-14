@@ -118,7 +118,6 @@ GameObject:
   - component: {fileID: 12793937}
   - component: {fileID: 12793936}
   - component: {fileID: 12793935}
-  - component: {fileID: 12793934}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -126,27 +125,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &12793934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 12793933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9245912550a797a4eb8b4724cb0d8a7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _prefabButton: {fileID: 114102376351153954, guid: 643ddc4336a56a541907cdea41062bc1,
-    type: 2}
-  _prefabText: {fileID: 114404184064878468, guid: ee3ddc11f5e084f41a6875c91a5b4339,
-    type: 2}
-  _prefabInputField: {fileID: 114317585450461346, guid: bdba72af33f86a845b4f44425e1c9736,
-    type: 2}
-  _prefabPanel: {fileID: 0}
-  _prefabCanvas: {fileID: 223918758982005614, guid: 1d28a995901909844bb2312cf60937e9,
-    type: 2}
-  _xamarinFormsPlatformCanvas: {fileID: 1376985421}
 --- !u!114 &12793935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +169,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &94843453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 94843455}
+  - component: {fileID: 94843454}
+  m_Layer: 0
+  m_Name: Xamarin.Forms Activity(FormsApplicationActivity)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &94843454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 94843453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9245912550a797a4eb8b4724cb0d8a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefabButton: {fileID: 114102376351153954, guid: 643ddc4336a56a541907cdea41062bc1,
+    type: 2}
+  _prefabText: {fileID: 114404184064878468, guid: ee3ddc11f5e084f41a6875c91a5b4339,
+    type: 2}
+  _prefabInputField: {fileID: 114317585450461346, guid: bdba72af33f86a845b4f44425e1c9736,
+    type: 2}
+  _prefabPanel: {fileID: 0}
+  _prefabCanvas: {fileID: 223918758982005614, guid: 1d28a995901909844bb2312cf60937e9,
+    type: 2}
+  _xamarinFormsPlatformCanvas: {fileID: 1376985421}
+--- !u!4 &94843455
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 94843453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &854050342
 GameObject:
