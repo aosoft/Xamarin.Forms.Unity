@@ -5,7 +5,7 @@ Copyright (c) 2017 Yasuhiro Taniuchi
 Copyright (c) .NET Foundation Contributors
 
 [LICENSE (MIT)](LICENSE)  
-[Demo (WebGL Build / 2017/8/7 Version)](https://aosoft.github.io/XFUnitySample/170908/)
+[Demo (WebGL Build / 2017/9/8 Version)](https://aosoft.github.io/XFUnitySample/170908/)
 
 ## About
 
