@@ -8,7 +8,7 @@ using UniRx;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class EditorRenderer : ViewRenderer<Entry, UnityEngine.UI.InputField>
+	public class EditorRenderer : ViewRenderer<Editor, UnityEngine.UI.InputField>
 	{
 		/*-----------------------------------------------------------------*/
 		#region Field
@@ -46,7 +46,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Event Handler
 
-		protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+		protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
 		{
 			base.OnElementChanged(e);
 
@@ -67,16 +67,16 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Entry.TextProperty.PropertyName)
+			if (e.PropertyName == Editor.TextProperty.PropertyName)
 			{
 				UpdateText();
 			}
-			else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
+			else if (e.PropertyName == Editor.TextColorProperty.PropertyName)
 			{
 				UpdateTextColor();
 			}
-			else if (e.PropertyName == Entry.FontSizeProperty.PropertyName ||
-				e.PropertyName == Entry.FontAttributesProperty.PropertyName)
+			else if (e.PropertyName == Editor.FontSizeProperty.PropertyName ||
+				e.PropertyName == Editor.FontAttributesProperty.PropertyName)
 			{
 				UpdateFont();
 			}
