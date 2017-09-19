@@ -206,6 +206,8 @@ MonoBehaviour:
   _prefabPanel: {fileID: 0}
   _prefabCanvas: {fileID: 223918758982005614, guid: 1d28a995901909844bb2312cf60937e9,
     type: 2}
+  _prefabToggle: {fileID: 114025503760307272, guid: a8b6f97e3b1110744baea51bcc4d4faf,
+    type: 2}
   _xamarinFormsPlatformCanvas: {fileID: 1376985421}
 --- !u!4 &94843455
 Transform:

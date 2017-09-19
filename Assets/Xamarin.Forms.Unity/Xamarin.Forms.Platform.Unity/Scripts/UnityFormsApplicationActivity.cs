@@ -18,6 +18,7 @@ namespace Xamarin.Forms.Platform.Unity
 		public InputField _prefabInputField;
 		public CanvasRenderer _prefabPanel;
 		public Canvas _prefabCanvas;
+		public Toggle _prefabToggle;
 
 		/// <summary>
 		/// 指定の VisualElement に対応する VisualElementRenderer のインスタンスを取得する。
