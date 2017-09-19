@@ -41,6 +41,10 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				return GetGameObject(target, _prefabInputField).gameObject.AddComponent<EntryRenderer>();
 			}
+			else if (IsCompatibleType(type, typeof(Editor)))
+			{
+				return GetGameObject(target, _prefabInputField).gameObject.AddComponent<EditorRenderer>();
+			}
 			else if (IsCompatibleType(type, typeof(Page)))
 			{
 				return GetGameObject(target, _prefabCanvas).AddComponent<PageRenderer>();
