@@ -20,10 +20,11 @@ This project contains source code of Xamarin.Forms 2.4.0-pre3.
 ## Try the sample
 
 1. Import "UniRx".
-2. Edit sample source code.
+2. Open "Assets/main.unity" scene file.
+3. Edit sample source code.
   * Assets/Scripts/Page1.xaml.cs
   * Assets/Scripts/SampleBindingContext.cs
-3. Run.
+4. Run.
 
 ## 新しいプロジェクトからの始め方
 
