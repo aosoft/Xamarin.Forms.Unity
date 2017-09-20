@@ -55,6 +55,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
+				UpdateToggle();
 			}
 		}
 
@@ -74,7 +75,10 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateToggle()
 		{
-			UnityComponent.isOn = Element.IsToggled;
+			if (UnityComponent != null && Element != null)
+			{
+				UnityComponent.isOn = Element.IsToggled;
+			}
 		}
 
 		#endregion
