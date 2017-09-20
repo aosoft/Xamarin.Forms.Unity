@@ -46,6 +46,10 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				return GetGameObject(target, _prefabInputField).gameObject.AddComponent<EditorRenderer>();
 			}
+			else if (IsCompatibleType(type, typeof(Switch)))
+			{
+				return GetGameObject(target, _prefabToggle).gameObject.AddComponent<SwitchRenderer>();
+			}
 			else if (IsCompatibleType(type, typeof(Page)))
 			{
 				return GetGameObject(target, _prefabCanvas).AddComponent<PageRenderer>();

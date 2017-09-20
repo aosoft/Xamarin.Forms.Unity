@@ -14,8 +14,6 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Field
 
-		TextTracker _componentText;
-
 		#endregion
 
 		/*-----------------------------------------------------------------*/
@@ -25,15 +23,25 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var Switch = UnityComponent;
-			if (Switch != null)
+			var swtch = UnityComponent;
+			if (swtch != null)
 			{
-				Switch.OnClickAsObservable()
-					.Subscribe(_ => (Element as ISwitchController)?.SendClicked())
-					.AddTo(this);
+				swtch.OnValueChangedAsObservable()
+					.Subscribe(_ =>
+					{
+						var elem = Element;
+						if (elem != null)
+						{
+							elem.IsToggled = swtch.isOn;
+						}
+					}).AddTo(this);
 			}
 
-			_componentText = new TextTracker(this.GetComponentInChildren<UnityEngine.UI.Text>());
+			var text = this.GetComponentInChildren<UnityEngine.UI.Text>();
+			if (text != null)
+			{
+				DestroyObject(text);
+			}
 		}
 
 		#endregion
@@ -47,11 +55,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
-				//_isInitiallyDefault = Element.IsDefault();
-
-				UpdateText();
-				UpdateTextColor();
-				UpdateFont();
 			}
 		}
 
@@ -79,21 +82,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 		/*-----------------------------------------------------------------*/
 		#region Internals
-
-		void UpdateText()
-		{
-			_componentText.UpdateText(Element.Text);
-		}
-
-		void UpdateTextColor()
-		{
-			_componentText.UpdateTextColor(Element.TextColor);
-		}
-
-		void UpdateFont()
-		{
-			_componentText.UpdateFont(Element);
-		}
 
 		#endregion
 	}
