@@ -7,7 +7,7 @@ using Xamarin.Forms.Internals;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-#if UNITY_2017
+#if UNITY_5 || UNITY_5_3_OR_NEWER
 #else
 
 [assembly: AssemblyTitle("Xamarin.Forms.Xaml")]

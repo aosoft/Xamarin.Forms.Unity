@@ -1,4 +1,4 @@
-#if UNITY_2017
+#if UNITY_5 || UNITY_5_3_OR_NEWER
 #else
 
 using System.Reflection;
