@@ -60,21 +60,10 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			/*
-			if (e.PropertyName == Switch.TextProperty.PropertyName)
+			if (e.PropertyName == Switch.IsToggledProperty.PropertyName)
 			{
-				UpdateText();
+				UpdateToggle();
 			}
-			else if (e.PropertyName == Switch.TextColorProperty.PropertyName)
-			{
-				UpdateTextColor();
-			}
-			else if (e.PropertyName == Switch.FontSizeProperty.PropertyName ||
-				e.PropertyName == Switch.FontAttributesProperty.PropertyName)
-			{
-				UpdateFont();
-			}
-			*/
 			base.OnElementPropertyChanged(sender, e);
 		}
 
@@ -82,6 +71,11 @@ namespace Xamarin.Forms.Platform.Unity
 
 		/*-----------------------------------------------------------------*/
 		#region Internals
+
+		void UpdateToggle()
+		{
+			UnityComponent.isOn = Element.IsToggled;
+		}
 
 		#endregion
 	}
