@@ -26,9 +26,14 @@ namespace Xamarin.Forms.Platform.Unity
 			var slider = UnityComponent;
 			if (slider != null)
 			{
-				/*slider.OnClickAsObservable()
-					.Subscribe(_ => (Element as ISliderController)?.SendClicked())
-					.AddTo(this);*/
+				slider.OnValueChangedAsObservable()
+					.Subscribe(value =>
+					{
+						if (Element != null)
+						{
+							Element.Value = value;
+						}
+					}).AddTo(this);
 			}
 		}
 
