@@ -201,6 +201,8 @@ MonoBehaviour:
     type: 2}
   _prefabText: {fileID: 114404184064878468, guid: ee3ddc11f5e084f41a6875c91a5b4339,
     type: 2}
+  _prefabSlider: {fileID: 114724796319323208, guid: c34e48404077fe143ae73b4681a98197,
+    type: 2}
   _prefabInputField: {fileID: 114317585450461346, guid: bdba72af33f86a845b4f44425e1c9736,
     type: 2}
   _prefabPanel: {fileID: 0}

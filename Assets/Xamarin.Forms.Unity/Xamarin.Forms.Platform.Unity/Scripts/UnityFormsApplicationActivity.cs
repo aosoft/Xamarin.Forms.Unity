@@ -14,7 +14,7 @@ namespace Xamarin.Forms.Platform.Unity
 	{
 		public UnityEngine.UI.Button _prefabButton;
 		public Text _prefabText;
-		public Slider _prefbSlider;
+		public UnityEngine.UI.Slider _prefabSlider;
 		public InputField _prefabInputField;
 		public CanvasRenderer _prefabPanel;
 		public Canvas _prefabCanvas;
@@ -49,6 +49,10 @@ namespace Xamarin.Forms.Platform.Unity
 			else if (IsCompatibleType(type, typeof(Switch)))
 			{
 				return GetGameObject(target, _prefabToggle).gameObject.AddComponent<SwitchRenderer>();
+			}
+			else if (IsCompatibleType(type, typeof(Slider)))
+			{
+				return GetGameObject(target, _prefabSlider).gameObject.AddComponent<SliderRenderer>();
 			}
 			else if (IsCompatibleType(type, typeof(Page)))
 			{
