@@ -18,7 +18,6 @@ namespace Xamarin.Forms.Platform.Unity
 		#region Field
 
 		VisualElementTracker<TElement, TNativeElement> _tracker;
-		TNativeElement _component;
 
 		protected RectTransform _rectTransform;
 
@@ -34,6 +33,7 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				_rectTransform = this.gameObject.AddComponent<RectTransform>();
 			}
+			UnityComponent = GetComponent<TNativeElement>();
 		}
 
 		#endregion
@@ -43,17 +43,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElementPackager Packager { get; set; }
 
-		public TNativeElement UnityComponent
-		{
-			get
-			{
-				if (_component == null)
-				{
-					_component = GetComponent<TNativeElement>();
-				}
-				return _component;
-			}
-		}
+		public TNativeElement UnityComponent { get; private set; }
 
 		public TElement Element { get; private set; }
 
