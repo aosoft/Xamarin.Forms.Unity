@@ -52,10 +52,13 @@ public class SampleBindingContext
 			rb.useGravity = true;
 
 			Counter.Value++;
+
+			DoubleValue.Value = _rnd.NextDouble();
 		}).AddTo(disposer);
 		InstantiateCommand = cmd;
 
 		Counter = new InternalReactiveProperty<int>(disposer);
+		DoubleValue = new InternalReactiveProperty<double>(disposer);
 	}
 
 
@@ -65,6 +68,11 @@ public class SampleBindingContext
 	}
 
 	public ReactiveProperty<int> Counter
+	{
+		get;
+	}
+
+	public ReactiveProperty<double> DoubleValue
 	{
 		get;
 	}

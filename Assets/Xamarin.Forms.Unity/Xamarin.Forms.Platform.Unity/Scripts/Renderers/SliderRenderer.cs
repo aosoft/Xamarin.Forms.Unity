@@ -35,6 +35,26 @@ namespace Xamarin.Forms.Platform.Unity
 							Element.Value = value;
 						}
 					}).AddTo(this);
+
+				slider.ObserveEveryValueChanged(x => x.minValue)
+					.BlockReenter()
+					.Subscribe(value =>
+					{
+						if (Element != null)
+						{
+							Element.Minimum = value;
+						}
+					}).AddTo(this);
+
+				slider.ObserveEveryValueChanged(x => x.maxValue)
+					.BlockReenter()
+					.Subscribe(value =>
+					{
+						if (Element != null)
+						{
+							Element.Maximum = value;
+						}
+					}).AddTo(this);
 			}
 		}
 
@@ -49,12 +69,18 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
+				UpdateValue();
 			}
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-
+			if (e.PropertyName == Slider.ValueProperty.PropertyName)
+				UpdateValue();
+			else if (e.PropertyName == Slider.MinimumProperty.PropertyName)
+				UpdateMinimum();
+			else if (e.PropertyName == Slider.MaximumProperty.PropertyName)
+				UpdateMaximum();
 			base.OnElementPropertyChanged(sender, e);
 		}
 
@@ -63,6 +89,29 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Internals
 
+		void UpdateValue()
+		{
+			if (UnityComponent != null && Element != null)
+			{
+				UnityComponent.value = (float)Element.Value;
+			}
+		}
+
+		void UpdateMinimum()
+		{
+			if (UnityComponent != null && Element != null)
+			{
+				UnityComponent.minValue = (float)Element.Minimum;
+			}
+		}
+
+		void UpdateMaximum()
+		{
+			if (UnityComponent != null && Element != null)
+			{
+				UnityComponent.maxValue = (float)Element.Maximum;
+			}
+		}
 
 		#endregion
 	}
