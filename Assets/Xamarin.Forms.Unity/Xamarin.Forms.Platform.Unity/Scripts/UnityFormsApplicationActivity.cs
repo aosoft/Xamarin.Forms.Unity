@@ -13,12 +13,13 @@ namespace Xamarin.Forms.Platform.Unity
 	public abstract class UnityFormsApplicationActivity : MonoBehaviour
 	{
 		public UnityEngine.UI.Button _prefabButton;
-		public Text _prefabText;
+		public UnityEngine.UI.Text _prefabText;
 		public UnityEngine.UI.Slider _prefabSlider;
-		public InputField _prefabInputField;
-		public CanvasRenderer _prefabPanel;
-		public Canvas _prefabCanvas;
-		public Toggle _prefabToggle;
+		public UnityEngine.UI.InputField _prefabInputField;
+		public UnityEngine.CanvasRenderer _prefabPanel;
+		public UnityEngine.Canvas _prefabCanvas;
+		public UnityEngine.UI.Toggle _prefabToggle;
+		public UnityEngine.UI.Dropdown _prefabDropdown; 
 
 		/// <summary>
 		/// 指定の VisualElement に対応する VisualElementRenderer のインスタンスを取得する。
@@ -53,6 +54,10 @@ namespace Xamarin.Forms.Platform.Unity
 			else if (IsCompatibleType(type, typeof(Slider)))
 			{
 				return GetGameObject(target, _prefabSlider).gameObject.AddComponent<SliderRenderer>();
+			}
+			else if (IsCompatibleType(type, typeof(Picker)))
+			{
+				return GetGameObject(target, _prefabDropdown).gameObject.AddComponent<PickerRenderer>();
 			}
 			else if (IsCompatibleType(type, typeof(Page)))
 			{

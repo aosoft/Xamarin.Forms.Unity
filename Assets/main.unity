@@ -210,6 +210,8 @@ MonoBehaviour:
     type: 2}
   _prefabToggle: {fileID: 114025503760307272, guid: a8b6f97e3b1110744baea51bcc4d4faf,
     type: 2}
+  _prefabDropdown: {fileID: 114517079786998456, guid: 038e3b4c20c2f8643904eda99da5ef8d,
+    type: 2}
   _xamarinFormsPlatformCanvas: {fileID: 1376985421}
 --- !u!4 &94843455
 Transform:
