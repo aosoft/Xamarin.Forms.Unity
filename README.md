@@ -26,6 +26,13 @@ This project contains source code of Xamarin.Forms 2.4.0-pre3.
   * Assets/Scripts/SampleBindingContext.cs
 4. Run.
 
+## Knwon Issues
+
+* NavigationPage is not implemented in the current version.
+* Custom Renderers is not supported in the current version.  
+  (Please apply the design with the component of Prefab.)
+* Standard Renderers are under development.
+
 ## 新しいプロジェクトからの始め方
 
 1. 新規に Unity Project を作成する。
