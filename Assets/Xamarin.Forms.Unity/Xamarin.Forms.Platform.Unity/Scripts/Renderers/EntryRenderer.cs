@@ -28,14 +28,16 @@ namespace Xamarin.Forms.Platform.Unity
 			if (inputField != null)
 			{
 				inputField.lineType = UnityEngine.UI.InputField.LineType.SingleLine;
-				inputField.OnValueChangedAsObservable().Subscribe(value =>
-				{
-					var element = Element;
-					if (element != null && element.Text != value)
+				inputField.OnValueChangedAsObservable()
+					.BlockReenter()
+					.Subscribe(value =>
 					{
-						element.Text = value;
-					}
-				}).AddTo(this);
+						var element = Element;
+						if (element != null)
+						{
+							element.Text = value;
+						}
+					}).AddTo(this);
 
 				_componentText = new TextTracker(inputField.textComponent);
 			}

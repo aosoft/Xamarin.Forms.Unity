@@ -1,4 +1,5 @@
-﻿
+﻿using UniRx;
+
 namespace Xamarin.Forms.Platform.Unity
 {
 	static public class Extensions
@@ -29,6 +30,29 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			return mode == LineBreakMode.CharacterWrap || mode == LineBreakMode.WordWrap ?
 					UnityEngine.HorizontalWrapMode.Wrap : UnityEngine.HorizontalWrapMode.Overflow;
+		}
+
+		static public IObservable<T> BlockReenter<T>(this IObservable<T> self)
+		{
+			return Observable.Create<T>(observer =>
+			{
+				bool entered = false;
+				return self.Subscribe(value =>
+				{
+					if (!entered)
+					{
+						entered = true;
+						try
+						{
+							observer.OnNext(value);
+						}
+						finally
+						{
+							entered = false;
+						}
+					}
+				});
+			});
 		}
 	}
 }

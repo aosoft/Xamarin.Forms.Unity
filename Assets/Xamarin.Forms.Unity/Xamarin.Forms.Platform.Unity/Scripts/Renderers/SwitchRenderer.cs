@@ -27,6 +27,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (swtch != null)
 			{
 				swtch.OnValueChangedAsObservable()
+					.BlockReenter()
 					.Subscribe(_ =>
 					{
 						var elem = Element;

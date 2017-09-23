@@ -27,6 +27,7 @@ namespace Xamarin.Forms.Platform.Unity
 			if (slider != null)
 			{
 				slider.OnValueChangedAsObservable()
+					.BlockReenter()
 					.Subscribe(value =>
 					{
 						if (Element != null)
