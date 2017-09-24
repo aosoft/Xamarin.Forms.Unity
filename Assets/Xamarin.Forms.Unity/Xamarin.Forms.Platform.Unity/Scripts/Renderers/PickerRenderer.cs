@@ -28,11 +28,17 @@ namespace Xamarin.Forms.Platform.Unity
 			var picker = UnityComponent;
 			if (picker != null)
 			{
-				/*picker.OnClickAsObservable()
-					.Subscribe(_ =>
+				picker.onValueChanged.AsObservable()
+					.BlockReenter()
+					.Subscribe(value =>
 					{
-					})
-					.AddTo(this);*/
+						var elem = Element;
+						if (elem != null)
+						{
+							elem.SelectedIndex = value;
+						}
+					}).AddTo(this);
+
 			}
 
 			_componentText = new TextTracker(this.GetComponentInChildren<UnityEngine.UI.Text>());
@@ -49,13 +55,19 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
+				UnityComponent.options = CreateOptionDatas(e.NewElement.Items);
+
 				UpdateTextColor();
 			}
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Picker.TextColorProperty.PropertyName)
+			if (e.PropertyName == Picker.SelectedItemProperty.PropertyName)
+			{
+				UpdateSelectedIndex();
+			}
+			else if (e.PropertyName == Picker.TextColorProperty.PropertyName)
 			{
 				UpdateTextColor();
 			}
@@ -68,9 +80,32 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Internals
 
-		void UpdateTextColor()
+		void UpdateSelectedIndex()
+		{
+			if (UnityComponent != null && Element != null)
+			{
+				UnityComponent.value = Element.SelectedIndex; 
+			}
+		}
+
+			void UpdateTextColor()
 		{
 			_componentText.UpdateTextColor(Element.TextColor);
+		}
+
+		static List<UnityEngine.UI.Dropdown.OptionData> CreateOptionDatas(IList<string> source)
+		{
+			if (source != null)
+			{
+				int count = source.Count;
+				var ret = new List<UnityEngine.UI.Dropdown.OptionData>(count);
+				for (int i = 0; i < count; i++)
+				{
+					ret.Add(new UnityEngine.UI.Dropdown.OptionData(source[i]));
+				}
+				return ret;
+			}
+			return null;
 		}
 
 		#endregion

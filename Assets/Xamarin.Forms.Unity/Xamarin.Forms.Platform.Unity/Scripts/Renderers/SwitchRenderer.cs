@@ -28,12 +28,12 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				swtch.OnValueChangedAsObservable()
 					.BlockReenter()
-					.Subscribe(_ =>
+					.Subscribe(value =>
 					{
 						var elem = Element;
 						if (elem != null)
 						{
-							elem.IsToggled = swtch.isOn;
+							elem.IsToggled = value;
 						}
 					}).AddTo(this);
 			}
