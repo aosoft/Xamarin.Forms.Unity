@@ -1,4 +1,5 @@
 ﻿using UniRx;
+using System.Collections.Specialized;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -53,6 +54,28 @@ namespace Xamarin.Forms.Platform.Unity
 					}
 				});
 			});
+		}
+
+		static public bool AddCollectionChangedEvent(this System.Collections.IEnumerable coll, NotifyCollectionChangedEventHandler handler)
+		{
+			var cc = coll as INotifyCollectionChanged;
+			if (cc != null)
+			{
+				cc.CollectionChanged += handler;
+				return true;
+			}
+			return false;
+		}
+
+		static public bool RemoveCollectionChangedEvent(this System.Collections.IEnumerable coll, NotifyCollectionChangedEventHandler handler)
+		{
+			var cc = coll as INotifyCollectionChanged;
+			if (cc != null)
+			{
+				cc.CollectionChanged -= handler;
+				return true;
+			}
+			return false;
 		}
 	}
 }

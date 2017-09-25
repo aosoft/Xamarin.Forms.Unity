@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UniRx;
 using System.ComponentModel;
+using UnityEngine.EventSystems;
+using System.Collections.Specialized;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class PickerRenderer : ViewRenderer<Picker, UnityEngine.UI.Dropdown>
+	public class PickerRenderer : ViewRenderer<Picker, UnityEngine.UI.Dropdown>, IPointerClickHandler
 	{
 		/*-----------------------------------------------------------------*/
 		#region Field
 
-		TextTracker _componentText;
+		bool _requiredUpdateOptions;
 
 		#endregion
 
@@ -24,6 +26,8 @@ namespace Xamarin.Forms.Platform.Unity
 		protected override void Awake()
 		{
 			base.Awake();
+
+			_requiredUpdateOptions = false;
 
 			var picker = UnityComponent;
 			if (picker != null)
@@ -40,8 +44,6 @@ namespace Xamarin.Forms.Platform.Unity
 					}).AddTo(this);
 
 			}
-
-			_componentText = new TextTracker(this.GetComponentInChildren<UnityEngine.UI.Text>());
 		}
 
 		#endregion
@@ -53,10 +55,17 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.OnElementChanged(e);
 
+			if (e.OldElement != null)
+			{
+				e.OldElement.Items.RemoveCollectionChangedEvent(OnCollectionChanged);
+			}
 			if (e.NewElement != null)
 			{
+				e.NewElement.Items.AddCollectionChangedEvent(OnCollectionChanged);
+
 				UnityComponent.options = CreateOptionDatas(e.NewElement.Items);
 
+				UpdatePicker();
 				UpdateTextColor();
 			}
 		}
@@ -88,9 +97,41 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
-			void UpdateTextColor()
+		void UpdateTextColor()
 		{
-			_componentText.UpdateTextColor(Element.TextColor);
+			var text = UnityComponent?.captionText;
+			if (text != null && Element != null)
+			{
+				text.color = Element.TextColor.ToUnityColor();
+			}
+		}
+
+		void UpdatePicker()
+		{
+			_requiredUpdateOptions = true;
+
+			var element = Element;
+			if (element != null)
+			{
+				var text = UnityComponent?.captionText;
+				if (text != null)
+				{
+					var index = element.SelectedIndex;
+					if (index < 0 || index >= element.Items.Count)
+					{
+						text.text = string.Empty;
+					}
+					else
+					{
+						text.text = element.Items[index];
+					}
+				}
+			}
+		}
+
+		void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			UpdatePicker();
 		}
 
 		static List<UnityEngine.UI.Dropdown.OptionData> CreateOptionDatas(IList<string> source)
@@ -106,6 +147,19 @@ namespace Xamarin.Forms.Platform.Unity
 				return ret;
 			}
 			return null;
+		}
+
+		void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+		{
+			var picker = UnityComponent;
+			var element = Element;
+			if (_requiredUpdateOptions && element != null && picker != null)
+			{
+				var index = picker.value;
+				picker.options = CreateOptionDatas(Element.Items);
+				element.SelectedIndex = index;
+				picker.value = index;
+			}
 		}
 
 		#endregion
