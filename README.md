@@ -26,7 +26,7 @@ This project contains source code of Xamarin.Forms 2.4.0-pre3.
   * Assets/Scripts/SampleBindingContext.cs
 4. Run.
 
-## Knwon Issues
+## Known Issues
 
 * XAML Loader does not work with WebGL Build. (maybe due to Unity (2017.1.1f1))
 * NavigationPage is not implemented in the current version.

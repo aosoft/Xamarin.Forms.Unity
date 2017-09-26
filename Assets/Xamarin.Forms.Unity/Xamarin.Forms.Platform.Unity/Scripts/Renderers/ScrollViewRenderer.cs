@@ -27,6 +27,13 @@ namespace Xamarin.Forms.Platform.Unity
 		#endregion
 
 		/*-----------------------------------------------------------------*/
+		#region IVisualElementRenderer
+
+		public override Transform UnityContainerTransform => UnityComponent?.content?.transform;
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
 		#region Event Handler
 
 		protected override void OnElementChanged(ElementChangedEventArgs<ScrollView> e)

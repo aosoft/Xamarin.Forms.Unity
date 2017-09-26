@@ -120,7 +120,7 @@ namespace Xamarin.Forms.Platform.Unity
 				Windows.UI.Xaml.Controls.Grid.SetColumnSpan(childRenderer.Component, _columnSpan);
 			*/
 
-			childRenderer.UnityComponent.transform.SetParent(_component.transform);
+			childRenderer.UnityComponent.transform.SetParent(_renderer.UnityContainerTransform);
 
 			EnsureZIndex();
 		}

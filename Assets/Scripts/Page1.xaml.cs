@@ -47,6 +47,16 @@ public partial class Page1 : ContentPage
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
 
+		var sv = new ScrollView();
+		grid.Children.Add(sv, 0, 0);
+		var gridsv = new Grid();
+		for (int i = 0; i < 100; i++)
+		{
+			gridsv.RowDefinitions.Add(new RowDefinition { Height = 24 });
+			gridsv.Children.Add(new Label { Text = string.Format("Label {0}", i), FontSize = 20 }, 0, i);
+		}
+		sv.Content = gridsv;
+
 		{
 			var grid2 = new Grid();
 			grid2.ColumnDefinitions.Add(new ColumnDefinition());

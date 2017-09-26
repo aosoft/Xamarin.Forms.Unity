@@ -56,6 +56,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		UnityEngine.Component IVisualElementRenderer.UnityComponent => this.UnityComponent;
 
+		public virtual Transform UnityContainerTransform => UnityComponent?.transform;
+
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
 		public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
