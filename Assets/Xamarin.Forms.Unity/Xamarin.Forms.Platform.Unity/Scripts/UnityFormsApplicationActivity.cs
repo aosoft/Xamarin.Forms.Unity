@@ -19,7 +19,8 @@ namespace Xamarin.Forms.Platform.Unity
 		public UnityEngine.CanvasRenderer _prefabPanel;
 		public UnityEngine.Canvas _prefabCanvas;
 		public UnityEngine.UI.Toggle _prefabToggle;
-		public UnityEngine.UI.Dropdown _prefabDropdown; 
+		public UnityEngine.UI.Dropdown _prefabDropdown;
+		public UnityEngine.UI.ScrollRect _prefabScrollView;
 
 		/// <summary>
 		/// 指定の VisualElement に対応する VisualElementRenderer のインスタンスを取得する。
@@ -58,6 +59,10 @@ namespace Xamarin.Forms.Platform.Unity
 			else if (IsCompatibleType(type, typeof(Picker)))
 			{
 				return GetGameObject(target, _prefabDropdown).gameObject.AddComponent<PickerRenderer>();
+			}
+			else if (IsCompatibleType(type, typeof(ScrollView)))
+			{
+				return GetGameObject(target, _prefabScrollView).AddComponent<ScrollViewRenderer>();
 			}
 			else if (IsCompatibleType(type, typeof(Page)))
 			{
