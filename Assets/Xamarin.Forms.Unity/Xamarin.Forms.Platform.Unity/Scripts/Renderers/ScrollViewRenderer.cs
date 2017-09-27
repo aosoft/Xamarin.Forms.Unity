@@ -29,7 +29,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region IVisualElementRenderer
 
-		public override Transform UnityContainerTransform => UnityComponent?.content?.transform;
+		public override Transform UnityContainerTransform => UnityComponent?.content;
 
 		#endregion
 
@@ -42,11 +42,22 @@ namespace Xamarin.Forms.Platform.Unity
 
 			if (e.NewElement != null)
 			{
+				UpdateOrientation();
+				UpdateContentSize();
 			}
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			if (e.PropertyName == ScrollView.OrientationProperty.PropertyName)
+			{
+				UpdateOrientation();
+			}
+			else if (e.PropertyName == ScrollView.ContentSizeProperty.PropertyName)
+			{
+				UpdateContentSize();
+			}
+
 			base.OnElementPropertyChanged(sender, e);
 		}
 
@@ -55,6 +66,56 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Internals
 
+		void UpdateOrientation()
+		{
+			var element = Element;
+			var scroll = UnityComponent;
+			if (element != null)
+			{
+				switch (element.Orientation)
+				{
+					case ScrollOrientation.Vertical:
+						{
+							scroll.horizontal = false;
+							scroll.vertical = true;
+						}
+						break;
+
+					case ScrollOrientation.Horizontal:
+						{
+							scroll.horizontal = true;
+							scroll.vertical = false;
+						}
+						break;
+
+					case ScrollOrientation.Both:
+						{
+							scroll.horizontal = true;
+							scroll.vertical = true;
+						}
+						break;
+				}
+			}
+		}
+
+		void UpdateContentSize()
+		{
+			var element = Element;
+			var content = UnityComponent?.content;
+			if (element != null && content != null)
+			{
+				var size = element.ContentSize;
+
+				var pivot = content.pivot;
+				content.anchorMin = new Vector2();
+				content.anchorMax = new Vector2();
+				content.anchoredPosition =
+					new Vector2(
+						(float)(size.Width * pivot.x),
+						(float)(size.Height * pivot.y));
+				content.sizeDelta = new Vector2((float)size.Width, (float)size.Height);
+			}
+		}
 
 		#endregion
 	}
