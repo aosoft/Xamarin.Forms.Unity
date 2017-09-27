@@ -77,17 +77,18 @@ namespace Xamarin.Forms.Platform.Unity
 			var size = new Vector2((float)view.Width, (float)view.Height);
 
 			//	サイズ不定時のみ、一応 Unity の Layout System にのる
-			var anchorMax = new Vector2(size.x < 0.0f ? 1.0f : 0.0f, size.y < 0.0f ? 1.0f : 0.0f);
+			var anchorMin = new Vector2(                       0.0f, size.y < 0.0f ? 0.0f : 1.0f);
+			var anchorMax = new Vector2(size.x < 0.0f ? 1.0f : 0.0f,                        1.0f);
 			size = new Vector2(Mathf.Max(size.x, 0.0f), Mathf.Max(size.y, 0.0f));
 
 			var pivot = _rectTransform.pivot;
 
-			_rectTransform.anchorMin = new Vector2();
+			_rectTransform.anchorMin = anchorMin;
 			_rectTransform.anchorMax = anchorMax;
 			_rectTransform.anchoredPosition =
 				new Vector2(
-					position.x + size.x * pivot.x,
-					parentHeight - (position.y + size.y * pivot.y));
+					 position.x + size.x * pivot.x,
+					-position.y + (parentHeight - size.y) * pivot.y);
 			_rectTransform.sizeDelta = size;
 		}
 
