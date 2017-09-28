@@ -9,8 +9,8 @@ Copyright (c) .NET Foundation Contributors
 
 ## About
 
-Xamarin.Forms Platform implementation for Unity Game Engine.  
-This project contains source code of Xamarin.Forms 2.4.0-pre3.
+Xamarin.Forms Platform implementation for Unity Game Engine (Unity3D).  
+This project contains source code of Xamarin.Forms 2.4.0.
 
 ## Requirements
 
