@@ -17,7 +17,13 @@ namespace Xamarin.Forms.Platform.Unity
 		Component UnityComponent { get; }
 
 		/// <summary>
+		/// Unity 側の RectTransform コンポーネント
+		/// </summary>
+		RectTransform UnityRectTransform { get; }
+
+		/// <summary>
 		/// Unity Component (GameObject) の親となるコンテナ。
+		/// 子はこの Transform を SetParent する。
 		/// 通常は UnityComponent.transform 。
 		/// </summary>
 		Transform UnityContainerTransform { get; }
@@ -27,5 +33,12 @@ namespace Xamarin.Forms.Platform.Unity
 		SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint);
 
 		void SetElement(VisualElement element);
+
+		/// <summary>
+		/// 自身をベースとした指定の VisualElementRenderer の AnchorPoint を取得する。
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <returns></returns>
+		Vector2 GetChildAnchorPoint(IVisualElementRenderer child);
 	}
 }

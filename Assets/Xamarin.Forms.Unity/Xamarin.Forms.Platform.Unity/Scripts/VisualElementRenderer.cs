@@ -58,6 +58,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public virtual Transform UnityContainerTransform => UnityComponent?.transform;
 
+		public RectTransform UnityRectTransform => _rectTransform;
+
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
 		public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
@@ -119,6 +121,26 @@ namespace Xamarin.Forms.Platform.Unity
 				controller.EffectControlProvider = this;
 		}
 
+		public virtual Vector2 GetChildAnchorPoint(IVisualElementRenderer child)
+		{
+			var ap = GetAnchorPoint();
+			var parentElement = this.Element;
+			if (parentElement == null)
+			{
+				return ap;
+			}
+
+			var element = child.Element;
+
+			if (element == null || child == null)
+			{
+				return new Vector2();
+			}
+
+			var parentHeight = Mathf.Max((float)parentElement.Height, 0.0f);
+			return new Vector2(ap.x, parentHeight - ap.y);
+		}
+
 		#endregion
 
 		/*-----------------------------------------------------------------*/
@@ -159,6 +181,21 @@ namespace Xamarin.Forms.Platform.Unity
 					UpdateTracker();
 				}
 			}
+		}
+
+		protected Vector2 GetAnchorPoint()
+		{
+			var element = Element;
+			if (element == null)
+			{
+				return new Vector2();
+			}
+
+			var position = new Vector2((float)element.X, (float)element.Y);
+			var size = new Vector2(Mathf.Max((float)element.Width, 0.0f), Mathf.Max((float)element.Height, 0.0f));
+			var pivot = (_rectTransform?.pivot).GetValueOrDefault();
+
+			return new Vector2(position.x + size.x * pivot.x, position.y + size.y * pivot.y);
 		}
 
 		protected virtual void UpdateBackgroundColor()
