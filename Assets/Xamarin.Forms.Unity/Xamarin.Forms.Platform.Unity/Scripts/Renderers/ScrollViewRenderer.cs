@@ -107,10 +107,10 @@ namespace Xamarin.Forms.Platform.Unity
 				var size = element.ContentSize;
 
 				var pivot = content.pivot;
-				content.anchorMin = new Vector2(0.0f, 1.0f);
-				content.anchorMax = new Vector2(1.0f, 1.0f);
+				content.anchorMin = new Vector2();
+				content.anchorMax = new Vector2();
 				content.anchoredPosition = new Vector2();
-				content.pivot = new Vector2(0.0f, 1.0f);
+				content.pivot = new Vector2();
 				content.sizeDelta = new Vector2((float)size.Width, (float)size.Height);
 			}
 		}
