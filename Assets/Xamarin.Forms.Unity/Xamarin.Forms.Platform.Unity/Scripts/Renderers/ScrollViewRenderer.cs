@@ -31,6 +31,17 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public override Transform UnityContainerTransform => UnityComponent?.content;
 
+		public override Vector2 GetChildAnchorPoint(IVisualElementRenderer child)
+		{
+			if (child == null)
+			{
+				return new Vector2();
+			}
+
+			//	ScrollView の content に入れる子は親からの補正は不要
+			return child.GetAnchorPoint();
+		}
+
 		#endregion
 
 		/*-----------------------------------------------------------------*/

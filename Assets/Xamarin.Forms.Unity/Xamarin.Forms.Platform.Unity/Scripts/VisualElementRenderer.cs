@@ -150,7 +150,6 @@ namespace Xamarin.Forms.Platform.Unity
 				return ap;
 			}
 
-
 			var parentHeight = Mathf.Max((float)parentElement.Height, 0.0f);
 			return new Vector2(ap.x, parentHeight - ap.y);
 		}
