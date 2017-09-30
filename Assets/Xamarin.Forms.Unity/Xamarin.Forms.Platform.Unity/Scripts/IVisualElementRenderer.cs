@@ -34,6 +34,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void SetElement(VisualElement element);
 
+		Vector2 GetAnchorPoint();
+
 		/// <summary>
 		/// 自身をベースとした指定の VisualElementRenderer の AnchorPoint を取得する。
 		/// </summary>
