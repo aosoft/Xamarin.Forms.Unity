@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms.Internals;
 using UnityEngine;
+using UniRx;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -22,6 +23,41 @@ namespace Xamarin.Forms.Platform.Unity
 		protected override void Awake()
 		{
 			base.Awake();
+
+			var scrollRect = UnityComponent;
+			if (scrollRect != null)
+			{
+				var vbar = scrollRect.verticalScrollbar;
+				var hbar = scrollRect.horizontalScrollbar;
+
+				vbar?.OnValueChangedAsObservable()
+					.BlockReenter()
+					.Subscribe(value =>
+					{
+						var element = Element;
+						if (element != null)
+						{
+							var y = (1.0 - value) * element.ContentSize.Height;
+							element.SetScrolledPosition(element.ScrollX, y);
+
+							Debug.Log(string.Format("Unity: vbar={0} -> XF: ScollView.SetScrolledPosition({1}, {2})", value, element.ScrollX, y));
+						}
+					});
+
+				hbar?.OnValueChangedAsObservable()
+					.BlockReenter()
+					.Subscribe(value =>
+					{
+						var element = Element;
+						if (element != null)
+						{
+							var x = (1.0 - value) * element.ContentSize.Width;
+							element.SetScrolledPosition(x, element.ScrollY);
+
+							Debug.Log(string.Format("Unity: hbar={0} -> XF: ScollView.SetScrolledPosition({1}, {2})", value, x, element.ScrollY));
+						}
+					});
+			}
 		}
 
 		#endregion
@@ -63,6 +99,14 @@ namespace Xamarin.Forms.Platform.Unity
 			if (e.PropertyName == ScrollView.OrientationProperty.PropertyName)
 			{
 				UpdateOrientation();
+			}
+			else if (e.PropertyName == ScrollView.ScrollXProperty.PropertyName)
+			{
+				UpdateScrollXPosition();
+			}
+			else if (e.PropertyName == ScrollView.ScrollYProperty.PropertyName)
+			{
+				UpdateScrollYPosition();
 			}
 			else if (e.PropertyName == ScrollView.ContentSizeProperty.PropertyName)
 			{
@@ -109,6 +153,38 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
+		void UpdateScrollXPosition()
+		{
+			var element = Element;
+			var hbar = UnityComponent?.horizontalScrollbar;
+
+			if (element != null && hbar != null)
+			{
+				var size = element.ContentSize;
+				if (size.Width > 0.0)
+				{
+					hbar.value = (float)(1.0f - element.ScrollX / size.Width);
+					Debug.Log(string.Format("XF: {0} -> Unity: hbar.value = {1}", element.ScrollX, hbar.value));
+				}
+			}
+		}
+
+		void UpdateScrollYPosition()
+		{
+			var element = Element;
+			var vbar = UnityComponent?.verticalScrollbar;
+
+			if (element != null && vbar != null)
+			{
+				var size = element.ContentSize;
+				if (size.Height > 0.0)
+				{
+					vbar.value = (float)(1.0f - element.ScrollY / size.Height);
+					Debug.Log(string.Format("XF: {0} -> Unity: vbar.value = {1}", element.ScrollY, vbar.value));
+				}
+			}
+		}
+
 		void UpdateContentSize()
 		{
 			var element = Element;
@@ -124,6 +200,8 @@ namespace Xamarin.Forms.Platform.Unity
 				content.pivot = new Vector2();
 				content.sizeDelta = new Vector2((float)size.Width, (float)size.Height);
 			}
+			UpdateScrollXPosition();
+			UpdateScrollYPosition();
 		}
 
 		#endregion
