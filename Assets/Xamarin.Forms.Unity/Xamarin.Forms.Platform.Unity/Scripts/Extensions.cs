@@ -33,23 +33,29 @@ namespace Xamarin.Forms.Platform.Unity
 					UnityEngine.HorizontalWrapMode.Wrap : UnityEngine.HorizontalWrapMode.Overflow;
 		}
 
+		class EnterState
+		{
+			public bool Entered { get; set; }
+		}
+
 		static public IObservable<T> BlockReenter<T>(this IObservable<T> self)
 		{
 			return Observable.Create<T>(observer =>
 			{
-				bool entered = false;
+				var entered = new EnterState { Entered = false };
 				return self.Subscribe(value =>
 				{
-					if (!entered)
+					//UnityEngine.Debug.Log(string.Format("BlockReenter: {0}, {1}", entered.GetHashCode(), entered.Entered));
+					if (!entered.Entered)
 					{
-						entered = true;
+						entered.Entered = true;
 						try
 						{
 							observer.OnNext(value);
 						}
 						finally
 						{
-							entered = false;
+							entered.Entered = false;
 						}
 					}
 				});
