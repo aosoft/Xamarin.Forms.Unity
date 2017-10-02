@@ -40,7 +40,7 @@ namespace Xamarin.Forms.Platform.Unity
 							var y = (1.0 - value) * element.ContentSize.Height;
 							element.SetScrolledPosition(element.ScrollX, y);
 
-							Debug.Log(string.Format("Unity: vbar={0} -> XF: ScollView.SetScrolledPosition({1}, {2})", value, element.ScrollX, y));
+							//Debug.Log(string.Format("Unity: vbar={0} -> XF: ScollView.SetScrolledPosition({1}, {2})", value, element.ScrollX, y));
 						}
 					});
 
@@ -54,7 +54,7 @@ namespace Xamarin.Forms.Platform.Unity
 							var x = (1.0 - value) * element.ContentSize.Width;
 							element.SetScrolledPosition(x, element.ScrollY);
 
-							Debug.Log(string.Format("Unity: hbar={0} -> XF: ScollView.SetScrolledPosition({1}, {2})", value, x, element.ScrollY));
+							//Debug.Log(string.Format("Unity: hbar={0} -> XF: ScollView.SetScrolledPosition({1}, {2})", value, x, element.ScrollY));
 						}
 					});
 			}
@@ -164,7 +164,7 @@ namespace Xamarin.Forms.Platform.Unity
 				if (size.Width > 0.0)
 				{
 					hbar.value = (float)(1.0f - element.ScrollX / size.Width);
-					Debug.Log(string.Format("XF: {0} -> Unity: hbar.value = {1}", element.ScrollX, hbar.value));
+					//Debug.Log(string.Format("XF: {0} -> Unity: hbar.value = {1}", element.ScrollX, hbar.value));
 				}
 			}
 		}
@@ -180,7 +180,7 @@ namespace Xamarin.Forms.Platform.Unity
 				if (size.Height > 0.0)
 				{
 					vbar.value = (float)(1.0f - element.ScrollY / size.Height);
-					Debug.Log(string.Format("XF: {0} -> Unity: vbar.value = {1}", element.ScrollY, vbar.value));
+					//Debug.Log(string.Format("XF: {0} -> Unity: vbar.value = {1}", element.ScrollY, vbar.value));
 				}
 			}
 		}
@@ -188,20 +188,36 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateContentSize()
 		{
 			var element = Element;
-			var content = UnityComponent?.content;
-			if (element != null && content != null)
+			var scrollRect = UnityComponent;
+			if (element == null || scrollRect == null)
+			{
+				return;
+			}
+			var content = scrollRect.content;
+			var vbar = scrollRect.verticalScrollbar;
+			var hbar = scrollRect.horizontalScrollbar;
+			if (content != null)
 			{
 				var size = element.ContentSize;
+				var x = element.ScrollX;
+				var y = element.ScrollY;
 
 				var pivot = content.pivot;
 				content.anchorMin = new Vector2();
 				content.anchorMax = new Vector2();
 				content.anchoredPosition = new Vector2();
 				content.pivot = new Vector2();
+
 				content.sizeDelta = new Vector2((float)size.Width, (float)size.Height);
+				if (size.Width > 0.0 && hbar != null)
+				{
+					hbar.value = (float)(1.0f - x / size.Width);
+				}
+				if (size.Height > 0.0 && vbar != null)
+				{
+					vbar.value = (float)(1.0f - y / size.Height);
+				}
 			}
-			UpdateScrollXPosition();
-			UpdateScrollYPosition();
 		}
 
 		#endregion
