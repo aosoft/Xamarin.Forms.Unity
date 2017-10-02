@@ -45,7 +45,7 @@ namespace Xamarin.Forms.Platform.Unity
 				var entered = new EnterState { Entered = false };
 				return self.Subscribe(value =>
 				{
-					UnityEngine.Debug.Log(string.Format("BlockReenter: {0}, {1}", entered.GetHashCode(), entered.Entered));
+					//UnityEngine.Debug.Log(string.Format("BlockReenter: {0}, {1}", entered.GetHashCode(), entered.Entered));
 					if (!entered.Entered)
 					{
 						entered.Entered = true;

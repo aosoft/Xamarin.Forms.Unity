@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms.Internals;
 using UnityEngine;
 using UniRx;
+using UniRx.Triggers;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -209,14 +210,40 @@ namespace Xamarin.Forms.Platform.Unity
 				content.pivot = new Vector2();
 
 				content.sizeDelta = new Vector2((float)size.Width, (float)size.Height);
-				if (size.Width > 0.0 && hbar != null)
+				float w = 0.0f;
+				float h = 0.0f;
+				if (size.Width > 0.0)
 				{
-					hbar.value = (float)(1.0f - x / size.Width);
+					w = (float)(1.0f - x / size.Width);
+				}
+				else
+				{
+					hbar = null;
 				}
 				if (size.Height > 0.0 && vbar != null)
 				{
-					vbar.value = (float)(1.0f - y / size.Height);
+					h = (float)(1.0f - y / size.Height);
 				}
+				else
+				{
+					vbar = null;
+				}
+
+				Action<Unit> f = _ =>
+				{
+					if (hbar != null)
+					{
+						hbar.value = w;
+					}
+					if (vbar != null)
+					{
+						vbar.value = h;
+					}
+				};
+
+				//	ここで設定しても Unity 側で上書きされるので次 Update で設定するのが本命
+				f(Unit.Default);
+				this.UpdateAsObservable().Take(1).Subscribe(f);
 			}
 		}
 
