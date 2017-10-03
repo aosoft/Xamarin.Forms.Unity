@@ -58,6 +58,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public virtual Transform UnityContainerTransform => UnityComponent?.transform;
 
+		public RectTransform UnityRectTransform => _rectTransform;
+
 		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
 		public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
@@ -117,6 +119,39 @@ namespace Xamarin.Forms.Platform.Unity
 			controller = element;
 			if (controller != null)
 				controller.EffectControlProvider = this;
+		}
+
+		public Vector2 GetAnchorPoint()
+		{
+			var element = Element;
+			if (element == null)
+			{
+				return new Vector2();
+			}
+
+			var position = new Vector2((float)element.X, (float)element.Y);
+			var size = new Vector2(Mathf.Max((float)element.Width, 0.0f), Mathf.Max((float)element.Height, 0.0f));
+			var pivot = (_rectTransform?.pivot).GetValueOrDefault();
+
+			return new Vector2(position.x + size.x * pivot.x, position.y + size.y * pivot.y);
+		}
+
+		public virtual Vector2 GetChildAnchorPoint(IVisualElementRenderer child)
+		{
+			if (child == null)
+			{
+				return new Vector2();
+			}
+
+			var ap = child.GetAnchorPoint();
+			var parentElement = this.Element;
+			if (parentElement == null)
+			{
+				return ap;
+			}
+
+			var parentHeight = Mathf.Max((float)parentElement.Height, 0.0f);
+			return new Vector2(ap.x, parentHeight - ap.y);
 		}
 
 		#endregion
