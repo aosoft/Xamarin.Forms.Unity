@@ -6,6 +6,8 @@ namespace XamlPad
 	{
 		public App()
 		{
+			MainPage = new XamlPadPage();
+			MainPage.BindingContext = new XamlPadBindingContext(Xamarin.Forms.Platform.Unity.Forms.Activity);
 		}
 
 		protected override void OnStart()
