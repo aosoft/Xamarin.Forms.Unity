@@ -5,17 +5,22 @@
   x:Class="Page1">
   <Grid Padding="16">
     <Grid.RowDefinitions>
-      <RowDefinition />
-      <RowDefinition Height="32"/>
+      <RowDefinition Height="24" />
+      <RowDefinition Height="2*" />
+      <RowDefinition Height="3*" />
+      <RowDefinition Height="48" />
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="1">
+    <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition />
-        <ColumnDefinition />
+        <ColumnDefinition Width="64" />
       </Grid.ColumnDefinitions>
-      <Label Grid.Column="0" Text="{Binding Counter.Value}" HorizontalTextAlignment="Center" FontSize="20"/>
-      <Button Grid.Column="1" Command="{Binding InstantiateCommand}" />
+
+      <Button Grid.Column="0" Text="Refresh" Command="{Binding CompileCommand}" />
     </Grid>
+
+    <Editor Grid.Row="1" Text="{Binding XamlSource, Mode=TwoWay}" />
+    <Editor Grid.Row="3" Text="{Binding CompileResult, Mode=TwoWay} />
+
   </Grid>
 </ContentPage>
