@@ -30,7 +30,16 @@ namespace XamlPad
 				var t = b as XamlPadPage;
 				if (t != null && t._root != null)
 				{
-					t._root.Children.Add(n as View, 0, 2);
+					var oldView = o as View;
+					var newView = n as View;
+					if (oldView != null)
+					{
+						t._root.Children.Remove(oldView);
+					}
+					if (oldView != null)
+					{
+						t._root.Children.Add(newView as View, 0, 2);
+					}
 				}
 			});
 

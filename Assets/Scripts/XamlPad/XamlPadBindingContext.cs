@@ -52,20 +52,21 @@ namespace XamlPad
 					var page = new Xamarin.Forms.Grid();
 					Xamarin.Forms.Platform.Unity.XamlLoader.LoadXaml(page, XamlSource.Value);
 					RootPage.Value = page;
+					CompileResult.Value = "Success!";
 				}
 				catch (Exception e)
 				{
+					while (e.InnerException != null)
+					{
+						e = e.InnerException;
+					}
 					CompileResult.Value = e.Message;
 				}
 
 			});
 			CompileCommand = cmd;
 
-			XamlSource.Value = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Grid
-  xmlns=""http://xamarin.com/schemas/2014/forms""
-  xmlns:x=""http://schemas.microsoft.com/winfx/2009/xaml"">
-</Grid>";
+			XamlSource.Value = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<Grid\n  xmlns=\"http://xamarin.com/schemas/2014/forms\"\n  xmlns:x=\"http://schemas.microsoft.com/winfx/2009/xaml\">\n</Grid>";
 		}
 
 		public ReactiveCommand CompileCommand

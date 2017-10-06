@@ -21,7 +21,7 @@
     </Grid>
     
     <Editor Grid.Row="1" FontSize="20" Text="{Binding XamlSource.Value, Mode=TwoWay}" />
-    <Editor Grid.Row="3" Text="{Binding CompileResult.Value, Mode=TwoWay}" />
+    <Editor Grid.Row="3" FontSize="14" Text="{Binding CompileResult.Value, Mode=TwoWay}" />
 
   </Grid>
 </ContentPage>
