@@ -93,7 +93,11 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateText()
 		{
-			_componentText.UpdateText(Element.Text);
+			var inputField = UnityComponent;
+			if (inputField != null)
+			{
+				inputField.text = Element.Text;
+			}
 		}
 
 		void UpdateTextColor()

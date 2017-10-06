@@ -2,8 +2,9 @@
 <ContentPage
   xmlns="http://xamarin.com/schemas/2014/forms"
   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-  x:Class="Page1">
-  <Grid Padding="16">
+  x:Class="Page1"
+  InnerContent="{Binding RootPage.Value}">
+  <Grid x:Name="_root" Padding="2">
     <Grid.RowDefinitions>
       <RowDefinition Height="24" />
       <RowDefinition Height="2*" />
@@ -19,7 +20,7 @@
       <Button Grid.Column="0" Text="Refresh" Command="{Binding CompileCommand}" />
     </Grid>
     
-    <Editor Grid.Row="1" Text="{Binding XamlSource.Value, Mode=TwoWay}" />
+    <Editor Grid.Row="1" FontSize="20" Text="{Binding XamlSource.Value, Mode=TwoWay}" />
     <Editor Grid.Row="3" Text="{Binding CompileResult.Value, Mode=TwoWay}" />
 
   </Grid>

@@ -42,7 +42,7 @@ namespace XamlPad
 		{
 			XamlSource = new InternalReactiveProperty<string>(disposer);
 			CompileResult = new InternalReactiveProperty<string>(disposer);
-			RootPage = new InternalReactiveProperty<RootPage>(disposer);
+			RootPage = new InternalReactiveProperty<Xamarin.Forms.View>(disposer);
 
 			var cmd = new InternalReactiveCommand(disposer);
 			cmd.Subscribe(_ =>
@@ -62,13 +62,11 @@ namespace XamlPad
 			CompileCommand = cmd;
 
 			XamlSource.Value = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<ContentPage
+<Grid
   xmlns=""http://xamarin.com/schemas/2014/forms""
   xmlns:x=""http://schemas.microsoft.com/winfx/2009/xaml""
   x:Class=""RootPage"">
-  <Grid>
-  </Grid>
-</ContentPage>";
+</Grid>";
 		}
 
 		public ReactiveCommand CompileCommand
@@ -86,7 +84,7 @@ namespace XamlPad
 			get;
 		}
 
-		public ReactiveProperty<RootPage> RootPage
+		public ReactiveProperty<Xamarin.Forms.View> RootPage
 		{
 			get;
 		}

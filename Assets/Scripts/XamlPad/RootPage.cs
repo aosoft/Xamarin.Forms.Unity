@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace XamlPad
 {
-	public class RootPage : ContentPage
+	public class RootPage : Grid
 	{
 	}
 }
