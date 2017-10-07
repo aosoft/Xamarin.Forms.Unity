@@ -36,7 +36,7 @@ namespace XamlPad
 					{
 						t._root.Children.Remove(oldView);
 					}
-					if (oldView != null)
+					if (newView != null)
 					{
 						t._root.Children.Add(newView as View, 0, 2);
 					}
