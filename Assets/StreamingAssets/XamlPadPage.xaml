@@ -7,20 +7,24 @@
   <Grid x:Name="_root" Padding="2">
     <Grid.RowDefinitions>
       <RowDefinition Height="24" />
-      <RowDefinition Height="2*" />
       <RowDefinition Height="3*" />
+      <RowDefinition Height="2*" />
       <RowDefinition Height="48" />
     </Grid.RowDefinitions>
 
     <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="16" />
+        <ColumnDefinition Width="64" />
         <ColumnDefinition Width="64" />
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="0" Text="Refresh" Command="{Binding CompileCommand}" />
+      <Switch Grid.Column="0" />
+      <Label Grid.Column="1" Text="Auto Parse" />
+      <Button Grid.Column="2" Text="Refresh" Command="{Binding CompileCommand}" />
     </Grid>
     
-    <Editor Grid.Row="1" FontSize="20" Text="{Binding XamlSource.Value, Mode=TwoWay}" />
+    <Editor Grid.Row="2" FontSize="20" Text="{Binding XamlSource.Value, Mode=TwoWay}" />
     <Editor Grid.Row="3" FontSize="14" Text="{Binding CompileResult.Value, Mode=TwoWay}" />
 
   </Grid>

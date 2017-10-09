@@ -38,7 +38,7 @@ namespace XamlPad
 					}
 					if (newView != null)
 					{
-						t._root.Children.Add(newView as View, 0, 2);
+						t._root.Children.Add(newView as View, 0, 1);
 					}
 				}
 			});
