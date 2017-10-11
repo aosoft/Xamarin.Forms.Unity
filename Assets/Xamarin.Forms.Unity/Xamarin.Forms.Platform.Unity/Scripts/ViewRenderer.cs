@@ -69,26 +69,18 @@ namespace Xamarin.Forms.Platform.Unity
 			var size = new Vector2(Mathf.Max((float)view.Width, 0.0f), Mathf.Max((float)view.Height, 0.0f));
 
 			var parent = view.Parent as VisualElement;
-			Vector2 ap;
+			Vector2 ap = GetAnchorPoint();
 			if (parent != null)
 			{
 				var parentRenderer = Platform.GetRenderer(parent);
 				if (parentRenderer != null)
 				{
-					ap = parentRenderer.GetChildAnchorPoint(this);
+					ap.y = -ap.y;
 				}
-				else
-				{
-					ap = GetAnchorPoint();
-				}
-			}
-			else
-			{
-				ap = GetAnchorPoint();
 			}
 
-			_rectTransform.anchorMin = new Vector2();
-			_rectTransform.anchorMax = new Vector2();
+			_rectTransform.anchorMin = new Vector2(0.0f, 1.0f);
+			_rectTransform.anchorMax = new Vector2(0.0f, 1.0f);
 			_rectTransform.anchoredPosition = ap;
 			_rectTransform.sizeDelta = size;
 

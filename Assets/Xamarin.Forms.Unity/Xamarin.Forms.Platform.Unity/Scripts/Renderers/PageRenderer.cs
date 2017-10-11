@@ -20,8 +20,8 @@ namespace Xamarin.Forms.Platform.Unity
 			var renderTransform = GetComponent<RectTransform>();
 			if (renderTransform != null)
 			{
-				renderTransform.anchorMin = new Vector2(0.0f, 0.0f);
-				renderTransform.anchorMax = new Vector2(0.0f, 0.0f);
+				renderTransform.anchorMin = new Vector2(0.0f, 1.0f);
+				renderTransform.anchorMax = new Vector2(0.0f, 1.0f);
 			}
 		}
 	}

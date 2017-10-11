@@ -136,24 +136,6 @@ namespace Xamarin.Forms.Platform.Unity
 			return new Vector2(position.x + size.x * pivot.x, position.y + size.y * pivot.y);
 		}
 
-		public virtual Vector2 GetChildAnchorPoint(IVisualElementRenderer child)
-		{
-			if (child == null)
-			{
-				return new Vector2();
-			}
-
-			var ap = child.GetAnchorPoint();
-			var parentElement = this.Element;
-			if (parentElement == null)
-			{
-				return ap;
-			}
-
-			var parentHeight = Mathf.Max((float)parentElement.Height, 0.0f);
-			return new Vector2(ap.x, parentHeight - ap.y);
-		}
-
 		#endregion
 
 		/*-----------------------------------------------------------------*/
