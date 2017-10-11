@@ -40,6 +40,7 @@ namespace XamlPad
 
 		public XamlPadBindingContext(MonoBehaviour disposer)
 		{
+			AutoRefresh = new InternalReactiveProperty<bool>(disposer);
 			XamlSource = new InternalReactiveProperty<string>(disposer);
 			CompileResult = new InternalReactiveProperty<string>(disposer);
 			RootPage = new InternalReactiveProperty<Xamarin.Forms.View>(disposer);
@@ -67,9 +68,18 @@ namespace XamlPad
 			CompileCommand = cmd;
 
 			XamlSource.Value = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<Grid\n  xmlns=\"http://xamarin.com/schemas/2014/forms\"\n  xmlns:x=\"http://schemas.microsoft.com/winfx/2009/xaml\">\n</Grid>";
+			AutoRefresh.Value = false;
+
+			XamlSource.Throttle(new TimeSpan(TimeSpan.TicksPerSecond)).ObserveOnMainThread().Subscribe(_ => cmd.Execute());
+			var o = AutoRefresh.AsObservable();
 		}
 
 		public ReactiveCommand CompileCommand
+		{
+			get;
+		}
+
+		public ReactiveProperty<bool> AutoRefresh
 		{
 			get;
 		}

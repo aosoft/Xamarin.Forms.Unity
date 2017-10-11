@@ -19,8 +19,8 @@
         <ColumnDefinition Width="64" />
       </Grid.ColumnDefinitions>
 
-      <Switch Grid.Column="0" />
-      <Label Grid.Column="1" Text="Auto Parse" />
+      <Switch Grid.Column="0" IsToggled="{Binding AutoRefresh.Value, Mode=TwoWay}" />
+      <Label Grid.Column="1" VerticalTextAlignment="Center" FontSize="12" Text="Auto Parse" />
       <Button Grid.Column="2" Text="Refresh" Command="{Binding CompileCommand}" />
     </Grid>
     
