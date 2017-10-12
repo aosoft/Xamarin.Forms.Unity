@@ -68,6 +68,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				UnityComponent.options = CreateOptionDatas(e.NewElement.Items);
 
+				UpdateSelectedIndex();
 				UpdatePicker();
 				UpdateTextColor();
 			}
@@ -75,7 +76,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Picker.SelectedItemProperty.PropertyName)
+			if (e.PropertyName == Picker.SelectedIndexProperty.PropertyName)
 			{
 				UpdateSelectedIndex();
 			}
