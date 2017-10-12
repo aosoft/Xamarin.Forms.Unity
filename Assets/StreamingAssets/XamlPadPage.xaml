@@ -17,14 +17,21 @@
         <ColumnDefinition Width="16" />
         <ColumnDefinition Width="64" />
         <ColumnDefinition Width="64" />
+        <ColumnDefinition Width="64" />
+        <ColumnDefinition Width="64" />
       </Grid.ColumnDefinitions>
 
       <Switch Grid.Column="0" IsToggled="{Binding AutoParse.Value, Mode=TwoWay}" />
       <Label Grid.Column="1" VerticalTextAlignment="Center" FontSize="12" Text="Auto Parse" />
       <Button Grid.Column="2" Text="Refresh" Command="{Binding CompileCommand}" />
+      <Label Grid.Column="3" VerticalTextAlignment="Center" FontSize="12" Text="Font Size:" />
+      <Picker Grid.Column="4"
+        SelectedIndex="{Binding FontSizeSelectedIndex.Value}"
+        ItemsSource="{Binding FontSizeList}"
+        HorizontalOptions="FillAndExpand" />
     </Grid>
     
-    <Editor Grid.Row="2" FontSize="20" Text="{Binding XamlSource.Value, Mode=TwoWay}" />
+    <Editor Grid.Row="2" FontSize="{Binding FontSize.Value}" Text="{Binding XamlSource.Value, Mode=TwoWay}" />
     <Editor Grid.Row="3" FontSize="14" Text="{Binding CompileResult.Value, Mode=TwoWay}" />
 
   </Grid>
