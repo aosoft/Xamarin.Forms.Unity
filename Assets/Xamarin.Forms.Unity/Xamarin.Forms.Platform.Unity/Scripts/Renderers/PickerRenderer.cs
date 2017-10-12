@@ -42,7 +42,10 @@ namespace Xamarin.Forms.Platform.Unity
 							elem.SelectedIndex = value;
 						}
 					}).AddTo(this);
-
+				picker.template.anchorMin = new Vector2(0.0f, 1.0f);
+				picker.template.anchorMax = new Vector2(1.0f, 1.0f);
+				picker.template.anchoredPosition = new Vector2();
+				picker.template.pivot = new Vector2(0.5f, 0.0f);
 			}
 		}
 

@@ -39,14 +39,24 @@ namespace XamlPad
 			public event PropertyChangedEventHandler PropertyChanged;
 		}
 
+		class InternalReadOnlyReactiveProperty<T> : ReadOnlyReactiveProperty<T>, INotifyPropertyChanged
+		{
+			public InternalReadOnlyReactiveProperty(UniRx.IObservable<T> source, MonoBehaviour disposer) : base(source)
+			{
+				this.Subscribe(_ => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null))).AddTo(disposer);
+			}
+
+			public event PropertyChangedEventHandler PropertyChanged;
+		}
+
 		public XamlPadBindingContext(MonoBehaviour disposer)
 		{
 			AutoParse = new InternalReactiveProperty<bool>(disposer);
 			XamlSource = new InternalReactiveProperty<string>(disposer);
 			CompileResult = new InternalReactiveProperty<string>(disposer);
 			FontSizeSelectedIndex = new InternalReactiveProperty<int>(disposer);
-			_fontSize = new InternalReactiveProperty<int>(disposer);
-			FontSize = _fontSize.ToReadOnlyReactiveProperty();
+			_fontSize = new InternalReactiveProperty<double>(disposer);
+			FontSize = new InternalReadOnlyReactiveProperty<double>(_fontSize, disposer);
 			RootPage = new InternalReactiveProperty<Xamarin.Forms.View>(disposer);
 
 			var cmd = new InternalReactiveCommand(disposer);
@@ -77,7 +87,7 @@ namespace XamlPad
 			FontSizeSelectedIndex.Subscribe(value =>
 			{
 				value = Math.Max(Math.Min(value, FontSizeList.Length - 1), 0);
-				_fontSize.Value = int.Parse(FontSizeList[value]);
+				_fontSize.Value = double.Parse(FontSizeList[value]);
 			});
 			FontSizeSelectedIndex.Value = 3;
 
@@ -110,12 +120,12 @@ namespace XamlPad
 			get;
 		}
 
-		public ReadOnlyReactiveProperty<int> FontSize
+		public ReadOnlyReactiveProperty<double> FontSize
 		{
 			get;
 		}
 
-		ReactiveProperty<int> _fontSize;
+		ReactiveProperty<double> _fontSize;
 
 		public string[] FontSizeList
 		{
