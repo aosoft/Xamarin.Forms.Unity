@@ -13,6 +13,7 @@ namespace XamlPad
 		protected override void OnStart()
 		{
 			base.OnStart();
+			(MainPage.BindingContext as XamlPadBindingContext)?.InitializePropertyValues();
 		}
 
 		protected override void OnSleep()

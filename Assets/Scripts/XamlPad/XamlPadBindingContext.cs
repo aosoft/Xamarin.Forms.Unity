@@ -81,15 +81,11 @@ namespace XamlPad
 			});
 			CompileCommand = cmd;
 
-			XamlSource.Value = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<Grid\n  xmlns=\"http://xamarin.com/schemas/2014/forms\"\n  xmlns:x=\"http://schemas.microsoft.com/winfx/2009/xaml\">\n</Grid>";
-			AutoParse.Value = false;
-
 			FontSizeSelectedIndex.Subscribe(value =>
 			{
 				value = Math.Max(Math.Min(value, FontSizeList.Length - 1), 0);
 				_fontSize.Value = double.Parse(FontSizeList[value]);
 			});
-			FontSizeSelectedIndex.Value = 3;
 
 			IDisposable o = null;
 			AutoParse.Subscribe(value =>
@@ -103,6 +99,17 @@ namespace XamlPad
 						.Subscribe(_ => cmd.Execute());
 				}
 			});
+		}
+
+		/// <summary>
+		/// プロパティ値を初期化する。
+		/// BindingContext に設定後に呼び出す。
+		/// </summary>
+		public void InitializePropertyValues()
+		{
+			XamlSource.Value = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<Grid\n  xmlns=\"http://xamarin.com/schemas/2014/forms\"\n  xmlns:x=\"http://schemas.microsoft.com/winfx/2009/xaml\">\n</Grid>";
+			FontSizeSelectedIndex.Value = 3;
+			AutoParse.Value = false;
 		}
 
 		public ReactiveCommand CompileCommand
