@@ -6,7 +6,7 @@
   InnerContent="{Binding RootPage.Value}">
   <Grid x:Name="_root" Padding="2">
     <Grid.RowDefinitions>
-      <RowDefinition Height="24" />
+      <RowDefinition Height="30" />
       <RowDefinition Height="3*" />
       <RowDefinition Height="2*" />
       <RowDefinition Height="48" />
@@ -23,8 +23,8 @@
 
       <Switch Grid.Column="0" IsToggled="{Binding AutoParse.Value, Mode=TwoWay}" />
       <Label Grid.Column="1" VerticalTextAlignment="Center" FontSize="12" Text="Auto Parse" />
-      <Button Grid.Column="2" Text="Refresh" Command="{Binding CompileCommand}" />
-      <Label Grid.Column="3" VerticalTextAlignment="Center" FontSize="12" Text="Font Size:" />
+      <Button Grid.Column="2" FontSize="12" Text="Refresh" Command="{Binding CompileCommand}" />
+      <Label Grid.Column="3" Margin="10,0,0,0" VerticalTextAlignment="Center" FontSize="12" Text="Font Size:" />
       <Picker Grid.Column="4"
         TextColor="Black"
         SelectedIndex="{Binding FontSizeSelectedIndex.Value}"
