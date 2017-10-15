@@ -42,7 +42,10 @@ namespace Xamarin.Forms.Platform.Unity
 							elem.SelectedIndex = value;
 						}
 					}).AddTo(this);
-
+				picker.template.anchorMin = new Vector2(0.0f, 1.0f);
+				picker.template.anchorMax = new Vector2(1.0f, 1.0f);
+				picker.template.anchoredPosition = new Vector2();
+				picker.template.pivot = new Vector2(0.5f, 0.0f);
 			}
 		}
 
@@ -65,6 +68,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				UnityComponent.options = CreateOptionDatas(e.NewElement.Items);
 
+				UpdateSelectedIndex();
 				UpdatePicker();
 				UpdateTextColor();
 			}
@@ -72,7 +76,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == Picker.SelectedItemProperty.PropertyName)
+			if (e.PropertyName == Picker.SelectedIndexProperty.PropertyName)
 			{
 				UpdateSelectedIndex();
 			}
