@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class VisualElementTracker<TElement, TUnityComponent>
+	public class VisualElementTracker<TElement, TNativeElement>
 		where TElement : VisualElement
-		where TUnityComponent : UnityEngine.Component
+		where TNativeElement : UnityEngine.Component
 	{
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		TUnityComponent _component;
+		TNativeElement _component;
 		TElement _element;
 		UnityEngine.RectTransform _rectTransform;
 
@@ -27,7 +27,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor
 
-		public VisualElementTracker(TUnityComponent component)
+		public VisualElementTracker(TNativeElement component)
 		{
 			//	Unity の仕組み上、 VisualElementRenderer と Component は不可分
 			//	なので Tracker のコンストラクト時で確定できる。
@@ -50,7 +50,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Property
 
-		public TUnityComponent UnityComponent
+		public TNativeElement UnityComponent
 		{
 			get { return _component; }
 		}

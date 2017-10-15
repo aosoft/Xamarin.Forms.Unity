@@ -54,8 +54,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
-		UnityEngine.Component IVisualElementRenderer.UnityComponent => this.UnityComponent;
-
 		public virtual Transform UnityContainerTransform => UnityComponent?.transform;
 
 		public RectTransform UnityRectTransform => _rectTransform;
@@ -134,6 +132,15 @@ namespace Xamarin.Forms.Platform.Unity
 			var pivot = (_rectTransform?.pivot).GetValueOrDefault();
 
 			return new Vector2(position.x + size.x * pivot.x, position.y + size.y * pivot.y);
+		}
+
+		public void DestroyObject()
+		{
+			var go = UnityComponent?.gameObject;
+			if (go != null)
+			{
+				UnityEngine.Object.Destroy(go);
+			}
 		}
 
 		#endregion

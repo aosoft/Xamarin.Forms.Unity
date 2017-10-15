@@ -9,7 +9,6 @@ namespace Xamarin.Forms.Platform.Unity
 		readonly int _column;
 		readonly int _columnSpan;
 
-		readonly Component _component;
 		readonly IVisualElementRenderer _renderer;
 		readonly int _row;
 		readonly int _rowSpan;
@@ -22,10 +21,6 @@ namespace Xamarin.Forms.Platform.Unity
 				throw new ArgumentNullException("renderer");
 
 			_renderer = renderer;
-
-			_component = renderer.UnityComponent;
-			if (_component == null)
-				throw new ArgumentException("renderer.Component");
 		}
 
 		public VisualElementPackager(IVisualElementRenderer renderer, int row = 0, int rowSpan = 0, int column = 0, int columnSpan = 0) : this(renderer)
@@ -120,7 +115,7 @@ namespace Xamarin.Forms.Platform.Unity
 				Windows.UI.Xaml.Controls.Grid.SetColumnSpan(childRenderer.Component, _columnSpan);
 			*/
 
-			childRenderer.UnityComponent.transform.SetParent(_renderer.UnityContainerTransform);
+			childRenderer.UnityRectTransform.SetParent(_renderer.UnityContainerTransform);
 
 			EnsureZIndex();
 		}
@@ -145,7 +140,7 @@ namespace Xamarin.Forms.Platform.Unity
 				if (_columnSpan > 0)
 					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnSpanProperty);
 				*/
-				childRenderer.UnityComponent.transform.SetParent(null);
+				childRenderer.UnityRectTransform.SetParent(null);
 
 				view.Cleanup();
 			}
