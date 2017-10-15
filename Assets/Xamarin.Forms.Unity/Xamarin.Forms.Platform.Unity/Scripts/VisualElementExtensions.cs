@@ -36,22 +36,14 @@ namespace Xamarin.Forms.Platform.Unity
 				IVisualElementRenderer childRenderer = Platform.GetRenderer(visual);
 				if (childRenderer != null)
 				{
-					var go = childRenderer.UnityComponent?.gameObject;
-					if (go != null)
-					{
-						UnityEngine.Object.Destroy(go);
-					}
+					childRenderer.DestroyObject();
 					Platform.SetRenderer(visual, null);
 				}
 			}
 
 			if (renderer != null)
 			{
-				var go = renderer.UnityComponent?.gameObject;
-				if (go != null)
-				{
-					UnityEngine.Object.Destroy(go);
-				}
+				renderer.DestroyObject();
 				Platform.SetRenderer(self, null);
 			}
 		}

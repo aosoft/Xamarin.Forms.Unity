@@ -23,7 +23,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var swtch = UnityComponent;
+			var swtch = Control;
 			if (swtch != null)
 			{
 				swtch.OnValueChangedAsObservable()
@@ -76,9 +76,9 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateToggle()
 		{
-			if (UnityComponent != null && Element != null)
+			if (Control != null && Element != null)
 			{
-				UnityComponent.isOn = Element.IsToggled;
+				Control.isOn = Element.IsToggled;
 			}
 		}
 

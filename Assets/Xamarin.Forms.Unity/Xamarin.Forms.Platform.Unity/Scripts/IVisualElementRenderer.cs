@@ -12,11 +12,6 @@ namespace Xamarin.Forms.Platform.Unity
 		VisualElement Element { get; }
 
 		/// <summary>
-		/// Unity 側で対応する Component (Native Element)
-		/// </summary>
-		Component UnityComponent { get; }
-
-		/// <summary>
 		/// Unity 側の RectTransform コンポーネント
 		/// </summary>
 		RectTransform UnityRectTransform { get; }
@@ -35,5 +30,10 @@ namespace Xamarin.Forms.Platform.Unity
 		void SetElement(VisualElement element);
 
 		Vector2 GetAnchorPoint();
+
+		/// <summary>
+		/// 自身を保有する GameObject を破棄する
+		/// </summary>
+		void DestroyObject();
 	}
 }

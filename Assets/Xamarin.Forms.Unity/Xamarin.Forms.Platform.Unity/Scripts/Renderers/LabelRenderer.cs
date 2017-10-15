@@ -25,7 +25,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			_componentText = new TextTracker(UnityComponent);
+			_componentText = new TextTracker(Control);
 		}
 
 		#endregion
@@ -101,12 +101,12 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateLineBreakMode()
 		{
-			UnityComponent.horizontalOverflow = Element.LineBreakMode.ToUnityHorizontalWrapMode();
+			Control.horizontalOverflow = Element.LineBreakMode.ToUnityHorizontalWrapMode();
 		}
 
 		void UpdateAlign()
 		{
-			UnityComponent?.SetTextAlign(Element);
+			Control?.SetTextAlign(Element);
 		}
 
 		#endregion

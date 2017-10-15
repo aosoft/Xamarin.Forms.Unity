@@ -23,7 +23,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var slider = UnityComponent;
+			var slider = Control;
 			if (slider != null)
 			{
 				slider.OnValueChangedAsObservable()
@@ -91,25 +91,25 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateValue()
 		{
-			if (UnityComponent != null && Element != null)
+			if (Control != null && Element != null)
 			{
-				UnityComponent.value = (float)Element.Value;
+				Control.value = (float)Element.Value;
 			}
 		}
 
 		void UpdateMinimum()
 		{
-			if (UnityComponent != null && Element != null)
+			if (Control != null && Element != null)
 			{
-				UnityComponent.minValue = (float)Element.Minimum;
+				Control.minValue = (float)Element.Minimum;
 			}
 		}
 
 		void UpdateMaximum()
 		{
-			if (UnityComponent != null && Element != null)
+			if (Control != null && Element != null)
 			{
-				UnityComponent.maxValue = (float)Element.Maximum;
+				Control.maxValue = (float)Element.Maximum;
 			}
 		}
 
