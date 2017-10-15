@@ -20,11 +20,29 @@ This project contains source code of Xamarin.Forms 2.4.0.
 ## Try the sample
 
 1. Import "UniRx".
-2. Open "Assets/main.unity" scene file.
+2. Open "Assets/main.unity" or "Assets/XamlPad.unity" scene file.
 3. Edit sample source code.
-  * Assets/Scripts/Page1.xaml.cs
-  * Assets/Scripts/SampleBindingContext.cs
+  * main.unity
+    * Assets/Scripts/Page1.xaml.cs
+    * Assets/Scripts/SampleBindingContext.cs
+  * XamlPad.unity
+    * Assets/Scripts/XamlPad/XamlPadBindingContext.cs
+    * Assets/Scripts/XamlPad/XamlPadPage.cs
+    * Assets/StreamingAssets/XamlPadPage.xaml
 4. Run.
+
+## Getting Started
+
+1. Create New Unity Project.
+2. Changes "Script Runtime Version" at Player Settings to ".NET 4.6".
+3. Copy 'Assets/Xamarin.Forms.Unity' to Unity Project.
+4. Import "UniRx".
+5. Create App class that inherits Xamarin.Forms.Application.
+6. Create FormsApplicationActivity class that inherits Xamarin.Forms.Platform.Unity.UnityFormsApplicationActivity<T>. T is Application class that implemented earlier.
+7. Create Prefabs of UI Comoponent. (Canvas, Button, Text, InputField etc.)
+8. Create "UI - Canvas" on the Hierarchy of Unity scene. This Canvas is UI Root of Xamarin.Forms.
+9. Create "Xamarin.Forms Application Activity(User defined)" on the Hierarchy of Unity scene. This Activity must be singleton.  
+10. Set Prefabs of UI Component and Root Canvas to Activity.
 
 ## Known Issues
 
@@ -33,16 +51,3 @@ This project contains source code of Xamarin.Forms 2.4.0.
 * Custom Renderers is not supported in the current version.  
   (Please apply the design with the component of Prefab.)
 * Standard Renderers are under development.
-
-## 新しいプロジェクトからの始め方
-
-1. 新規に Unity Project を作成する。
-2. PlayerSettings の Scripting Runtime Version を ".NET 4.6" に変更する。
-3. 'Assets/Xamarin.Forms.Unity' を作成したプロジェクトにコピーする。
-4. "UniRx" を import する。
-5. Xamarin.Forms.Application を継承した App クラスを作成する。
-6. Xamarin.Forms.Platform.Unity.UnityFormsApplicationActivity<T> を継承した FormsApplicationActivity クラスを作成する。 T は先に作成した Application 継承クラスを指定する。
-7. UI Comoponent の Prefab を作成する。 (Canvas, Button, Text, InputField etc.)
-8. Unity の Scene 上に Xamarin.Forms の UI ルートとなる Canvas (UI - Canvas) を作成する。
-9. Unity の Scene 上で "Xamarin.Forms.Activity" を作成する (GameObject メニュー) 。
-10. 9.で作成したActivityに UI Comoponent の Prefab と Root Canvas を指定する。
