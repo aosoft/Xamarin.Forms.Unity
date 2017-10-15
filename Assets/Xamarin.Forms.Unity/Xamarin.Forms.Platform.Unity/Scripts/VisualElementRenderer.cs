@@ -33,7 +33,7 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				_rectTransform = this.gameObject.AddComponent<RectTransform>();
 			}
-			UnityComponent = GetComponent<TNativeElement>();
+			Control = GetComponent<TNativeElement>();
 		}
 
 		#endregion
@@ -43,7 +43,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElementPackager Packager { get; set; }
 
-		public TNativeElement UnityComponent { get; private set; }
+		public TNativeElement Control { get; private set; }
 
 		public TElement Element { get; private set; }
 
@@ -54,7 +54,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		VisualElement IVisualElementRenderer.Element => Element;
 
-		public virtual Transform UnityContainerTransform => UnityComponent?.transform;
+		public virtual Transform UnityContainerTransform => Control?.transform;
 
 		public RectTransform UnityRectTransform => _rectTransform;
 
@@ -94,7 +94,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				if (AutoTrack && Tracker == null)
 				{
-					Tracker = new VisualElementTracker<TElement, TNativeElement>(UnityComponent);
+					Tracker = new VisualElementTracker<TElement, TNativeElement>(Control);
 				}
 
 				// Disabled until reason for crashes with unhandled exceptions is discovered
@@ -136,7 +136,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public void DestroyObject()
 		{
-			var go = UnityComponent?.gameObject;
+			var go = Control?.gameObject;
 			if (go != null)
 			{
 				UnityEngine.Object.Destroy(go);
@@ -229,8 +229,8 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateEnabled()
 		{
-			if (UnityComponent != null)
-				UnityComponent.gameObject.SetActive(Element.IsEnabled);
+			if (Control != null)
+				Control.gameObject.SetActive(Element.IsEnabled);
 			/*else
 				IsHitTestVisible = Element.IsEnabled && !Element.InputTransparent;*/
 		}

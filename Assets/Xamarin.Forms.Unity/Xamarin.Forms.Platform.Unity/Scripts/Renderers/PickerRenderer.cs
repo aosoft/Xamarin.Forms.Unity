@@ -29,7 +29,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 			_requiredUpdateOptions = false;
 
-			var picker = UnityComponent;
+			var picker = Control;
 			if (picker != null)
 			{
 				picker.onValueChanged.AsObservable()
@@ -66,7 +66,7 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				e.NewElement.Items.AddCollectionChangedEvent(OnCollectionChanged);
 
-				UnityComponent.options = CreateOptionDatas(e.NewElement.Items);
+				Control.options = CreateOptionDatas(e.NewElement.Items);
 
 				UpdateSelectedIndex();
 				UpdatePicker();
@@ -95,15 +95,15 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateSelectedIndex()
 		{
-			if (UnityComponent != null && Element != null)
+			if (Control != null && Element != null)
 			{
-				UnityComponent.value = Element.SelectedIndex; 
+				Control.value = Element.SelectedIndex; 
 			}
 		}
 
 		void UpdateTextColor()
 		{
-			var text = UnityComponent?.captionText;
+			var text = Control?.captionText;
 			if (text != null && Element != null)
 			{
 				text.color = Element.TextColor.ToUnityColor();
@@ -117,7 +117,7 @@ namespace Xamarin.Forms.Platform.Unity
 			var element = Element;
 			if (element != null)
 			{
-				var text = UnityComponent?.captionText;
+				var text = Control?.captionText;
 				if (text != null)
 				{
 					var index = element.SelectedIndex;
@@ -155,7 +155,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
 		{
-			var picker = UnityComponent;
+			var picker = Control;
 			var element = Element;
 			if (_requiredUpdateOptions && element != null && picker != null)
 			{

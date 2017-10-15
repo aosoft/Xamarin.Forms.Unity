@@ -25,7 +25,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var scrollRect = UnityComponent;
+			var scrollRect = Control;
 			if (scrollRect != null)
 			{
 				var vbar = scrollRect.verticalScrollbar;
@@ -66,7 +66,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region IVisualElementRenderer
 
-		public override Transform UnityContainerTransform => UnityComponent?.content;
+		public override Transform UnityContainerTransform => Control?.content;
 
 		#endregion
 
@@ -114,7 +114,7 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateOrientation()
 		{
 			var element = Element;
-			var scroll = UnityComponent;
+			var scroll = Control;
 			if (element != null)
 			{
 				switch (element.Orientation)
@@ -146,7 +146,7 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateScrollXPosition()
 		{
 			var element = Element;
-			var hbar = UnityComponent?.horizontalScrollbar;
+			var hbar = Control?.horizontalScrollbar;
 
 			if (element != null && hbar != null)
 			{
@@ -162,7 +162,7 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateScrollYPosition()
 		{
 			var element = Element;
-			var vbar = UnityComponent?.verticalScrollbar;
+			var vbar = Control?.verticalScrollbar;
 
 			if (element != null && vbar != null)
 			{
@@ -178,7 +178,7 @@ namespace Xamarin.Forms.Platform.Unity
 		void UpdateContentSize()
 		{
 			var element = Element;
-			var scrollRect = UnityComponent;
+			var scrollRect = Control;
 			if (element == null || scrollRect == null)
 			{
 				return;

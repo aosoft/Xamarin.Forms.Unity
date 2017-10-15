@@ -24,7 +24,7 @@ namespace Xamarin.Forms.Platform.Unity
 		{
 			base.Awake();
 
-			var inputField = UnityComponent;
+			var inputField = Control;
 			if (inputField != null)
 			{
 				inputField.lineType = UnityEngine.UI.InputField.LineType.SingleLine;
@@ -93,7 +93,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void UpdateText()
 		{
-			var inputField = UnityComponent;
+			var inputField = Control;
 			if (inputField != null)
 			{
 				inputField.text = Element.Text;
