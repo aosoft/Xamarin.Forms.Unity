@@ -74,7 +74,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void EnsureZIndex()
 		{
-			/*if (ElementController.LogicalChildren.Count == 0)
+			if (ElementController.LogicalChildren.Count == 0)
 				return;
 
 			for (var z = 0; z < ElementController.LogicalChildren.Count; z++)
@@ -83,15 +83,15 @@ namespace Xamarin.Forms.Platform.Unity
 				if (child == null)
 					continue;
 
-				IVisualElementRenderer childRenderer = UnityPlatform.GetRenderer(child);
+				IVisualElementRenderer childRenderer = Platform.GetRenderer(child);
 
 				if (childRenderer == null)
 				{
 					continue;
 				}
-
-				Canvas.SetZIndex(childRenderer.Component, z + 1);
-			}*/
+				//Debug.Log(string.Format("EnsureZIndex: {0}[{1}] = {2}", this._renderer.UnityRectTransform.GetHashCode(), z, childRenderer.UnityRectTransform.GetHashCode()));
+				childRenderer.UnityRectTransform.SetSiblingIndex(z);
+			}
 		}
 
 		void OnChildAdded(object sender, ElementEventArgs e)
@@ -103,18 +103,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 			IVisualElementRenderer childRenderer = Platform.CreateRenderer(view);
 			Platform.SetRenderer(view, childRenderer);
-
-			/*
-			if (_row > 0)
-				Windows.UI.Xaml.Controls.Grid.SetRow(childRenderer.Component, _row);
-			if (_rowSpan > 0)
-				Windows.UI.Xaml.Controls.Grid.SetRowSpan(childRenderer.Component, _rowSpan);
-			if (_column > 0)
-				Windows.UI.Xaml.Controls.Grid.SetColumn(childRenderer.Component, _column);
-			if (_columnSpan > 0)
-				Windows.UI.Xaml.Controls.Grid.SetColumnSpan(childRenderer.Component, _columnSpan);
-			*/
-
 			childRenderer.UnityRectTransform.SetParent(_renderer.UnityContainerTransform);
 
 			EnsureZIndex();
@@ -130,16 +118,6 @@ namespace Xamarin.Forms.Platform.Unity
 			IVisualElementRenderer childRenderer = Platform.GetRenderer(view);
 			if (childRenderer != null)
 			{
-				/*
-				if (_row > 0)
-					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.RowProperty);
-				if (_rowSpan > 0)
-					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.RowSpanProperty);
-				if (_column > 0)
-					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnProperty);
-				if (_columnSpan > 0)
-					childRenderer.Component.ClearValue(Windows.UI.Xaml.Controls.Grid.ColumnSpanProperty);
-				*/
 				childRenderer.UnityRectTransform.SetParent(null);
 
 				view.Cleanup();

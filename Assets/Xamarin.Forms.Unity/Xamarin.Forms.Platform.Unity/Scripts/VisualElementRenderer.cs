@@ -119,21 +119,6 @@ namespace Xamarin.Forms.Platform.Unity
 				controller.EffectControlProvider = this;
 		}
 
-		public Vector2 GetAnchorPoint()
-		{
-			var element = Element;
-			if (element == null)
-			{
-				return new Vector2();
-			}
-
-			var position = new Vector2((float)element.X, (float)element.Y);
-			var size = new Vector2(Mathf.Max((float)element.Width, 0.0f), Mathf.Max((float)element.Height, 0.0f));
-			var pivot = (_rectTransform?.pivot).GetValueOrDefault();
-
-			return new Vector2(position.x + size.x * pivot.x, position.y + size.y * pivot.y);
-		}
-
 		public void DestroyObject()
 		{
 			var go = Control?.gameObject;

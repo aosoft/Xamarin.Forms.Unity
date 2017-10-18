@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -16,9 +17,9 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		TNativeElement _component;
+		TNativeElement _control;
 		TElement _element;
-		UnityEngine.RectTransform _rectTransform;
+		RectTransform _rectTransform;
 
 		bool _invalidateArrangeNeeded;
 
@@ -27,16 +28,16 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor
 
-		public VisualElementTracker(TNativeElement component)
+		public VisualElementTracker(TNativeElement control)
 		{
 			//	Unity の仕組み上、 VisualElementRenderer と Component は不可分
 			//	なので Tracker のコンストラクト時で確定できる。
 
-			_component = component;
-			_rectTransform = component.GetComponent<UnityEngine.RectTransform>();
+			_control = control;
+			_rectTransform = control.GetComponent<RectTransform>();
 			if (_rectTransform == null)
 			{
-				_rectTransform = component.gameObject.AddComponent<UnityEngine.RectTransform>();
+				_rectTransform = control.gameObject.AddComponent<RectTransform>();
 			}
 
 			/*
@@ -50,9 +51,9 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Property
 
-		public TNativeElement UnityComponent
+		public TNativeElement Control
 		{
-			get { return _component; }
+			get { return _control; }
 		}
 
 		public TElement Element
@@ -95,7 +96,9 @@ namespace Xamarin.Forms.Platform.Unity
 				if (e.PropertyName == VisualElement.XProperty.PropertyName ||
 					e.PropertyName == VisualElement.YProperty.PropertyName ||
 					e.PropertyName == VisualElement.WidthProperty.PropertyName ||
-					e.PropertyName == VisualElement.HeightProperty.PropertyName)
+					e.PropertyName == VisualElement.HeightProperty.PropertyName ||
+					e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
+					e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
 				{
 					_invalidateArrangeNeeded = true;
 				}
@@ -105,18 +108,15 @@ namespace Xamarin.Forms.Platform.Unity
 			if (e.PropertyName == VisualElement.XProperty.PropertyName ||
 				e.PropertyName == VisualElement.YProperty.PropertyName ||
 				e.PropertyName == VisualElement.WidthProperty.PropertyName ||
-				e.PropertyName == VisualElement.HeightProperty.PropertyName)
+				e.PropertyName == VisualElement.HeightProperty.PropertyName ||
+				e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
+				e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
 			{
 				MaybeInvalidate();
 			}
-			else if (e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
-					 e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
-			{
-				UpdateScaleAndRotation(Element, _rectTransform);
-			}
 			else if (e.PropertyName == VisualElement.ScaleProperty.PropertyName)
 			{
-				UpdateScaleAndRotation(Element, _rectTransform);
+				UpdateScale(Element, _rectTransform);
 			}
 			else if (e.PropertyName == VisualElement.TranslationXProperty.PropertyName ||
 					 e.PropertyName == VisualElement.TranslationYProperty.PropertyName ||
@@ -152,7 +152,9 @@ namespace Xamarin.Forms.Platform.Unity
 
 			UpdateVisibility(Element, _rectTransform);
 			UpdateOpacity(Element, _rectTransform);
-			UpdateScaleAndRotation(Element, _rectTransform);
+			UpdatePositionSizeAnchor(Element, _rectTransform);
+			UpdateScale(Element, _rectTransform);
+			UpdateRotation(Element, _rectTransform);
 			UpdateInputTransparent(Element, _rectTransform);
 
 			if (_invalidateArrangeNeeded)
@@ -184,18 +186,47 @@ namespace Xamarin.Forms.Platform.Unity
 			//Container.InvalidateMeasure();
 		}
 
-		static void UpdateInputTransparent(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateInputTransparent(VisualElement view, RectTransform rectTransform)
 		{
 			rectTransform.gameObject.SetActive(view.IsEnabled && view.IsVisible && !view.InputTransparent);
 		}
 
-		static void UpdateOpacity(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateOpacity(VisualElement view, RectTransform rectTransform)
 		{
 			//control.Opacity = view.Opacity;
 		}
 
-		static void UpdateRotation(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdatePositionSizeAnchor(VisualElement view, RectTransform rectTransform)
 		{
+			var position = new Vector2((float)view.X, (float)view.Y);
+			var size = new Vector2(Mathf.Max((float)view.Width, 0.0f), Mathf.Max((float)view.Height, 0.0f));
+			var pivot = new Vector2((float)view.AnchorX, (float)view.AnchorY);
+			var ap = new Vector2(position.x + size.x * pivot.x, -(position.y + size.y * pivot.y));
+
+			/*var parent = view.Parent as VisualElement;
+			if (parent != null)
+			{
+				var parentRenderer = Platform.GetRenderer(parent);
+				if (parentRenderer != null)
+				{
+					ap.y = -ap.y;
+				}
+			}*/
+
+			rectTransform.anchorMin = new Vector2(0.0f, 1.0f);
+			rectTransform.anchorMax = new Vector2(0.0f, 1.0f);
+			rectTransform.anchoredPosition = ap;
+			rectTransform.sizeDelta = size;
+			rectTransform.pivot = pivot;
+
+			//Debug.Log(string.Format("Layout: {0} ({1}) pt={2} sz={3} pivot={4} ancpt={5}",
+			//	view.GetType(), rectTransform.GetInstanceID(),
+			//	position, size, pivot, ap));
+		}
+
+		static void UpdateRotation(VisualElement view, RectTransform rectTransform)
+		{
+			rectTransform.localEulerAngles = new Vector3((float)view.RotationX, (float)view.RotationY, (float)view.Rotation);
 			/*
 			double anchorX = view.AnchorX;
 			double anchorY = view.AnchorY;
@@ -226,21 +257,14 @@ namespace Xamarin.Forms.Platform.Unity
 			*/
 		}
 
-		static void UpdateScaleAndRotation(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateScale(VisualElement view, RectTransform rectTransform)
 		{
-			float anchorX = (float)view.AnchorX;
-			float anchorY = (float)view.AnchorY;
 			float scale = (float)view.Scale;
-			//control.RenderTransformOrigin = new Windows.Foundation.Point(anchorX, anchorY);
-			//control.RenderTransform = new ScaleTransform { ScaleX = scale, ScaleY = scale };
-
-			rectTransform.localScale = new UnityEngine.Vector3(scale, scale, 0.0f);
-			rectTransform.localScale = new UnityEngine.Vector3(scale, scale, 0.0f);
-
-			UpdateRotation(view, rectTransform);
+			rectTransform.localScale = new Vector3(scale, scale, 0.0f);
+			rectTransform.localScale = new Vector3(scale, scale, 0.0f);
 		}
 
-		static void UpdateVisibility(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateVisibility(VisualElement view, RectTransform rectTransform)
 		{
 			UpdateInputTransparent(view, rectTransform);
 		}

@@ -38,7 +38,8 @@ namespace XamlPad
 					}
 					if (newView != null)
 					{
-						t._root.Children.Add(newView as View, 0, 1);
+						t._root.Children.Insert(1, newView);
+						Grid.SetRow(newView, 1);
 					}
 				}
 			});

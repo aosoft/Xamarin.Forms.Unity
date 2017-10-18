@@ -123,10 +123,13 @@ namespace Xamarin.Forms.Platform.Unity
 					previousPage.Cleanup();
 			}
 
-			newPage.Layout(ContainerBounds);
-
+			//	SetParent をすると pageRenderer の RenderTransform が変わってしまうので
+			//	(SetParent しても見栄えが変わらないように維持させるため)
+			//	先に SetParent してから Layout で補正する。
 			var pageRenderer = newPage.GetOrCreateRenderer();
 			pageRenderer.UnityRectTransform.SetParent(_canvas.transform);
+
+			newPage.Layout(ContainerBounds);
 
 			//pageRenderer.ContainerElement.Width = _canvas.Width;
 			//pageRenderer.ContainerElement.Height = _canvas.Height;
