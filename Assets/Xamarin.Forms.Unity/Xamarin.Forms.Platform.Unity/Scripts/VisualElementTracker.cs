@@ -16,7 +16,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Private Field
 
-		TNativeElement _component;
+		TNativeElement _control;
 		TElement _element;
 		UnityEngine.RectTransform _rectTransform;
 
@@ -27,16 +27,16 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor
 
-		public VisualElementTracker(TNativeElement component)
+		public VisualElementTracker(TNativeElement control)
 		{
 			//	Unity の仕組み上、 VisualElementRenderer と Component は不可分
 			//	なので Tracker のコンストラクト時で確定できる。
 
-			_component = component;
-			_rectTransform = component.GetComponent<UnityEngine.RectTransform>();
+			_control = control;
+			_rectTransform = control.GetComponent<UnityEngine.RectTransform>();
 			if (_rectTransform == null)
 			{
-				_rectTransform = component.gameObject.AddComponent<UnityEngine.RectTransform>();
+				_rectTransform = control.gameObject.AddComponent<UnityEngine.RectTransform>();
 			}
 
 			/*
@@ -50,9 +50,9 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Property
 
-		public TNativeElement UnityComponent
+		public TNativeElement Control
 		{
-			get { return _component; }
+			get { return _control; }
 		}
 
 		public TElement Element
