@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -18,7 +19,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		TNativeElement _control;
 		TElement _element;
-		UnityEngine.RectTransform _rectTransform;
+		RectTransform _rectTransform;
 
 		bool _invalidateArrangeNeeded;
 
@@ -33,10 +34,10 @@ namespace Xamarin.Forms.Platform.Unity
 			//	なので Tracker のコンストラクト時で確定できる。
 
 			_control = control;
-			_rectTransform = control.GetComponent<UnityEngine.RectTransform>();
+			_rectTransform = control.GetComponent<RectTransform>();
 			if (_rectTransform == null)
 			{
-				_rectTransform = control.gameObject.AddComponent<UnityEngine.RectTransform>();
+				_rectTransform = control.gameObject.AddComponent<RectTransform>();
 			}
 
 			/*
@@ -184,17 +185,45 @@ namespace Xamarin.Forms.Platform.Unity
 			//Container.InvalidateMeasure();
 		}
 
-		static void UpdateInputTransparent(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateInputTransparent(VisualElement view, RectTransform rectTransform)
 		{
 			rectTransform.gameObject.SetActive(view.IsEnabled && view.IsVisible && !view.InputTransparent);
 		}
 
-		static void UpdateOpacity(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateOpacity(VisualElement view, RectTransform rectTransform)
 		{
 			//control.Opacity = view.Opacity;
 		}
 
-		static void UpdateRotation(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdatePositionAndSize(VisualElement view, RectTransform rectTransform)
+		{
+			var position = new Vector2((float)view.X, (float)view.Y);
+			var size = new Vector2(Mathf.Max((float)view.Width, 0.0f), Mathf.Max((float)view.Height, 0.0f));
+			var pivot = rectTransform.pivot;
+			var ap = new Vector2(position.x + size.x * pivot.x, position.y + size.y * pivot.y);
+
+			var parent = view.Parent as VisualElement;
+			if (parent != null)
+			{
+				var parentRenderer = Platform.GetRenderer(parent);
+				if (parentRenderer != null)
+				{
+					ap.y = -ap.y;
+				}
+			}
+
+			rectTransform.anchorMin = new Vector2(0.0f, 1.0f);
+			rectTransform.anchorMax = new Vector2(0.0f, 1.0f);
+			rectTransform.anchoredPosition = ap;
+			rectTransform.sizeDelta = size;
+		}
+
+		static void UpdateAnchor(VisualElement view, RectTransform rectTransform)
+		{
+			rectTransform.pivot = new Vector2((float)view.AnchorX, (float)view.AnchorY);
+		}
+
+		static void UpdateRotation(VisualElement view, RectTransform rectTransform)
 		{
 			/*
 			double anchorX = view.AnchorX;
@@ -226,7 +255,7 @@ namespace Xamarin.Forms.Platform.Unity
 			*/
 		}
 
-		static void UpdateScaleAndRotation(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateScaleAndRotation(VisualElement view, RectTransform rectTransform)
 		{
 			float anchorX = (float)view.AnchorX;
 			float anchorY = (float)view.AnchorY;
@@ -234,13 +263,13 @@ namespace Xamarin.Forms.Platform.Unity
 			//control.RenderTransformOrigin = new Windows.Foundation.Point(anchorX, anchorY);
 			//control.RenderTransform = new ScaleTransform { ScaleX = scale, ScaleY = scale };
 
-			rectTransform.localScale = new UnityEngine.Vector3(scale, scale, 0.0f);
-			rectTransform.localScale = new UnityEngine.Vector3(scale, scale, 0.0f);
+			rectTransform.localScale = new Vector3(scale, scale, 0.0f);
+			rectTransform.localScale = new Vector3(scale, scale, 0.0f);
 
 			UpdateRotation(view, rectTransform);
 		}
 
-		static void UpdateVisibility(VisualElement view, UnityEngine.RectTransform rectTransform)
+		static void UpdateVisibility(VisualElement view, RectTransform rectTransform)
 		{
 			UpdateInputTransparent(view, rectTransform);
 		}
