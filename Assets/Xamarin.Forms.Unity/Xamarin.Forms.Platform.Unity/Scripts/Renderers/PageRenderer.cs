@@ -9,20 +9,5 @@ namespace Xamarin.Forms.Platform.Unity
 {
 	public class PageRenderer : VisualElementRenderer<Page, UnityEngine.Canvas>
 	{
-		public PageRenderer()
-		{
-		}
-
-		protected override void UpdateNativeControl()
-		{
-			base.UpdateNativeControl();
-
-			var renderTransform = GetComponent<RectTransform>();
-			if (renderTransform != null)
-			{
-				renderTransform.anchorMin = new Vector2(0.0f, 1.0f);
-				renderTransform.anchorMax = new Vector2(0.0f, 1.0f);
-			}
-		}
 	}
 }

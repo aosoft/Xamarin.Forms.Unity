@@ -29,8 +29,6 @@ namespace Xamarin.Forms.Platform.Unity
 
 		void SetElement(VisualElement element);
 
-		Vector2 GetAnchorPoint();
-
 		/// <summary>
 		/// 自身を保有する GameObject を破棄する
 		/// </summary>
