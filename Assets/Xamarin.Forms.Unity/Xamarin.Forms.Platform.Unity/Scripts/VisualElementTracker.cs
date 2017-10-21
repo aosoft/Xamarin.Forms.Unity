@@ -219,9 +219,9 @@ namespace Xamarin.Forms.Platform.Unity
 			rectTransform.sizeDelta = size;
 			rectTransform.pivot = pivot;
 
-			Debug.Log(string.Format("Layout: {0} ({1}) pt={2} sz={3} pivot={4} ancpt={5}",
-				view.GetType(), rectTransform.GetInstanceID(),
-				position, size, pivot, ap));
+			//Debug.Log(string.Format("Layout: {0} ({1}) pt={2} sz={3} pivot={4} ancpt={5}",
+			//	view.GetType(), rectTransform.GetInstanceID(),
+			//	position, size, pivot, ap));
 		}
 
 		static void UpdateRotation(VisualElement view, RectTransform rectTransform)
