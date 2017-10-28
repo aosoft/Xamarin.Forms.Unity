@@ -76,7 +76,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		public IIsolatedStorageFile GetUserStoreForApplication()
 		{
-			throw new NotImplementedException();
+			return new UnityIsolatedStorage();
 		}
 
 		public void OpenUriAction(Uri uri)
