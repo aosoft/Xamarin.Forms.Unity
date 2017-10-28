@@ -139,7 +139,14 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void OnApplicationPause(bool pause)
 		{
-			
+			if (pause)
+			{
+				Application.Current?.SendSleepAsync();
+			}
+			else
+			{
+				Application.Current?.SendResume();
+			}
 		}
 
 		#endregion
