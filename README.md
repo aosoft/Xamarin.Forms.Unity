@@ -48,6 +48,6 @@ This project contains source code of Xamarin.Forms 2.4.0-sr2.
 
 * XAML Loader does not work with WebGL Build. (maybe due to Unity (2017.1.1f1))
 * NavigationPage is not implemented in the current version.
-* Custom Renderers is not supported in the current version.  
+* ~~Custom Renderers is not supported in the current version.~~  
   (Please apply the design with the component of Prefab.)
 * Standard Renderers are under development.

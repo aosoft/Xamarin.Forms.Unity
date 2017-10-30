@@ -34,7 +34,7 @@ namespace Xamarin.Forms.Platform.Unity
 						{
 							Element.Value = value;
 						}
-					}).AddTo(this);
+					}).AddTo(slider);
 
 				slider.ObserveEveryValueChanged(x => x.minValue)
 					.BlockReenter()
@@ -44,7 +44,7 @@ namespace Xamarin.Forms.Platform.Unity
 						{
 							Element.Minimum = value;
 						}
-					}).AddTo(this);
+					}).AddTo(slider);
 
 				slider.ObserveEveryValueChanged(x => x.maxValue)
 					.BlockReenter()
@@ -54,7 +54,7 @@ namespace Xamarin.Forms.Platform.Unity
 						{
 							Element.Maximum = value;
 						}
-					}).AddTo(this);
+					}).AddTo(slider);
 			}
 		}
 

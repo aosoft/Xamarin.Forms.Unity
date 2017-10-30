@@ -37,7 +37,7 @@ namespace Xamarin.Forms.Platform.Unity
 						{
 							element.Text = value;
 						}
-					}).AddTo(this);
+					}).AddTo(inputField);
 
 				_componentText = new TextTracker(inputField.textComponent);
 			}

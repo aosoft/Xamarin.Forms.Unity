@@ -77,7 +77,8 @@ namespace Xamarin.Forms.Platform.Unity
 			if (element == null)
 				throw new ArgumentNullException(nameof(element));
 
-			IVisualElementRenderer renderer = Forms.Activity.CreateVisualElementRenderer(element.GetType());
+			IVisualElementRenderer renderer = Internals.Registrar.Registered.GetHandler<IVisualElementRenderer>(element.GetType()) ?? new DefaultRenderer();
+
 			renderer.SetElement(element);
 			return renderer;
 		}

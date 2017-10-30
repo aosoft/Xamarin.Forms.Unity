@@ -35,13 +35,13 @@ namespace Xamarin.Forms.Platform.Unity
 						{
 							elem.IsToggled = value;
 						}
-					}).AddTo(this);
-			}
+					}).AddTo(swtch);
 
-			var text = this.GetComponentInChildren<UnityEngine.UI.Text>();
-			if (text != null)
-			{
-				DestroyObject(text);
+				var text = swtch.GetComponentInChildren<UnityEngine.UI.Text>();
+				if (text != null)
+				{
+					UnityEngine.Object.DestroyObject(text);
+				}
 			}
 		}
 

@@ -1,7 +1,22 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Xamarin.Forms.Internals;
+
+using Xamarin.Forms.Platform.Unity;
+
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Label), typeof(LabelRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Button), typeof(ButtonRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Entry), typeof(EntryRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Editor), typeof(EditorRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Switch), typeof(SwitchRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Slider), typeof(SliderRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Picker), typeof(PickerRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.ScrollView), typeof(ScrollViewRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Page), typeof(PageRenderer))]
+[assembly: ExportRenderer(typeof(Xamarin.Forms.Layout), typeof(LayoutRenderer))]
 
 namespace Xamarin.Forms.Platform.Unity
 {
@@ -22,75 +37,43 @@ namespace Xamarin.Forms.Platform.Unity
 		public UnityEngine.UI.Dropdown _prefabDropdown;
 		public UnityEngine.UI.ScrollRect _prefabScrollView;
 
+		Dictionary<Type, UnityEngine.Component> _prefabs;
+
+		protected virtual void Awake()
+		{
+			_prefabs = new Dictionary<Type, UnityEngine.Component>();
+			InternalAddPrefab(_prefabButton);
+			InternalAddPrefab(_prefabText);
+			InternalAddPrefab(_prefabSlider);
+			InternalAddPrefab(_prefabInputField);
+			InternalAddPrefab(_prefabPanel);
+			InternalAddPrefab(_prefabCanvas);
+			InternalAddPrefab(_prefabToggle);
+			InternalAddPrefab(_prefabDropdown);
+			InternalAddPrefab(_prefabScrollView);
+		}
+
+		void InternalAddPrefab(UnityEngine.Component o)
+		{
+			if (o != null)
+			{
+				_prefabs.Add(o.GetType(), o);
+			}
+		}
+
 		/// <summary>
-		/// 指定の VisualElement に対応する VisualElementRenderer のインスタンスを取得する。
+		/// 指定の型に対応する基底コンポーネントを Prefab から生成する。
 		/// </summary>
-		/// <remarks>
-		/// Unity の構造上、Registrar.GetHandler 経由でのインスタンス取得ができないので。
-		/// </remarks>
-		/// <param name="type"></param>
+		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public IVisualElementRenderer CreateVisualElementRenderer(System.Type type, GameObject target = null)
+		public T CreateBaseComponent<T>() where T : UnityEngine.Component
 		{
-			if (IsCompatibleType(type, typeof(Label)))
+			var t = typeof(T);
+			if (_prefabs.ContainsKey(t))
 			{
-				return GetGameObject(target, _prefabText).AddComponent<LabelRenderer>();
+				return UnityEngine.Object.Instantiate<T>(_prefabs[t] as T);
 			}
-			else if (IsCompatibleType(type, typeof(Button)))
-			{
-				return GetGameObject(target, _prefabButton).gameObject.AddComponent<ButtonRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Entry)))
-			{
-				return GetGameObject(target, _prefabInputField).gameObject.AddComponent<EntryRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Editor)))
-			{
-				return GetGameObject(target, _prefabInputField).gameObject.AddComponent<EditorRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Switch)))
-			{
-				return GetGameObject(target, _prefabToggle).gameObject.AddComponent<SwitchRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Slider)))
-			{
-				return GetGameObject(target, _prefabSlider).gameObject.AddComponent<SliderRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Picker)))
-			{
-				return GetGameObject(target, _prefabDropdown).gameObject.AddComponent<PickerRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(ScrollView)))
-			{
-				return GetGameObject(target, _prefabScrollView).AddComponent<ScrollViewRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Page)))
-			{
-				return GetGameObject(target, _prefabCanvas).AddComponent<PageRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Layout)))
-			{
-				return GetGameObject(target, _prefabCanvas).AddComponent<LayoutRenderer>();
-			}
-			else
-			{
-				//	Default Renderer は Canvas コンポーネントに適用して返す
-				return GetGameObject(target, _prefabCanvas).AddComponent<DefaultRenderer>();
-			}
-		}
-
-		static GameObject GetGameObject<T>(GameObject target, T original) where T : UnityEngine.Component
-		{
-			if (target == null)
-			{
-				target = UnityEngine.Object.Instantiate<T>(original).gameObject;
-			}
-			return target;
-		}
-
-		static bool IsCompatibleType(System.Type target, System.Type baseType)
-		{
-			return target == baseType || target.IsSubclassOf(baseType);
+			return null;
 		}
 	}
 
@@ -114,8 +97,10 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region MonoBehavior
 
-		private void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
+
 			Forms.Init(this);
 			_platform = new Platform(this, _xamarinFormsPlatformCanvas);
 		}
@@ -139,7 +124,14 @@ namespace Xamarin.Forms.Platform.Unity
 
 		private void OnApplicationPause(bool pause)
 		{
-			
+			if (pause)
+			{
+				Application.Current?.SendSleepAsync();
+			}
+			else
+			{
+				Application.Current?.SendResume();
+			}
 		}
 
 		#endregion

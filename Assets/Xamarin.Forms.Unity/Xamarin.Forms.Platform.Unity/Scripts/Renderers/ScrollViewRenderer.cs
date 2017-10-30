@@ -232,7 +232,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				//	ここで設定しても Unity 側で上書きされるので次 Update で設定するのが本命
 				f(Unit.Default);
-				this.UpdateAsObservable().Take(1).Subscribe(f);
+				scrollRect.UpdateAsObservable().Take(1).Subscribe(f);
 			}
 		}
 

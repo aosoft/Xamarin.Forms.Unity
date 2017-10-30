@@ -30,10 +30,10 @@ namespace Xamarin.Forms.Platform.Unity
 			{
 				button.OnClickAsObservable()
 					.Subscribe(_ => (Element as IButtonController)?.SendClicked())
-					.AddTo(this);
+					.AddTo(button);
 			}
 
-			_componentText = new TextTracker(this.GetComponentInChildren<UnityEngine.UI.Text>());
+			_componentText = new TextTracker(button.GetComponentInChildren<UnityEngine.UI.Text>());
 		}
 
 		#endregion

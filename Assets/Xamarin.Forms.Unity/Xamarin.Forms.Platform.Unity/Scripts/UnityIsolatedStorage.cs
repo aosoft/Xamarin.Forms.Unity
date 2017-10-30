@@ -5,9 +5,9 @@ using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	internal class WinFormsIsolatedStorage : IIsolatedStorageFile
+	internal class UnityIsolatedStorage : IIsolatedStorageFile
 	{
-		public WinFormsIsolatedStorage()
+		public UnityIsolatedStorage()
 		{
 		}
 

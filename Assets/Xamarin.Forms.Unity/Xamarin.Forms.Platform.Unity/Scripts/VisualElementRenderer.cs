@@ -10,13 +10,14 @@ using Xamarin.Forms.Internals;
 namespace Xamarin.Forms.Platform.Unity
 {
 	public class VisualElementRenderer<TElement, TNativeElement> :
-		MonoBehaviour, IVisualElementRenderer, IEffectControlProvider
+		IVisualElementRenderer, IEffectControlProvider, IDisposable
 		where TElement : VisualElement
 		where TNativeElement : UnityEngine.Component
 	{
 		/*-----------------------------------------------------------------*/
 		#region Field
 
+		VisualElementBehaviour _monoBehavior;
 		VisualElementTracker<TElement, TNativeElement> _tracker;
 
 		protected RectTransform _rectTransform;
@@ -24,16 +25,35 @@ namespace Xamarin.Forms.Platform.Unity
 		#endregion
 
 		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+		#region Constructor / Dispose
+
+		public VisualElementRenderer()
+		{
+			Control = CreateBaseComponent();
+			_monoBehavior = Control.gameObject.AddComponent<VisualElementBehaviour>();
+			_rectTransform = _monoBehavior.RectTransform;
+
+			Awake();
+		}
+
+		protected virtual TNativeElement CreateBaseComponent()
+		{
+			//	既定の実装は TNativeElement で指定した型の登録済 Prefab の
+			//	複製を利用する。
+			return Forms.Activity.CreateBaseComponent<TNativeElement>();
+		}
 
 		protected virtual void Awake()
 		{
-			_rectTransform = GetComponent<RectTransform>();
-			if (_rectTransform == null)
+		}
+
+		public void Dispose()
+		{
+			if (_monoBehavior != null)
 			{
-				_rectTransform = this.gameObject.AddComponent<RectTransform>();
+				UnityEngine.Object.Destroy(_monoBehavior.gameObject);
+				_monoBehavior = null;
 			}
-			Control = GetComponent<TNativeElement>();
 		}
 
 		#endregion
