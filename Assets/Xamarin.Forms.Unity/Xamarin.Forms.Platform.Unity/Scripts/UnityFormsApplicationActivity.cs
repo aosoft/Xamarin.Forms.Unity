@@ -62,72 +62,10 @@ namespace Xamarin.Forms.Platform.Unity
 		}
 
 		/// <summary>
-		/// 指定の VisualElement に対応する VisualElementRenderer のインスタンスを取得する。
+		/// 指定の型に対応する基底コンポーネントを Prefab から生成する。
 		/// </summary>
+		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public IVisualElementRenderer CreateVisualElementRenderer(System.Type type)
-		{
-			var t = Internals.Registrar.Registered.GetHandlerType(type);
-			if (t == null)
-			{
-				t = typeof(DefaultRenderer);
-			}
-
-			//	TODO:
-			//	t2 は type から対応する prefab のものを類推する必要がある。
-			//	t は VisualElementRenderer なので t2 は別の方法が必要。
-			Type t2 = null;
-
-			return UnityEngine.Object.Instantiate(_prefabs[t2]).gameObject.AddComponent(t) as IVisualElementRenderer;
-			/*
-			if (IsCompatibleType(type, typeof(Label)))
-			{
-				return GetGameObject(_prefabText).AddComponent<LabelRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Button)))
-			{
-				return GetGameObject(_prefabButton).gameObject.AddComponent<ButtonRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Entry)))
-			{
-				return GetGameObject(_prefabInputField).gameObject.AddComponent<EntryRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Editor)))
-			{
-				return GetGameObject(_prefabInputField).gameObject.AddComponent<EditorRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Switch)))
-			{
-				return GetGameObject(_prefabToggle).gameObject.AddComponent<SwitchRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Slider)))
-			{
-				return GetGameObject(_prefabSlider).gameObject.AddComponent<SliderRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Picker)))
-			{
-				return GetGameObject(_prefabDropdown).gameObject.AddComponent<PickerRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(ScrollView)))
-			{
-				return GetGameObject(_prefabScrollView).AddComponent<ScrollViewRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Page)))
-			{
-				return GetGameObject(_prefabCanvas).AddComponent<PageRenderer>();
-			}
-			else if (IsCompatibleType(type, typeof(Layout)))
-			{
-				return GetGameObject(_prefabCanvas).AddComponent<LayoutRenderer>();
-			}
-			else
-			{
-				//	Default Renderer は Canvas コンポーネントに適用して返す
-				return GetGameObject(_prefabCanvas).AddComponent<DefaultRenderer>();
-			}
-			*/
-		}
-
 		public T CreateBaseComponent<T>() where T : UnityEngine.Component
 		{
 			var t = typeof(T);
@@ -136,16 +74,6 @@ namespace Xamarin.Forms.Platform.Unity
 				return UnityEngine.Object.Instantiate<T>(_prefabs[t] as T);
 			}
 			return null;
-		}
-
-		static GameObject GetGameObject<T>(T original) where T : UnityEngine.Component
-		{
-			return UnityEngine.Object.Instantiate<T>(original).gameObject;
-		}
-
-		static bool IsCompatibleType(System.Type target, System.Type baseType)
-		{
-			return target == baseType || target.IsSubclassOf(baseType);
 		}
 	}
 

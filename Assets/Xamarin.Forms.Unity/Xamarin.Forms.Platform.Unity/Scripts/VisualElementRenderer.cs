@@ -14,36 +14,10 @@ namespace Xamarin.Forms.Platform.Unity
 		where TElement : VisualElement
 		where TNativeElement : UnityEngine.Component
 	{
-		public class InternalBehaviour : MonoBehaviour
-		{
-			/*-------------------------------------------------------------*/
-			#region Field
-
-			VisualElementRenderer<TElement, TNativeElement> _parent;
-
-			#endregion
-
-			/*-------------------------------------------------------------*/
-			#region MonoBehavior
-
-			private void Awake()
-			{
-				_parent?.Awake();
-			}
-
-			private void OnDestroy()
-			{
-				_parent = null;	
-			}
-
-			#endregion
-		}
-
-
 		/*-----------------------------------------------------------------*/
 		#region Field
 
-		InternalBehaviour _monoBehavior;
+		VisualElementBehaviour _monoBehavior;
 		VisualElementTracker<TElement, TNativeElement> _tracker;
 
 		protected RectTransform _rectTransform;
@@ -56,7 +30,10 @@ namespace Xamarin.Forms.Platform.Unity
 		public VisualElementRenderer()
 		{
 			Control = CreateBaseComponent();
-			_monoBehavior = Control.gameObject.AddComponent<InternalBehaviour>();
+			_monoBehavior = Control.gameObject.AddComponent<VisualElementBehaviour>();
+			_rectTransform = _monoBehavior.RectTransform;
+
+			Awake();
 		}
 
 		protected virtual TNativeElement CreateBaseComponent()
@@ -66,6 +43,10 @@ namespace Xamarin.Forms.Platform.Unity
 			return Forms.Activity.CreateBaseComponent<TNativeElement>();
 		}
 
+		protected virtual void Awake()
+		{
+		}
+
 		public void Dispose()
 		{
 			if (_monoBehavior != null)
@@ -73,21 +54,6 @@ namespace Xamarin.Forms.Platform.Unity
 				UnityEngine.Object.Destroy(_monoBehavior.gameObject);
 				_monoBehavior = null;
 			}
-		}
-
-		#endregion
-
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
-
-		protected virtual void Awake()
-		{
-			_rectTransform = _monoBehavior.GetComponent<RectTransform>();
-			if (_rectTransform == null)
-			{
-				_rectTransform = _monoBehavior.gameObject.AddComponent<RectTransform>();
-			}
-			Control = _monoBehavior.GetComponent<TNativeElement>();
 		}
 
 		#endregion
