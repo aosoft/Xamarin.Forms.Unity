@@ -10,16 +10,70 @@ using Xamarin.Forms.Internals;
 namespace Xamarin.Forms.Platform.Unity
 {
 	public class VisualElementRenderer<TElement, TNativeElement> :
-		MonoBehaviour, IVisualElementRenderer, IEffectControlProvider
+		IVisualElementRenderer, IEffectControlProvider, IDisposable
 		where TElement : VisualElement
 		where TNativeElement : UnityEngine.Component
 	{
+		public class InternalBehaviour : MonoBehaviour
+		{
+			/*-------------------------------------------------------------*/
+			#region Field
+
+			VisualElementRenderer<TElement, TNativeElement> _parent;
+
+			#endregion
+
+			/*-------------------------------------------------------------*/
+			#region MonoBehavior
+
+			private void Awake()
+			{
+				_parent?.Awake();
+			}
+
+			private void OnDestroy()
+			{
+				_parent = null;	
+			}
+
+			#endregion
+		}
+
+
 		/*-----------------------------------------------------------------*/
 		#region Field
 
+		InternalBehaviour _monoBehavior;
 		VisualElementTracker<TElement, TNativeElement> _tracker;
 
 		protected RectTransform _rectTransform;
+
+		#endregion
+
+		/*-----------------------------------------------------------------*/
+		#region Constructor / Dispose
+
+		public VisualElementRenderer()
+		{
+			Control = CreateBaseComponent();
+			_monoBehavior = Control.gameObject.AddComponent<InternalBehaviour>();
+		}
+
+		protected virtual TNativeElement CreateBaseComponent()
+		{
+			//	既定の実装は TNativeElement で指定した型の登録済 Prefab の
+			//	複製を利用する。
+			return Forms.Activity.CreateBaseComponent<TNativeElement>();
+		}
+
+		public void Dispose()
+		{
+			if (_monoBehavior != null)
+			{
+				UnityEngine.Object.Destroy(_monoBehavior.gameObject);
+				_monoBehavior = null;
+			}
+		}
 
 		#endregion
 
@@ -28,12 +82,12 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected virtual void Awake()
 		{
-			_rectTransform = GetComponent<RectTransform>();
+			_rectTransform = _monoBehavior.GetComponent<RectTransform>();
 			if (_rectTransform == null)
 			{
-				_rectTransform = this.gameObject.AddComponent<RectTransform>();
+				_rectTransform = _monoBehavior.gameObject.AddComponent<RectTransform>();
 			}
-			Control = GetComponent<TNativeElement>();
+			Control = _monoBehavior.GetComponent<TNativeElement>();
 		}
 
 		#endregion

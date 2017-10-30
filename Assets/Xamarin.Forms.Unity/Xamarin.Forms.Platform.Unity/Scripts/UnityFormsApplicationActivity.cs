@@ -128,12 +128,12 @@ namespace Xamarin.Forms.Platform.Unity
 			*/
 		}
 
-		public GameObject CreateBaseComponent<T>() where T : UnityEngine.Component
+		public T CreateBaseComponent<T>() where T : UnityEngine.Component
 		{
 			var t = typeof(T);
 			if (_prefabs.ContainsKey(t))
 			{
-				return UnityEngine.Object.Instantiate<T>(_prefabs[t] as T).gameObject;
+				return UnityEngine.Object.Instantiate<T>(_prefabs[t] as T);
 			}
 			return null;
 		}
