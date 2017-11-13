@@ -19,7 +19,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 		TNativeElement _control;
 		TElement _element;
-		RectTransform _rectTransform;
+		VisualElementBehaviour _behaviour;
 
 		bool _invalidateArrangeNeeded;
 
@@ -28,17 +28,10 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region Constructor
 
-		public VisualElementTracker(TNativeElement control)
+		public VisualElementTracker(TNativeElement control, VisualElementBehaviour behaviour)
 		{
-			//	Unity の仕組み上、 VisualElementRenderer と Component は不可分
-			//	なので Tracker のコンストラクト時で確定できる。
-
 			_control = control;
-			_rectTransform = control.GetComponent<RectTransform>();
-			if (_rectTransform == null)
-			{
-				_rectTransform = control.gameObject.AddComponent<RectTransform>();
-			}
+			_behaviour = behaviour;
 
 			/*
 			_control.Tapped -= HandleTapped;
@@ -116,7 +109,7 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 			else if (e.PropertyName == VisualElement.ScaleProperty.PropertyName)
 			{
-				UpdateScale(Element, _rectTransform);
+				UpdateScale(Element, _behaviour.RectTransform);
 			}
 			else if (e.PropertyName == VisualElement.TranslationXProperty.PropertyName ||
 					 e.PropertyName == VisualElement.TranslationYProperty.PropertyName ||
@@ -124,19 +117,19 @@ namespace Xamarin.Forms.Platform.Unity
 					 e.PropertyName == VisualElement.RotationXProperty.PropertyName ||
 					 e.PropertyName == VisualElement.RotationYProperty.PropertyName)
 			{
-				UpdateRotation(Element, _rectTransform);
+				UpdateRotation(Element, _behaviour.RectTransform);
 			}
 			else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName)
 			{
-				UpdateVisibility(Element, _rectTransform);
+				UpdateVisibility(Element, _behaviour.RectTransform);
 			}
 			else if (e.PropertyName == VisualElement.OpacityProperty.PropertyName)
 			{
-				UpdateOpacity(Element, _rectTransform);
+				UpdateOpacity(Element, _behaviour);
 			}
 			else if (e.PropertyName == VisualElement.InputTransparentProperty.PropertyName)
 			{
-				UpdateInputTransparent(Element, _rectTransform);
+				UpdateInputTransparent(Element, _behaviour.RectTransform);
 			}
 		}
 
@@ -147,15 +140,15 @@ namespace Xamarin.Forms.Platform.Unity
 
 		protected virtual void UpdateNativeControl()
 		{
-			if (Element == null || _rectTransform == null)
+			if (Element == null || _behaviour == null)
 				return;
 
-			UpdateVisibility(Element, _rectTransform);
-			UpdateOpacity(Element, _rectTransform);
-			UpdatePositionSizeAnchor(Element, _rectTransform);
-			UpdateScale(Element, _rectTransform);
-			UpdateRotation(Element, _rectTransform);
-			UpdateInputTransparent(Element, _rectTransform);
+			UpdateVisibility(Element, _behaviour.RectTransform);
+			UpdateOpacity(Element, _behaviour);
+			UpdatePositionSizeAnchor(Element, _behaviour.RectTransform);
+			UpdateScale(Element, _behaviour.RectTransform);
+			UpdateRotation(Element, _behaviour.RectTransform);
+			UpdateInputTransparent(Element, _behaviour.RectTransform);
 
 			if (_invalidateArrangeNeeded)
 			{
@@ -191,9 +184,9 @@ namespace Xamarin.Forms.Platform.Unity
 			rectTransform.gameObject.SetActive(view.IsEnabled && view.IsVisible && !view.InputTransparent);
 		}
 
-		static void UpdateOpacity(VisualElement view, RectTransform rectTransform)
+		static void UpdateOpacity(VisualElement view, VisualElementBehaviour behaviour)
 		{
-			//control.Opacity = view.Opacity;
+			behaviour.Opacity = view.Opacity;
 		}
 
 		static void UpdatePositionSizeAnchor(VisualElement view, RectTransform rectTransform)

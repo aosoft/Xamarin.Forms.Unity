@@ -46,6 +46,7 @@ public partial class Page1 : ContentPage
 		grid.RowDefinitions.Add(new RowDefinition());
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
+		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
 
 		var sv = new ScrollView();
 		grid.Children.Add(sv, 0, 0);
@@ -108,6 +109,18 @@ public partial class Page1 : ContentPage
 			grid2.Children.Add(label, 0, 0);
 			grid2.Children.Add(button, 1, 0);
 		}
+
+		{
+			var slider = new Slider();
+			grid.Children.Add(slider, 0, 3);
+
+			slider.Minimum = 0.0;
+			slider.Maximum = 1.0;
+			slider.Value = 1.0;
+
+			slider.SetBinding(Page.OpacityProperty, new Binding { Path = "Value", Source = slider });
+		}
+
 		this.Content = grid;
 #endif
 	}

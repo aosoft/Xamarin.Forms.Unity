@@ -114,7 +114,7 @@ namespace Xamarin.Forms.Platform.Unity
 
 				if (AutoTrack && Tracker == null)
 				{
-					Tracker = new VisualElementTracker<TElement, TNativeElement>(Control);
+					Tracker = new VisualElementTracker<TElement, TNativeElement>(Control, _monoBehavior);
 				}
 
 				// Disabled until reason for crashes with unhandled exceptions is discovered
