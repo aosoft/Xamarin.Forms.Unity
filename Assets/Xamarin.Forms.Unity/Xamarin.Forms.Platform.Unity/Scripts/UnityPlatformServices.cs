@@ -101,6 +101,11 @@ namespace Xamarin.Forms.Platform.Unity
 			}
 		}
 
+		public void QuitApplication()
+		{
+			UnityEngine.Application.Quit();
+		}
+
 		#endregion
 	}
 }
