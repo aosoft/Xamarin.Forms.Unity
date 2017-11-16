@@ -54,3 +54,4 @@ AndroidNative/build/
 AndroidNative/.gradle/
 AndroidNative/gradlew
 AndroidNative/gradlew.bat
+!EmbeddingTestBeds/Embedding.iOS/*.designer.cs
