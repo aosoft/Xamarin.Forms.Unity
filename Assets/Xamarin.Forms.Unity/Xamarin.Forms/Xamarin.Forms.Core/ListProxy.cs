@@ -10,21 +10,21 @@ namespace Xamarin.Forms
 {
 	internal sealed class ListProxy : IReadOnlyList<object>, IListProxy, INotifyCollectionChanged
 	{
-		readonly ICollection _collection;
-		readonly IList _list;
-		readonly int _windowSize;
-		readonly ConditionalWeakTable<ListProxy, WeakNotifyProxy> _sourceToWeakHandlers;
+		private readonly ICollection _collection;
+		private readonly IList _list;
+		private readonly int _windowSize;
+		private readonly ConditionalWeakTable<ListProxy, WeakNotifyProxy> _sourceToWeakHandlers;
 
-		IEnumerator _enumerator;
-		int _enumeratorIndex;
+		private IEnumerator _enumerator;
+		private int _enumeratorIndex;
 
-		bool _finished;
-		HashSet<int> _indexesCounted;
+		private bool _finished;
+		private HashSet<int> _indexesCounted;
 
-		Dictionary<int, object> _items;
-		int _version;
+		private Dictionary<int, object> _items;
+		private int _version;
 
-		int _windowIndex;
+		private int _windowIndex;
 
 		internal ListProxy(IEnumerable enumerable, int windowSize = int.MaxValue)
 		{
@@ -157,7 +157,7 @@ namespace Xamarin.Forms
 
 		public event EventHandler CountChanged;
 
-		void ClearRange(int index, int clearCount)
+		private void ClearRange(int index, int clearCount)
 		{
 			if (_items == null)
 				return;
@@ -166,7 +166,7 @@ namespace Xamarin.Forms
 				_items.Remove(i);
 		}
 
-		bool CountIndex(int index)
+		private bool CountIndex(int index)
 		{
 			if (_collection != null)
 				return false;
@@ -182,7 +182,7 @@ namespace Xamarin.Forms
 			return true;
 		}
 
-		void EnsureWindowCreated()
+		private void EnsureWindowCreated()
 		{
 			if (_items != null && _items.Count > 0)
 				return;
@@ -191,7 +191,7 @@ namespace Xamarin.Forms
 			TryGetValue(0, out value);
 		}
 
-		void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			Action action;
 			if (_list == null)
@@ -226,21 +226,21 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+		private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
 		{
 			NotifyCollectionChangedEventHandler changed = CollectionChanged;
 			if (changed != null)
 				changed(this, e);
 		}
 
-		void OnCountChanged()
+		private void OnCountChanged()
 		{
 			EventHandler changed = CountChanged;
 			if (changed != null)
 				changed(this, EventArgs.Empty);
 		}
 
-		bool TryGetValue(int index, out object value)
+		private bool TryGetValue(int index, out object value)
 		{
 			value = null;
 
@@ -361,11 +361,11 @@ namespace Xamarin.Forms
 			return _items.TryGetValue(index, out value);
 		}
 
-		class WeakNotifyProxy
+		private class WeakNotifyProxy
 		{
-			readonly WeakReference<INotifyCollectionChanged> _weakCollection;
-			readonly WeakReference<ListProxy> _weakProxy;
-			readonly ConditionalWeakTable<ListProxy, NotifyCollectionChangedEventHandler> _sourceToWeakHandlers;
+			private readonly WeakReference<INotifyCollectionChanged> _weakCollection;
+			private readonly WeakReference<ListProxy> _weakProxy;
+			private readonly ConditionalWeakTable<ListProxy, NotifyCollectionChangedEventHandler> _sourceToWeakHandlers;
 
 			public WeakNotifyProxy(ListProxy proxy, INotifyCollectionChanged incc)
 			{
@@ -379,7 +379,7 @@ namespace Xamarin.Forms
 				_weakCollection = new WeakReference<INotifyCollectionChanged>(incc);
 			}
 
-			void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+			private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 			{
 				ListProxy proxy;
 				if (!_weakProxy.TryGetTarget(out proxy))
@@ -395,12 +395,12 @@ namespace Xamarin.Forms
 			}
 		}
 
-		class ProxyEnumerator : IEnumerator<object>
+		private class ProxyEnumerator : IEnumerator<object>
 		{
-			readonly ListProxy _proxy;
-			readonly int _version;
+			private readonly ListProxy _proxy;
+			private readonly int _version;
 
-			int _index;
+			private int _index;
 
 			public ProxyEnumerator(ListProxy proxy)
 			{
@@ -492,6 +492,6 @@ namespace Xamarin.Forms
 			throw new NotSupportedException();
 		}
 
-		#endregion
+		#endregion IList
 	}
 }

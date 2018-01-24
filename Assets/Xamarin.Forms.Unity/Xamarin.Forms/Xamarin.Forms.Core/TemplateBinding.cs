@@ -6,11 +6,11 @@ namespace Xamarin.Forms
 	public class TemplateBinding : BindingBase
 	{
 		internal const string SelfPath = ".";
-		IValueConverter _converter;
-		object _converterParameter;
+		private IValueConverter _converter;
+		private object _converterParameter;
 
-		BindingExpression _expression;
-		string _path;
+		private BindingExpression _expression;
+		private string _path;
 
 		public TemplateBinding()
 		{
@@ -116,7 +116,7 @@ namespace Xamarin.Forms
 				_expression.Unapply();
 		}
 
-		void ApplyInner(Element templatedParent, BindableObject bindableObject, BindableProperty targetProperty)
+		private void ApplyInner(Element templatedParent, BindableObject bindableObject, BindableProperty targetProperty)
 		{
 			if (_expression == null && templatedParent != null)
 				_expression = new BindingExpression(this, SelfPath);
@@ -124,7 +124,7 @@ namespace Xamarin.Forms
 			_expression?.Apply(templatedParent, bindableObject, targetProperty);
 		}
 
-		BindingExpression GetBindingExpression(string path)
+		private BindingExpression GetBindingExpression(string path)
 		{
 			return new BindingExpression(this, !string.IsNullOrWhiteSpace(path) ? path : SelfPath);
 		}

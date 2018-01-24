@@ -10,7 +10,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty ColorProperty = BindableProperty.Create("Color", typeof(Color), typeof(ActivityIndicator), Color.Default);
 
-		readonly Lazy<PlatformConfigurationRegistry<ActivityIndicator>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<ActivityIndicator>> _platformConfigurationRegistry;
 
 		public ActivityIndicator()
 		{
@@ -28,6 +28,7 @@ namespace Xamarin.Forms
 			get { return (bool)GetValue(IsRunningProperty); }
 			set { SetValue(IsRunningProperty, value); }
 		}
+
 		public IPlatformElementConfiguration<T, ActivityIndicator> On<T>() where T : IConfigPlatform
 		{
 			return _platformConfigurationRegistry.Value.On<T>();

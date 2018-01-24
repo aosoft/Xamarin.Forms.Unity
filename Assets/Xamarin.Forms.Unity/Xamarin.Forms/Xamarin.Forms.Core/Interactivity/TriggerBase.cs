@@ -1,13 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
 	public abstract class TriggerBase : BindableObject, IAttachedObject
 	{
-		bool _isSealed;
+		private bool _isSealed;
 
 		internal TriggerBase(Type targetType)
 		{
@@ -91,7 +90,7 @@ namespace Xamarin.Forms
 				Condition.IsSealed = true;
 		}
 
-		void OnConditionChanged(BindableObject bindable, bool oldValue, bool newValue)
+		private void OnConditionChanged(BindableObject bindable, bool oldValue, bool newValue)
 		{
 			if (newValue)
 			{
@@ -111,9 +110,9 @@ namespace Xamarin.Forms
 
 		internal class SealedList<T> : IList<T>
 		{
-			readonly IList<T> _actual;
+			private readonly IList<T> _actual;
 
-			bool _isReadOnly;
+			private bool _isReadOnly;
 
 			public SealedList()
 			{

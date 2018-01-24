@@ -1,198 +1,199 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class VisualElementRenderer<TElement, TNativeElement> :
-		IVisualElementRenderer, IEffectControlProvider, IDisposable
-		where TElement : VisualElement
-		where TNativeElement : UnityEngine.Component
-	{
-		/*-----------------------------------------------------------------*/
-		#region Field
+    public class VisualElementRenderer<TElement, TNativeElement> :
+        IVisualElementRenderer, IEffectControlProvider, IDisposable
+        where TElement : VisualElement
+        where TNativeElement : UnityEngine.Component
+    {
+        /*-----------------------------------------------------------------*/
 
-		VisualElementBehaviour _monoBehavior;
-		VisualElementTracker<TElement, TNativeElement> _tracker;
+        #region Field
 
-		protected RectTransform _rectTransform;
+        private VisualElementBehaviour _monoBehavior;
+        private VisualElementTracker<TElement, TNativeElement> _tracker;
 
-		#endregion
+        protected RectTransform _rectTransform;
 
-		/*-----------------------------------------------------------------*/
-		#region Constructor / Dispose
+        #endregion Field
 
-		public VisualElementRenderer()
-		{
-			Control = CreateBaseComponent();
-			_monoBehavior = Control.gameObject.AddComponent<VisualElementBehaviour>();
-			_rectTransform = _monoBehavior.RectTransform;
+        /*-----------------------------------------------------------------*/
 
-			Awake();
-		}
+        #region Constructor / Dispose
 
-		protected virtual TNativeElement CreateBaseComponent()
-		{
-			//	既定の実装は TNativeElement で指定した型の登録済 Prefab の
-			//	複製を利用する。
-			return Forms.Activity.CreateBaseComponent<TNativeElement>();
-		}
+        public VisualElementRenderer()
+        {
+            Control = CreateBaseComponent();
+            _monoBehavior = Control.gameObject.AddComponent<VisualElementBehaviour>();
+            _rectTransform = _monoBehavior.RectTransform;
 
-		protected virtual void Awake()
-		{
-		}
+            Awake();
+        }
 
-		public void Dispose()
-		{
-			if (_monoBehavior != null)
-			{
-				UnityEngine.Object.Destroy(_monoBehavior.gameObject);
-				_monoBehavior = null;
-			}
-		}
+        protected virtual TNativeElement CreateBaseComponent()
+        {
+            //	既定の実装は TNativeElement で指定した型の登録済 Prefab の
+            //	複製を利用する。
+            return Forms.Activity.CreateBaseComponent<TNativeElement>();
+        }
 
-		#endregion
+        protected virtual void Awake()
+        {
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Property
+        public void Dispose()
+        {
+            if (_monoBehavior != null)
+            {
+                UnityEngine.Object.Destroy(_monoBehavior.gameObject);
+                _monoBehavior = null;
+            }
+        }
 
-		VisualElementPackager Packager { get; set; }
+        #endregion Constructor / Dispose
 
-		public TNativeElement Control { get; private set; }
+        /*-----------------------------------------------------------------*/
 
-		public TElement Element { get; private set; }
+        #region Property
 
-		#endregion
+        private VisualElementPackager Packager { get; set; }
 
-		/*-----------------------------------------------------------------*/
-		#region IVisualElementRenderer
+        public TNativeElement Control { get; private set; }
 
-		VisualElement IVisualElementRenderer.Element => Element;
+        public TElement Element { get; private set; }
 
-		public virtual Transform UnityContainerTransform => Control?.transform;
+        #endregion Property
 
-		public RectTransform UnityRectTransform => _rectTransform;
+        /*-----------------------------------------------------------------*/
 
-		public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
+        #region IVisualElementRenderer
 
-		public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
-		{
-			//	暫定
-			if (_rectTransform != null)
-			{
-				return new SizeRequest(
-					new Size(
-						Math.Min(_rectTransform.rect.width, widthConstraint),
-						Math.Min(_rectTransform.rect.height, heightConstraint)));
-			}
-			return new SizeRequest(new Size(widthConstraint, heightConstraint));
-		}
+        VisualElement IVisualElementRenderer.Element => Element;
 
-		public void SetElement(VisualElement element)
-		{
-			TElement oldElement = Element;
-			Element = (TElement)element;
+        public virtual Transform UnityContainerTransform => Control?.transform;
 
-			if (oldElement != null)
-			{
-				oldElement.PropertyChanged -= OnElementPropertyChanged;
-				oldElement.FocusChangeRequested -= OnElementFocusChangeRequested;
-			}
+        public RectTransform UnityRectTransform => _rectTransform;
 
-			if (element != null)
-			{
-				Element.PropertyChanged += OnElementPropertyChanged;
-				Element.FocusChangeRequested += OnElementFocusChangeRequested;
+        public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
-				if (AutoPackage && Packager == null)
-					Packager = new VisualElementPackager(this);
+        public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
+        {
+            //	暫定
+            if (_rectTransform != null)
+            {
+                return new SizeRequest(
+                    new Size(
+                        Math.Min(_rectTransform.rect.width, widthConstraint),
+                        Math.Min(_rectTransform.rect.height, heightConstraint)));
+            }
+            return new SizeRequest(new Size(widthConstraint, heightConstraint));
+        }
 
-				if (AutoTrack && Tracker == null)
-				{
-					Tracker = new VisualElementTracker<TElement, TNativeElement>(Control, _monoBehavior);
-				}
+        public void SetElement(VisualElement element)
+        {
+            TElement oldElement = Element;
+            Element = (TElement)element;
 
-				// Disabled until reason for crashes with unhandled exceptions is discovered
-				// Without this some layouts may end up with improper sizes, however their children
-				// will position correctly
-				//Loaded += (sender, args) => {
-				if (Packager != null)
-					Packager.Load();
-				//};
-			}
+            if (oldElement != null)
+            {
+                oldElement.PropertyChanged -= OnElementPropertyChanged;
+                oldElement.FocusChangeRequested -= OnElementFocusChangeRequested;
+            }
 
-			OnElementChanged(new ElementChangedEventArgs<TElement>(oldElement, Element));
+            if (element != null)
+            {
+                Element.PropertyChanged += OnElementPropertyChanged;
+                Element.FocusChangeRequested += OnElementFocusChangeRequested;
 
-			var controller = (IElementController)oldElement;
-			if (controller != null && controller.EffectControlProvider == (IEffectControlProvider)this)
-			{
-				controller.EffectControlProvider = null;
-			}
+                if (AutoPackage && Packager == null)
+                    Packager = new VisualElementPackager(this);
 
-			controller = element;
-			if (controller != null)
-				controller.EffectControlProvider = this;
-		}
+                if (AutoTrack && Tracker == null)
+                {
+                    Tracker = new VisualElementTracker<TElement, TNativeElement>(Control, _monoBehavior);
+                }
 
-		public void DestroyObject()
-		{
-			var go = Control?.gameObject;
-			if (go != null)
-			{
-				UnityEngine.Object.Destroy(go);
-			}
-		}
+                // Disabled until reason for crashes with unhandled exceptions is discovered
+                // Without this some layouts may end up with improper sizes, however their children
+                // will position correctly
+                //Loaded += (sender, args) => {
+                if (Packager != null)
+                    Packager.Load();
+                //};
+            }
 
-		#endregion
+            OnElementChanged(new ElementChangedEventArgs<TElement>(oldElement, Element));
 
-		/*-----------------------------------------------------------------*/
-		#region IEffectControlProvider
+            var controller = (IElementController)oldElement;
+            if (controller != null && controller.EffectControlProvider == (IEffectControlProvider)this)
+            {
+                controller.EffectControlProvider = null;
+            }
 
-		void IEffectControlProvider.RegisterEffect(Effect effect)
-		{
-			throw new NotImplementedException();
-		}
+            controller = element;
+            if (controller != null)
+                controller.EffectControlProvider = this;
+        }
 
-		#endregion
+        public void DestroyObject()
+        {
+            var go = Control?.gameObject;
+            if (go != null)
+            {
+                UnityEngine.Object.Destroy(go);
+            }
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Internals
+        #endregion IVisualElementRenderer
 
-		protected bool AutoPackage { get; set; } = true;
+        /*-----------------------------------------------------------------*/
 
-		protected bool AutoTrack { get; set; } = true;
+        #region IEffectControlProvider
 
-		protected VisualElementTracker<TElement, TNativeElement> Tracker
-		{
-			get { return _tracker; }
-			set
-			{
-				if (_tracker == value)
-					return;
+        void IEffectControlProvider.RegisterEffect(Effect effect)
+        {
+            throw new NotImplementedException();
+        }
 
-				if (_tracker != null)
-				{
-					_tracker.Updated -= OnTrackerUpdated;
-				}
+        #endregion IEffectControlProvider
 
-				_tracker = value;
+        /*-----------------------------------------------------------------*/
 
-				if (_tracker != null)
-				{
-					_tracker.Updated += OnTrackerUpdated;
-					UpdateTracker();
-				}
-			}
-		}
+        #region Internals
 
-		protected virtual void UpdateBackgroundColor()
-		{
-			/*
+        protected bool AutoPackage { get; set; } = true;
+
+        protected bool AutoTrack { get; set; } = true;
+
+        protected VisualElementTracker<TElement, TNativeElement> Tracker
+        {
+            get { return _tracker; }
+            set
+            {
+                if (_tracker == value)
+                    return;
+
+                if (_tracker != null)
+                {
+                    _tracker.Updated -= OnTrackerUpdated;
+                }
+
+                _tracker = value;
+
+                if (_tracker != null)
+                {
+                    _tracker.Updated += OnTrackerUpdated;
+                    UpdateTracker();
+                }
+            }
+        }
+
+        protected virtual void UpdateBackgroundColor()
+        {
+            /*
 			Color backgroundColor = Element.BackgroundColor;
 			var control = Control as Control;
 			if (control != null)
@@ -218,55 +219,55 @@ namespace Xamarin.Forms.Platform.Unity
 				}
 			}
 			*/
-		}
+        }
 
-		protected virtual void UpdateNativeControl()
-		{
-			UpdateEnabled();
-			/*
+        protected virtual void UpdateNativeControl()
+        {
+            UpdateEnabled();
+            /*
 			SetAutomationPropertiesHelpText();
 			SetAutomationPropertiesName();
 			SetAutomationPropertiesAccessibilityView();
 			SetAutomationPropertiesLabeledBy();
 			*/
-		}
+        }
 
-
-		void UpdateEnabled()
-		{
-			if (Control != null)
-				Control.gameObject.SetActive(Element.IsEnabled);
-			/*else
+        private void UpdateEnabled()
+        {
+            if (Control != null)
+                Control.gameObject.SetActive(Element.IsEnabled);
+            /*else
 				IsHitTestVisible = Element.IsEnabled && !Element.InputTransparent;*/
-		}
+        }
 
-		void UpdateTracker()
-		{
-			if (_tracker == null)
-				return;
+        private void UpdateTracker()
+        {
+            if (_tracker == null)
+                return;
 
-			//_tracker.PreventGestureBubbling = PreventGestureBubbling;
-			_tracker.Element = Element;
-		}
+            //_tracker.PreventGestureBubbling = PreventGestureBubbling;
+            _tracker.Element = Element;
+        }
 
-		#endregion
+        #endregion Internals
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+        /*-----------------------------------------------------------------*/
 
-		protected virtual void OnElementChanged(ElementChangedEventArgs<TElement> e)
-		{
-			var args = new VisualElementChangedEventArgs(e.OldElement, e.NewElement);
-			ElementChanged?.Invoke(this, args);
-		}
+        #region Event Handler
 
-		protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == VisualElement.IsEnabledProperty.PropertyName)
-				UpdateEnabled();
-			else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
-				UpdateBackgroundColor();
-			/*
+        protected virtual void OnElementChanged(ElementChangedEventArgs<TElement> e)
+        {
+            var args = new VisualElementChangedEventArgs(e.OldElement, e.NewElement);
+            ElementChanged?.Invoke(this, args);
+        }
+
+        protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == VisualElement.IsEnabledProperty.PropertyName)
+                UpdateEnabled();
+            else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+                UpdateBackgroundColor();
+            /*
 			else if (e.PropertyName == AutomationProperties.HelpTextProperty.PropertyName)
 				SetAutomationPropertiesHelpText();
 			else if (e.PropertyName == AutomationProperties.NameProperty.PropertyName)
@@ -276,26 +277,26 @@ namespace Xamarin.Forms.Platform.Unity
 			else if (e.PropertyName == AutomationProperties.LabeledByProperty.PropertyName)
 				SetAutomationPropertiesLabeledBy();
 			*/
-		}
+        }
 
-		void OnControlGotFocus(object sender, EventArgs args)
-		{
-			((IVisualElementController)Element).SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
-		}
+        private void OnControlGotFocus(object sender, EventArgs args)
+        {
+            ((IVisualElementController)Element).SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, true);
+        }
 
-		void OnControlLoaded(object sender, EventArgs args)
-		{
-			Element.IsNativeStateConsistent = true;
-		}
+        private void OnControlLoaded(object sender, EventArgs args)
+        {
+            Element.IsNativeStateConsistent = true;
+        }
 
-		void OnControlLostFocus(object sender, EventArgs args)
-		{
-			((IVisualElementController)Element).SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
-		}
+        private void OnControlLostFocus(object sender, EventArgs args)
+        {
+            ((IVisualElementController)Element).SetValueFromRenderer(VisualElement.IsFocusedPropertyKey, false);
+        }
 
-		internal virtual void OnElementFocusChangeRequested(object sender, VisualElement.FocusRequestArgs args)
-		{
-			/*
+        internal virtual void OnElementFocusChangeRequested(object sender, VisualElement.FocusRequestArgs args)
+        {
+            /*
 			var control = Control as Control;
 			if (control == null)
 				return;
@@ -308,13 +309,13 @@ namespace Xamarin.Forms.Platform.Unity
 				args.Result = true;
 			}
 			*/
-		}
+        }
 
-		void OnTrackerUpdated(object sender, EventArgs e)
-		{
-			UpdateNativeControl();
-		}
+        private void OnTrackerUpdated(object sender, EventArgs e)
+        {
+            UpdateNativeControl();
+        }
 
-		#endregion
-	}
+        #endregion Event Handler
+    }
 }

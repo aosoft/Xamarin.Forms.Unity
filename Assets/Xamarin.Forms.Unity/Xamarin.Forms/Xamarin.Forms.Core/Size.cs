@@ -8,8 +8,8 @@ namespace Xamarin.Forms
 	[DebuggerDisplay("Width={Width}, Height={Height}")]
 	public struct Size
 	{
-		double _width;
-		double _height;
+		private double _width;
+		private double _height;
 
 		public static readonly Size Zero;
 

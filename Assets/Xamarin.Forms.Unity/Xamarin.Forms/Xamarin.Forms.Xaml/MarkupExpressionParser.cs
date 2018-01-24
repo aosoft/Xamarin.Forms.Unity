@@ -18,10 +18,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -157,14 +157,14 @@ namespace Xamarin.Forms.Xaml
 			var piece = new StringBuilder();
 			// If we're inside a quoted string we append all chars to our piece until we hit the ending quote.
 			while (end < remaining.Length &&
-			       (inString || (remaining[end] != '}' && remaining[end] != ',' && remaining[end] != '=')))
+				   (inString || (remaining[end] != '}' && remaining[end] != ',' && remaining[end] != '=')))
 			{
 				if (inString)
 				{
 					if (remaining[end] == stringTerminator)
 					{
 						inString = false;
-						end ++;
+						end++;
 						break;
 					}
 				}
@@ -174,7 +174,7 @@ namespace Xamarin.Forms.Xaml
 					{
 						inString = true;
 						stringTerminator = remaining[end];
-						end ++;
+						end++;
 						continue;
 					}
 				}
@@ -182,7 +182,7 @@ namespace Xamarin.Forms.Xaml
 				// If this is an escape char, consume it and append the next char to our piece.
 				if (remaining[end] == '\\')
 				{
-					end ++;
+					end++;
 					if (end == remaining.Length)
 						break;
 				}
@@ -206,9 +206,9 @@ namespace Xamarin.Forms.Xaml
 			remaining = remaining.Substring(end + 1);
 
 			// Whitespace is trimmed from the end of the piece before stripping
-			// quote chars from the start/end of the string. 
+			// quote chars from the start/end of the string.
 			while (piece.Length > 0 && char.IsWhiteSpace(piece[piece.Length - 1]))
-				piece.Length --;
+				piece.Length--;
 
 			if (piece.Length >= 2)
 			{

@@ -10,7 +10,6 @@ namespace Xamarin.Forms.Internals
 			Flags = flags;
 		}
 
-
 		public KeyboardFlags Flags { get; private set; }
 	}
 }

@@ -1,4 +1,3 @@
-
 namespace Xamarin.Forms
 {
 	public class Configuration<TPlatform, TElement> : IPlatformElementConfiguration<TPlatform, TElement>

@@ -74,7 +74,7 @@ namespace Xamarin.Forms
 			TappedCallback = (s, o) => tappedCallback(s);
 		}
 
-		[Obsolete("TappedCallbackProperty is obsolete as of version 1.0.2. Please use Command instead.")] 
+		[Obsolete("TappedCallbackProperty is obsolete as of version 1.0.2. Please use Command instead.")]
 		public static readonly BindableProperty TappedCallbackProperty = BindableProperty.Create("TappedCallback", typeof(Action<View, object>), typeof(TapGestureRecognizer), null);
 
 		[Obsolete("TappedCallback is obsolete as of version 1.0.2. Please use Command instead.")]
@@ -84,7 +84,7 @@ namespace Xamarin.Forms
 			set { SetValue(TappedCallbackProperty, value); }
 		}
 
-		[Obsolete("TappedCallbackParameterProperty is obsolete as of version 1.0.2. Please use Command instead.")] 
+		[Obsolete("TappedCallbackParameterProperty is obsolete as of version 1.0.2. Please use Command instead.")]
 		public static readonly BindableProperty TappedCallbackParameterProperty = BindableProperty.Create("TappedCallbackParameter", typeof(object), typeof(TapGestureRecognizer), null);
 
 		[Obsolete("TappedCallbackParameter is obsolete as of version 1.0.2. Please use Command instead.")]
@@ -94,6 +94,6 @@ namespace Xamarin.Forms
 			set { SetValue(TappedCallbackParameterProperty, value); }
 		}
 
-		#endregion
+		#endregion obsolete cruft
 	}
 }

@@ -11,7 +11,7 @@ namespace Xamarin.Forms
 	[ProvideCompiled("Xamarin.Forms.Core.XamlC.SetterValueProvider")]
 	public sealed class Setter : IValueProvider
 	{
-		readonly ConditionalWeakTable<BindableObject, object> _originalValues = new ConditionalWeakTable<BindableObject, object>();
+		private readonly ConditionalWeakTable<BindableObject, object> _originalValues = new ConditionalWeakTable<BindableObject, object>();
 
 		public BindableProperty Property { get; set; }
 

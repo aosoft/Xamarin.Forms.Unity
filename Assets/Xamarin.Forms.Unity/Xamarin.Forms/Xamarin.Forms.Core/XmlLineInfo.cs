@@ -4,7 +4,7 @@ namespace Xamarin.Forms.Xaml
 {
 	public class XmlLineInfo : IXmlLineInfo
 	{
-		readonly bool _hasLineInfo;
+		private readonly bool _hasLineInfo;
 
 		public XmlLineInfo()
 		{

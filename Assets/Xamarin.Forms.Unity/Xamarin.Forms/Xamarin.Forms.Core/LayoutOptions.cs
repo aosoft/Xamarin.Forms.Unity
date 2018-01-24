@@ -5,7 +5,7 @@ namespace Xamarin.Forms
 	[TypeConverter(typeof(LayoutOptionsConverter))]
 	public struct LayoutOptions
 	{
-		int _flags;
+		private int _flags;
 
 		public static readonly LayoutOptions Start = new LayoutOptions(LayoutAlignment.Start, false);
 		public static readonly LayoutOptions Center = new LayoutOptions(LayoutAlignment.Center, false);

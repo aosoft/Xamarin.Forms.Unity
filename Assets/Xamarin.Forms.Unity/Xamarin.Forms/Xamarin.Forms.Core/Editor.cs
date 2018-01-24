@@ -23,7 +23,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty TextColorProperty = TextElement.TextColorProperty;
 
-		readonly Lazy<PlatformConfigurationRegistry<Editor>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Editor>> _platformConfigurationRegistry;
 
 		public string Text
 		{

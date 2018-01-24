@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ using Xamarin.Forms.Platform;
 namespace Xamarin.Forms
 {
 	[RenderWith(typeof(_NavigationPageRenderer))]
-	public class NavigationPage : Page, IPageContainer<Page>, INavigationPageController, IElementConfiguration<NavigationPage> 
+	public class NavigationPage : Page, IPageContainer<Page>, INavigationPageController, IElementConfiguration<NavigationPage>
 	{
 		public static readonly BindableProperty BackButtonTitleProperty = BindableProperty.CreateAttached("BackButtonTitle", typeof(string), typeof(Page), null);
 
@@ -18,7 +17,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty HasBackButtonProperty = BindableProperty.CreateAttached("HasBackButton", typeof(bool), typeof(NavigationPage), true);
 
-		[Obsolete("TintProperty is obsolete as of version 1.2.0. Please use BarBackgroundColorProperty and BarTextColorProperty to change NavigationPage bar color properties.")] 
+		[Obsolete("TintProperty is obsolete as of version 1.2.0. Please use BarBackgroundColorProperty and BarTextColorProperty to change NavigationPage bar color properties.")]
 		public static readonly BindableProperty TintProperty = BindableProperty.Create("Tint", typeof(Color), typeof(NavigationPage), Color.Default);
 
 		public static readonly BindableProperty BarBackgroundColorProperty = BindableProperty.Create("BarBackgroundColor", typeof(Color), typeof(NavigationPage), Color.Default);
@@ -27,10 +26,10 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty TitleIconProperty = BindableProperty.CreateAttached("TitleIcon", typeof(FileImageSource), typeof(NavigationPage), default(FileImageSource));
 
-		static readonly BindablePropertyKey CurrentPagePropertyKey = BindableProperty.CreateReadOnly("CurrentPage", typeof(Page), typeof(NavigationPage), null);
+		private static readonly BindablePropertyKey CurrentPagePropertyKey = BindableProperty.CreateReadOnly("CurrentPage", typeof(Page), typeof(NavigationPage), null);
 		public static readonly BindableProperty CurrentPageProperty = CurrentPagePropertyKey.BindableProperty;
 
-		static readonly BindablePropertyKey RootPagePropertyKey = BindableProperty.CreateReadOnly(nameof(RootPage), typeof(Page), typeof(NavigationPage), null);
+		private static readonly BindablePropertyKey RootPagePropertyKey = BindableProperty.CreateReadOnly(nameof(RootPage), typeof(Page), typeof(NavigationPage), null);
 		public static readonly BindableProperty RootPageProperty = RootPagePropertyKey.BindableProperty;
 
 		public NavigationPage()
@@ -289,7 +288,7 @@ namespace Xamarin.Forms
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public event EventHandler<NavigationRequestedEventArgs> RemovePageRequested;
 
-		void InsertPageBefore(Page page, Page before)
+		private void InsertPageBefore(Page page, Page before)
 		{
 			if (page == null)
 				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
@@ -317,7 +316,7 @@ namespace Xamarin.Forms
 				ForceLayout();
 		}
 
-		async Task PopToRootAsyncInner(bool animated)
+		private async Task PopToRootAsyncInner(bool animated)
 		{
 			if (StackDepth == 1)
 				return;
@@ -342,7 +341,7 @@ namespace Xamarin.Forms
 			PoppedToRoot?.Invoke(this, new PoppedToRootEventArgs(RootPage, childrenToRemove.OfType<Page>().ToList()));
 		}
 
-		async Task PushAsyncInner(Page page, bool animated)
+		private async Task PushAsyncInner(Page page, bool animated)
 		{
 			if (InternalChildren.Contains(page))
 				return;
@@ -363,7 +362,7 @@ namespace Xamarin.Forms
 			Pushed?.Invoke(this, args);
 		}
 
-		void PushPage(Page page)
+		private void PushPage(Page page)
 		{
 			InternalChildren.Add(page);
 
@@ -373,7 +372,7 @@ namespace Xamarin.Forms
 			CurrentPage = page;
 		}
 
-		void RemovePage(Page page)
+		private void RemovePage(Page page)
 		{
 			if (page == null)
 				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
@@ -398,7 +397,7 @@ namespace Xamarin.Forms
 				RootPage = (Page)InternalChildren.First();
 		}
 
-		void SafePop()
+		private void SafePop()
 		{
 			PopAsync(true).ContinueWith(t =>
 			{
@@ -407,9 +406,9 @@ namespace Xamarin.Forms
 			});
 		}
 
-		class NavigationImpl : NavigationProxy
+		private class NavigationImpl : NavigationProxy
 		{
-			readonly Lazy<ReadOnlyCastingList<Page, Element>> _castingList;
+			private readonly Lazy<ReadOnlyCastingList<Page, Element>> _castingList;
 
 			public NavigationImpl(NavigationPage owner)
 			{
@@ -417,7 +416,7 @@ namespace Xamarin.Forms
 				_castingList = new Lazy<ReadOnlyCastingList<Page, Element>>(() => new ReadOnlyCastingList<Page, Element>(Owner.InternalChildren));
 			}
 
-			NavigationPage Owner { get; }
+			private NavigationPage Owner { get; }
 
 			protected override IReadOnlyList<Page> GetNavigationStack()
 			{
@@ -450,7 +449,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		readonly Lazy<PlatformConfigurationRegistry<NavigationPage>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<NavigationPage>> _platformConfigurationRegistry;
 
 		public new IPlatformElementConfiguration<T, NavigationPage> On<T>() where T : IConfigPlatform
 		{

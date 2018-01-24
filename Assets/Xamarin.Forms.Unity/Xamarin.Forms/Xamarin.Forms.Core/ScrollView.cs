@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform;
 
 namespace Xamarin.Forms
@@ -12,23 +11,23 @@ namespace Xamarin.Forms
 	{
 		public static readonly BindableProperty OrientationProperty = BindableProperty.Create("Orientation", typeof(ScrollOrientation), typeof(ScrollView), ScrollOrientation.Vertical);
 
-		static readonly BindablePropertyKey ScrollXPropertyKey = BindableProperty.CreateReadOnly("ScrollX", typeof(double), typeof(ScrollView), 0d);
+		private static readonly BindablePropertyKey ScrollXPropertyKey = BindableProperty.CreateReadOnly("ScrollX", typeof(double), typeof(ScrollView), 0d);
 
 		public static readonly BindableProperty ScrollXProperty = ScrollXPropertyKey.BindableProperty;
 
-		static readonly BindablePropertyKey ScrollYPropertyKey = BindableProperty.CreateReadOnly("ScrollY", typeof(double), typeof(ScrollView), 0d);
+		private static readonly BindablePropertyKey ScrollYPropertyKey = BindableProperty.CreateReadOnly("ScrollY", typeof(double), typeof(ScrollView), 0d);
 
 		public static readonly BindableProperty ScrollYProperty = ScrollYPropertyKey.BindableProperty;
 
-		static readonly BindablePropertyKey ContentSizePropertyKey = BindableProperty.CreateReadOnly("ContentSize", typeof(Size), typeof(ScrollView), default(Size));
+		private static readonly BindablePropertyKey ContentSizePropertyKey = BindableProperty.CreateReadOnly("ContentSize", typeof(Size), typeof(ScrollView), default(Size));
 
 		public static readonly BindableProperty ContentSizeProperty = ContentSizePropertyKey.BindableProperty;
 
-		readonly Lazy<PlatformConfigurationRegistry<ScrollView>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<ScrollView>> _platformConfigurationRegistry;
 
-		View _content;
+		private View _content;
 
-		TaskCompletionSource<bool> _scrollCompletionSource;
+		private TaskCompletionSource<bool> _scrollCompletionSource;
 
 		public View Content
 		{
@@ -94,9 +93,11 @@ namespace Xamarin.Forms
 					case ScrollOrientation.Vertical:
 						position = y > ScrollY ? ScrollToPosition.End : ScrollToPosition.Start;
 						break;
+
 					case ScrollOrientation.Horizontal:
 						position = x > ScrollX ? ScrollToPosition.End : ScrollToPosition.Start;
 						break;
+
 					case ScrollOrientation.Both:
 						position = x > ScrollX || y > ScrollY ? ScrollToPosition.End : ScrollToPosition.Start;
 						break;
@@ -108,6 +109,7 @@ namespace Xamarin.Forms
 					y = y - Height / 2 + item.Height / 2;
 					x = x - Width / 2 + item.Width / 2;
 					break;
+
 				case ScrollToPosition.End:
 					y = y - Height + item.Height;
 					x = x - Width + item.Width;
@@ -179,11 +181,13 @@ namespace Xamarin.Forms
 						LayoutChildIntoBoundingRegion(_content, new Rectangle(x, y, GetMaxWidth(width, size), height));
 						ContentSize = new Size(GetMaxWidth(width), height);
 						break;
+
 					case ScrollOrientation.Vertical:
 						size = _content.Measure(width, double.PositiveInfinity, MeasureFlags.IncludeMargins);
 						LayoutChildIntoBoundingRegion(_content, new Rectangle(x, y, width, GetMaxHeight(height, size)));
 						ContentSize = new Size(width, GetMaxHeight(height));
 						break;
+
 					case ScrollOrientation.Both:
 						size = _content.Measure(double.PositiveInfinity, double.PositiveInfinity, MeasureFlags.IncludeMargins);
 						LayoutChildIntoBoundingRegion(_content, new Rectangle(x, y, GetMaxWidth(width, size), GetMaxHeight(height, size)));
@@ -204,9 +208,11 @@ namespace Xamarin.Forms
 				case ScrollOrientation.Horizontal:
 					widthConstraint = double.PositiveInfinity;
 					break;
+
 				case ScrollOrientation.Vertical:
 					heightConstraint = double.PositiveInfinity;
 					break;
+
 				case ScrollOrientation.Both:
 					widthConstraint = double.PositiveInfinity;
 					heightConstraint = double.PositiveInfinity;
@@ -229,6 +235,7 @@ namespace Xamarin.Forms
 						view.ComputedConstraint = LayoutConstraint.VerticallyFixed;
 					}
 					break;
+
 				case ScrollOrientation.Vertical:
 					LayoutOptions hOptions = view.HorizontalOptions;
 					if (hOptions.Alignment == LayoutAlignment.Fill && (Constraint & LayoutConstraint.HorizontallyFixed) != 0)
@@ -236,18 +243,19 @@ namespace Xamarin.Forms
 						view.ComputedConstraint = LayoutConstraint.HorizontallyFixed;
 					}
 					break;
+
 				case ScrollOrientation.Both:
 					view.ComputedConstraint = LayoutConstraint.None;
 					break;
 			}
 		}
 
-		bool CheckElementBelongsToScrollViewer(Element element)
+		private bool CheckElementBelongsToScrollViewer(Element element)
 		{
 			return Equals(element, this) || element.RealParent != null && CheckElementBelongsToScrollViewer(element.RealParent);
 		}
 
-		void CheckTaskCompletionSource()
+		private void CheckTaskCompletionSource()
 		{
 			if (_scrollCompletionSource != null && _scrollCompletionSource.Task.Status == TaskStatus.Running)
 			{
@@ -256,7 +264,7 @@ namespace Xamarin.Forms
 			_scrollCompletionSource = new TaskCompletionSource<bool>();
 		}
 
-		double GetCoordinate(Element item, string coordinateName, double coordinate)
+		private double GetCoordinate(Element item, string coordinateName, double coordinate)
 		{
 			if (item == this)
 				return coordinate;
@@ -265,27 +273,27 @@ namespace Xamarin.Forms
 			return visualParentElement != null ? GetCoordinate(visualParentElement, coordinateName, coordinate) : coordinate;
 		}
 
-		double GetMaxHeight(double height)
+		private double GetMaxHeight(double height)
 		{
 			return Math.Max(height, _content.Bounds.Top + Padding.Top + _content.Bounds.Bottom + Padding.Bottom);
 		}
 
-		static double GetMaxHeight(double height, SizeRequest size)
+		private static double GetMaxHeight(double height, SizeRequest size)
 		{
 			return Math.Max(size.Request.Height, height);
 		}
 
-		double GetMaxWidth(double width)
+		private double GetMaxWidth(double width)
 		{
 			return Math.Max(width, _content.Bounds.Left + Padding.Left + _content.Bounds.Right + Padding.Right);
 		}
 
-		static double GetMaxWidth(double width, SizeRequest size)
+		private static double GetMaxWidth(double width, SizeRequest size)
 		{
 			return Math.Max(size.Request.Width, width);
 		}
 
-		void OnScrollToRequested(ScrollToRequestedEventArgs e)
+		private void OnScrollToRequested(ScrollToRequestedEventArgs e)
 		{
 			CheckTaskCompletionSource();
 			EventHandler<ScrollToRequestedEventArgs> handler = ScrollToRequested;

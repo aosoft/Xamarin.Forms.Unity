@@ -96,7 +96,7 @@ namespace Xamarin.Forms
 			return result;
 		}
 
-		bool Equals(Font other)
+		private bool Equals(Font other)
 		{
 			return string.Equals(FontFamily, other.FontFamily) && FontSize.Equals(other.FontSize) && NamedSize == other.NamedSize && FontAttributes == other.FontAttributes;
 		}

@@ -1,5 +1,3 @@
-using System;
-
 namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 {
 	using FormsElement = Forms.ListView;
@@ -34,7 +32,7 @@ namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 			return config;
 		}
 
-		#endregion
+		#endregion SelectionMode
 	}
 
 	public enum ListViewSelectionMode
@@ -43,6 +41,7 @@ namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 		/// Allows ListItems to have TapGestures. The Enter key and Narrator will not fire the ItemTapped event.
 		/// </summary>
 		Inaccessible,
+
 		/// <summary>
 		/// Allows the Enter key and Narrator to fire the ItemTapped event. ListItems cannot have TapGestures.
 		/// </summary>

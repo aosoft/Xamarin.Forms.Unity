@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Xamarin.Forms.Xaml
 {
@@ -22,7 +21,7 @@ namespace Xamarin.Forms.Xaml
 		public XamlCompilationOptions XamlCompilationOptions { get; set; }
 	}
 
-	static class XamlCExtensions
+	internal static class XamlCExtensions
 	{
 		public static bool IsCompiled(this Type type)
 		{

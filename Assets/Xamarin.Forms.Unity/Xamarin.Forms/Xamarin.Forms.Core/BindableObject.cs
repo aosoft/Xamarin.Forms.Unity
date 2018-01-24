@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms.Internals;
 
@@ -14,10 +13,10 @@ namespace Xamarin.Forms
 			BindableProperty.Create("BindingContext", typeof(object), typeof(BindableObject), default(object),
 									BindingMode.OneWay, null, BindingContextPropertyChanged, null, null, BindingContextPropertyBindingChanging);
 
-		readonly List<BindablePropertyContext> _properties = new List<BindablePropertyContext>(4);
+		private readonly List<BindablePropertyContext> _properties = new List<BindablePropertyContext>(4);
 
-		bool _applying;
-		object _inheritedContext;
+		private bool _applying;
+		private object _inheritedContext;
 
 		public object BindingContext
 		{
@@ -147,8 +146,9 @@ namespace Xamarin.Forms
 
 		protected void UnapplyBindings()
 		{
-			for (int i = 0, _propertiesCount = _properties.Count; i < _propertiesCount; i++) {
-				BindablePropertyContext context = _properties [i];
+			for (int i = 0, _propertiesCount = _properties.Count; i < _propertiesCount; i++)
+			{
+				BindablePropertyContext context = _properties[i];
 				if (context.Binding == null)
 					continue;
 
@@ -365,10 +365,12 @@ namespace Xamarin.Forms
 				value = property.CoerceValue(this, value);
 
 			BindablePropertyContext context = GetOrCreateContext(property);
-			if (manuallySet) {
+			if (manuallySet)
+			{
 				context.Attributes |= BindableContextAttributes.IsManuallySet;
 				context.Attributes &= ~BindableContextAttributes.IsSetFromStyle;
-			} else
+			}
+			else
 				context.Attributes &= ~BindableContextAttributes.IsManuallySet;
 
 			if (fromStyle)
@@ -406,11 +408,12 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void ApplyBindings(bool skipBindingContext)
+		private void ApplyBindings(bool skipBindingContext)
 		{
 			var prop = _properties.ToArray();
-			for (int i = 0, propLength = prop.Length; i < propLength; i++) {
-				BindablePropertyContext context = prop [i];
+			for (int i = 0, propLength = prop.Length; i < propLength; i++)
+			{
+				BindablePropertyContext context = prop[i];
 				BindingBase binding = context.Binding;
 				if (binding == null)
 					continue;
@@ -423,7 +426,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void BindingContextPropertyBindingChanging(BindableObject bindable, BindingBase oldBindingBase, BindingBase newBindingBase)
+		private static void BindingContextPropertyBindingChanging(BindableObject bindable, BindingBase oldBindingBase, BindingBase newBindingBase)
 		{
 			object context = bindable._inheritedContext;
 			var oldBinding = oldBindingBase as Binding;
@@ -435,14 +438,14 @@ namespace Xamarin.Forms
 				newBinding.Context = context;
 		}
 
-		static void BindingContextPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		private static void BindingContextPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			bindable._inheritedContext = null;
 			bindable.ApplyBindings(true);
 			bindable.OnBindingContextChanged();
 		}
 
-		void ClearValue(BindableProperty property, bool checkaccess)
+		private void ClearValue(BindableProperty property, bool checkaccess)
 		{
 			if (property == null)
 				throw new ArgumentNullException("property");
@@ -480,7 +483,7 @@ namespace Xamarin.Forms
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		BindablePropertyContext CreateAndAddContext(BindableProperty property)
+		private BindablePropertyContext CreateAndAddContext(BindableProperty property)
 		{
 			var context = new BindablePropertyContext { Property = property, Value = property.DefaultValueCreator != null ? property.DefaultValueCreator(this) : property.DefaultValue };
 
@@ -492,7 +495,7 @@ namespace Xamarin.Forms
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		BindablePropertyContext GetContext(BindableProperty property)
+		private BindablePropertyContext GetContext(BindableProperty property)
 		{
 			List<BindablePropertyContext> properties = _properties;
 
@@ -507,7 +510,7 @@ namespace Xamarin.Forms
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		BindablePropertyContext GetOrCreateContext(BindableProperty property)
+		private BindablePropertyContext GetOrCreateContext(BindableProperty property)
 		{
 			BindablePropertyContext context = GetContext(property);
 			if (context == null)
@@ -518,7 +521,7 @@ namespace Xamarin.Forms
 			return context;
 		}
 
-		void RemoveBinding(BindableProperty property, BindablePropertyContext context)
+		private void RemoveBinding(BindableProperty property, BindablePropertyContext context)
 		{
 			context.Binding.Unapply();
 
@@ -528,7 +531,7 @@ namespace Xamarin.Forms
 			context.Binding = null;
 		}
 
-		void SetValue(BindableProperty property, object value, bool fromStyle, bool checkAccess)
+		private void SetValue(BindableProperty property, object value, bool fromStyle, bool checkAccess)
 		{
 			if (property == null)
 				throw new ArgumentNullException("property");
@@ -545,7 +548,7 @@ namespace Xamarin.Forms
 				(fromStyle ? SetValuePrivateFlags.FromStyle : SetValuePrivateFlags.ManuallySet) | (checkAccess ? SetValuePrivateFlags.CheckAccess : 0));
 		}
 
-		void SetValueActual(BindableProperty property, BindablePropertyContext context, object value, bool currentlyApplying, SetValueFlags attributes, bool silent = false)
+		private void SetValueActual(BindableProperty property, BindablePropertyContext context, object value, bool currentlyApplying, SetValueFlags attributes, bool silent = false)
 		{
 			object original = context.Value;
 			bool raiseOnEqual = (attributes & SetValueFlags.RaiseOnEqual) != 0;
@@ -599,7 +602,7 @@ namespace Xamarin.Forms
 		}
 
 		[Flags]
-		enum BindableContextAttributes
+		private enum BindableContextAttributes
 		{
 			IsManuallySet = 1 << 0,
 			IsBeingSet = 1 << 1,
@@ -608,7 +611,7 @@ namespace Xamarin.Forms
 			IsDefaultValue = 1 << 4
 		}
 
-		class BindablePropertyContext
+		private class BindablePropertyContext
 		{
 			public BindableContextAttributes Attributes;
 			public BindingBase Binding;
@@ -629,7 +632,7 @@ namespace Xamarin.Forms
 			Default = CheckAccess
 		}
 
-		class SetValueArgs
+		private class SetValueArgs
 		{
 			public readonly SetValueFlags Attributes;
 			public readonly BindablePropertyContext Context;

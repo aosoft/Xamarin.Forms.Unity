@@ -32,8 +32,8 @@ namespace Xamarin.Forms
 {
 	public static class AnimationExtensions
 	{
-		static readonly Dictionary<AnimatableKey, Info> s_animations;
-		static readonly Dictionary<AnimatableKey, int> s_kinetics;
+		private static readonly Dictionary<AnimatableKey, Info> s_animations;
+		private static readonly Dictionary<AnimatableKey, int> s_kinetics;
 
 		static AnimationExtensions()
 		{
@@ -73,7 +73,8 @@ namespace Xamarin.Forms
 		{
 			if (repeat == null)
 				self.Animate(name, animation.GetCallback(), rate, length, easing, finished, null);
-			else {
+			else
+			{
 				Func<bool> r = () =>
 				{
 					var val = repeat();
@@ -120,7 +121,6 @@ namespace Xamarin.Forms
 			}
 		}
 
-
 		public static void AnimateKinetic(this IAnimatable self, string name, Func<double, double, bool> callback, double velocity, double drag, Action finished = null)
 		{
 			Action animate = () => AnimateKineticInternal(self, name, callback, velocity, drag, finished);
@@ -147,7 +147,7 @@ namespace Xamarin.Forms
 			return x => start + (target - start) * x;
 		}
 
-		static void AbortAnimation(AnimatableKey key)
+		private static void AbortAnimation(AnimatableKey key)
 		{
 			if (!s_animations.ContainsKey(key))
 			{
@@ -163,7 +163,7 @@ namespace Xamarin.Forms
 			s_animations.Remove(key);
 		}
 
-		static void AbortKinetic(AnimatableKey key)
+		private static void AbortKinetic(AnimatableKey key)
 		{
 			if (!s_kinetics.ContainsKey(key))
 			{
@@ -174,7 +174,7 @@ namespace Xamarin.Forms
 			s_kinetics.Remove(key);
 		}
 
-		static void AnimateInternal<T>(IAnimatable self, string name, Func<double, T> transform, Action<T> callback,
+		private static void AnimateInternal<T>(IAnimatable self, string name, Func<double, T> transform, Action<T> callback,
 			uint rate, uint length, Easing easing, Action<T, bool> finished, Func<bool> repeat)
 		{
 			var key = new AnimatableKey(self, name);
@@ -205,7 +205,7 @@ namespace Xamarin.Forms
 			tweener.Start();
 		}
 
-		static void AnimateKineticInternal(IAnimatable self, string name, Func<double, double, bool> callback, double velocity, double drag, Action finished = null)
+		private static void AnimateKineticInternal(IAnimatable self, string name, Func<double, double, bool> callback, double velocity, double drag, Action finished = null)
 		{
 			var key = new AnimatableKey(self, name);
 
@@ -214,7 +214,8 @@ namespace Xamarin.Forms
 			double sign = velocity / Math.Abs(velocity);
 			velocity = Math.Abs(velocity);
 
-			int tick = Ticker.Default.Insert(step => {
+			int tick = Ticker.Default.Insert(step =>
+			{
 				long ms = step;
 
 				velocity -= drag * ms;
@@ -237,7 +238,7 @@ namespace Xamarin.Forms
 			s_kinetics[key] = tick;
 		}
 
-		static void HandleTweenerFinished(object o, EventArgs args)
+		private static void HandleTweenerFinished(object o, EventArgs args)
 		{
 			var tweener = o as Tweener;
 			Info info;
@@ -271,7 +272,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void HandleTweenerUpdated(object o, EventArgs args)
+		private static void HandleTweenerUpdated(object o, EventArgs args)
 		{
 			var tweener = o as Tweener;
 			Info info;
@@ -285,7 +286,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		class Info
+		private class Info
 		{
 			public Action<double> Callback;
 			public Action<double, bool> Finished;

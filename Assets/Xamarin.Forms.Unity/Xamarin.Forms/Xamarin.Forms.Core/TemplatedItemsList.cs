@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Cadenza.Collections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Cadenza.Collections;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Internals
 {
-
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public sealed class TemplatedItemsList<TView, TItem> : BindableObject, ITemplatedItemsList<TItem>, IList, IDisposable
 												where TView : BindableObject, IItemsView<TItem>
@@ -20,30 +18,30 @@ namespace Xamarin.Forms.Internals
 
 		public static readonly BindableProperty ShortNameProperty = BindableProperty.Create("ShortName", typeof(string), typeof(TemplatedItemsList<TView, TItem>), null);
 
-		static readonly BindablePropertyKey HeaderContentPropertyKey = BindableProperty.CreateReadOnly("HeaderContent", typeof(TItem), typeof(TemplatedItemsList<TView, TItem>), null);
+		private static readonly BindablePropertyKey HeaderContentPropertyKey = BindableProperty.CreateReadOnly("HeaderContent", typeof(TItem), typeof(TemplatedItemsList<TView, TItem>), null);
 
 		internal static readonly BindablePropertyKey ListProxyPropertyKey = BindableProperty.CreateReadOnly("ListProxy", typeof(ListProxy), typeof(TemplatedItemsList<TView, TItem>), null,
 			propertyChanged: OnListProxyChanged);
 
-		static readonly BindableProperty GroupProperty = BindableProperty.Create("Group", typeof(TemplatedItemsList<TView, TItem>), typeof(TItem), null);
+		private static readonly BindableProperty GroupProperty = BindableProperty.Create("Group", typeof(TemplatedItemsList<TView, TItem>), typeof(TItem), null);
 
-		static readonly BindableProperty IndexProperty = BindableProperty.Create("Index", typeof(int), typeof(TItem), -1);
+		private static readonly BindableProperty IndexProperty = BindableProperty.Create("Index", typeof(int), typeof(TItem), -1);
 
-		static readonly BindablePropertyKey IsGroupHeaderPropertyKey = BindableProperty.CreateAttachedReadOnly("IsGroupHeader", typeof(bool), typeof(Cell), false);
+		private static readonly BindablePropertyKey IsGroupHeaderPropertyKey = BindableProperty.CreateAttachedReadOnly("IsGroupHeader", typeof(bool), typeof(Cell), false);
 
-		readonly BindableProperty _itemSourceProperty;
-		readonly BindableProperty _itemTemplateProperty;
+		private readonly BindableProperty _itemSourceProperty;
+		private readonly BindableProperty _itemTemplateProperty;
 
-		readonly TView _itemsView;
+		private readonly TView _itemsView;
 
-		readonly List<TItem> _templatedObjects = new List<TItem>();
+		private readonly List<TItem> _templatedObjects = new List<TItem>();
 
-		bool _disposed;
-		BindingBase _groupDisplayBinding;
-		OrderedDictionary<object, TemplatedItemsList<TView, TItem>> _groupedItems;
-		DataTemplate _groupHeaderTemplate;
-		BindingBase _groupShortNameBinding;
-		ShortNamesProxy _shortNames;
+		private bool _disposed;
+		private BindingBase _groupDisplayBinding;
+		private OrderedDictionary<object, TemplatedItemsList<TView, TItem>> _groupedItems;
+		private DataTemplate _groupHeaderTemplate;
+		private BindingBase _groupShortNameBinding;
+		private ShortNamesProxy _shortNames;
 
 		internal TemplatedItemsList(TView itemsView, BindableProperty itemSourceProperty, BindableProperty itemTemplateProperty)
 		{
@@ -200,12 +198,12 @@ namespace Xamarin.Forms.Internals
 			get { return ListProxy; }
 		}
 
-		DataTemplate ItemTemplate
+		private DataTemplate ItemTemplate
 		{
 			get { return (DataTemplate)_itemsView.GetValue(_itemTemplateProperty); }
 		}
 
-		bool ProgressiveLoading
+		private bool ProgressiveLoading
 		{
 			get { return (ProgressiveLoadingProperty != null) && (bool)_itemsView.GetValue(ProgressiveLoadingProperty); }
 		}
@@ -508,6 +506,7 @@ namespace Xamarin.Forms.Internals
 		}
 
 		public event NotifyCollectionChangedEventHandler GroupedCollectionChanged;
+
 		event NotifyCollectionChangedEventHandler ITemplatedItemsList<TItem>.GroupedCollectionChanged
 		{
 			add { GroupedCollectionChanged += value; }
@@ -628,6 +627,7 @@ namespace Xamarin.Forms.Internals
 			object item = ListProxy[index];
 			return UpdateContent(content, index, item);
 		}
+
 		TItem ITemplatedItemsList<TItem>.UpdateContent(TItem content, int index)
 		{
 			return UpdateContent(content, index);
@@ -650,12 +650,13 @@ namespace Xamarin.Forms.Internals
 
 			return content;
 		}
+
 		TItem ITemplatedItemsList<TItem>.UpdateHeader(TItem content, int groupIndex)
 		{
 			return UpdateHeader(content, groupIndex);
 		}
 
-		void BindableOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void BindableOnPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (_itemSourceProperty != null && e.PropertyName == _itemSourceProperty.PropertyName)
 				OnItemsSourceChanged();
@@ -669,7 +670,7 @@ namespace Xamarin.Forms.Internals
 				OnGroupingEnabledChanged();
 		}
 
-		IList ConvertContent(int startingIndex, IList items, bool forceCreate = false, bool setIndex = false)
+		private IList ConvertContent(int startingIndex, IList items, bool forceCreate = false, bool setIndex = false)
 		{
 			var contentItems = new List<TItem>(items.Count);
 			for (var i = 0; i < items.Count; i++)
@@ -685,7 +686,7 @@ namespace Xamarin.Forms.Internals
 			return contentItems;
 		}
 
-		IEnumerable GetItemsViewSource()
+		private IEnumerable GetItemsViewSource()
 		{
 			return (IEnumerable)_itemsView.GetValue(_itemSourceProperty);
 		}
@@ -698,7 +699,7 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		void GroupedReset()
+		private void GroupedReset()
 		{
 			if (_groupedItems != null)
 			{
@@ -719,7 +720,7 @@ namespace Xamarin.Forms.Internals
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}
 
-		TemplatedItemsList<TView, TItem> InsertGrouped(object item, int index)
+		private TemplatedItemsList<TView, TItem> InsertGrouped(object item, int index)
 		{
 			var children = item as IEnumerable;
 
@@ -764,14 +765,14 @@ namespace Xamarin.Forms.Internals
 			return groupProxy;
 		}
 
-		void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+		private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
 		{
 			NotifyCollectionChangedEventHandler changed = CollectionChanged;
 			if (changed != null)
 				changed(this, e);
 		}
 
-		void OnCollectionChangedGrouped(NotifyCollectionChangedEventArgs e)
+		private void OnCollectionChangedGrouped(NotifyCollectionChangedEventArgs e)
 		{
 			if (_groupedItems == null)
 				_groupedItems = new OrderedDictionary<object, TemplatedItemsList<TView, TItem>>();
@@ -902,7 +903,7 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		void OnGroupingEnabledChanged()
+		private void OnGroupingEnabledChanged()
 		{
 			if ((CachingStrategy & ListViewCachingStrategy.RecycleElement) != 0)
 				_templatedObjects.Clear();
@@ -918,24 +919,24 @@ namespace Xamarin.Forms.Internals
 				OnShortNameBindingChanged();
 		}
 
-		void OnHeaderTemplateChanged()
+		private void OnHeaderTemplateChanged()
 		{
 			OnItemTemplateChanged();
 		}
 
-		void OnInfiniteScrollingChanged()
+		private void OnInfiniteScrollingChanged()
 		{
 			OnItemsSourceChanged();
 		}
 
-		void OnInnerCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnInnerCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			NotifyCollectionChangedEventHandler handler = GroupedCollectionChanged;
 			if (handler != null)
 				handler(sender, e);
 		}
 
-		void OnItemsSourceChanged(bool fromGrouping = false)
+		private void OnItemsSourceChanged(bool fromGrouping = false)
 		{
 			ListProxy.CollectionChanged -= OnProxyCollectionChanged;
 
@@ -949,7 +950,7 @@ namespace Xamarin.Forms.Internals
 			OnProxyCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}
 
-		void OnItemTemplateChanged()
+		private void OnItemTemplateChanged()
 		{
 			if (ListProxy.Count == 0)
 				return;
@@ -957,18 +958,18 @@ namespace Xamarin.Forms.Internals
 			OnProxyCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}
 
-		static void OnListProxyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnListProxyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var til = (TemplatedItemsList<TView, TItem>)bindable;
 			til.OnPropertyChanged("ItemsSource");
 		}
 
-		void OnProxyCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnProxyCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			OnProxyCollectionChanged(sender, e, true);
 		}
 
-		void OnProxyCollectionChanged(object sender, NotifyCollectionChangedEventArgs e, bool fixWindows = true)
+		private void OnProxyCollectionChanged(object sender, NotifyCollectionChangedEventArgs e, bool fixWindows = true)
 		{
 			if (IsGroupingEnabled)
 			{
@@ -1114,7 +1115,7 @@ namespace Xamarin.Forms.Internals
 			OnCollectionChanged(e);
 		}
 
-		void OnShortNameBindingChanged()
+		private void OnShortNameBindingChanged()
 		{
 			if (!IsGroupingEnabled)
 				return;
@@ -1145,7 +1146,7 @@ namespace Xamarin.Forms.Internals
 				_shortNames.Reset();
 		}
 
-		static void SetGroup(TItem item, TemplatedItemsList<TView, TItem> group)
+		private static void SetGroup(TItem item, TemplatedItemsList<TView, TItem> group)
 		{
 			if (item == null)
 				throw new ArgumentNullException("item");
@@ -1153,7 +1154,7 @@ namespace Xamarin.Forms.Internals
 			item.SetValue(GroupProperty, group);
 		}
 
-		static void SetIndex(TItem item, int index)
+		private static void SetIndex(TItem item, int index)
 		{
 			if (item == null)
 				return;
@@ -1161,7 +1162,7 @@ namespace Xamarin.Forms.Internals
 			item.SetValue(IndexProperty, index);
 		}
 
-		void SplitCollectionChangedItems(NotifyCollectionChangedEventArgs e)
+		private void SplitCollectionChangedItems(NotifyCollectionChangedEventArgs e)
 		{
 			switch (e.Action)
 			{
@@ -1198,7 +1199,7 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		void UnhookAndClear()
+		private void UnhookAndClear()
 		{
 			for (var i = 0; i < _templatedObjects.Count; i++)
 			{
@@ -1212,26 +1213,26 @@ namespace Xamarin.Forms.Internals
 			_templatedObjects.Clear();
 		}
 
-		async void UnhookItem(TItem item)
+		private async void UnhookItem(TItem item)
 		{
 			SetIndex(item, -1);
 			_itemsView.UnhookContent(item);
 
-			//Hack: the cell could still be visible on iOS because the cells are reloaded after this unhook 
+			//Hack: the cell could still be visible on iOS because the cells are reloaded after this unhook
 			//this causes some visual updates caused by a null datacontext and default values like IsVisible
 			if (Device.RuntimePlatform == Device.iOS && CachingStrategy == ListViewCachingStrategy.RetainElement)
 				await Task.Delay(100);
 			item.BindingContext = null;
 		}
 
-		class ShortNamesProxy : IReadOnlyList<string>, INotifyCollectionChanged, IDisposable
+		private class ShortNamesProxy : IReadOnlyList<string>, INotifyCollectionChanged, IDisposable
 		{
-			readonly HashSet<TemplatedItemsList<TView, TItem>> _attachedItems = new HashSet<TemplatedItemsList<TView, TItem>>();
-			readonly TemplatedItemsList<TView, TItem> _itemsList;
+			private readonly HashSet<TemplatedItemsList<TView, TItem>> _attachedItems = new HashSet<TemplatedItemsList<TView, TItem>>();
+			private readonly TemplatedItemsList<TView, TItem> _itemsList;
 
-			readonly Dictionary<TemplatedItemsList<TView, TItem>, string> _oldNames = new Dictionary<TemplatedItemsList<TView, TItem>, string>();
+			private readonly Dictionary<TemplatedItemsList<TView, TItem>, string> _oldNames = new Dictionary<TemplatedItemsList<TView, TItem>, string>();
 
-			bool _disposed;
+			private bool _disposed;
 
 			internal ShortNamesProxy(TemplatedItemsList<TView, TItem> itemsList)
 			{
@@ -1290,7 +1291,7 @@ namespace Xamarin.Forms.Internals
 				ResetCore(true);
 			}
 
-			void AttachList(TemplatedItemsList<TView, TItem> list)
+			private void AttachList(TemplatedItemsList<TView, TItem> list)
 			{
 				if (_attachedItems.Contains(list))
 					return;
@@ -1300,14 +1301,14 @@ namespace Xamarin.Forms.Internals
 				_attachedItems.Add(list);
 			}
 
-			List<string> ConvertItems(IList list)
+			private List<string> ConvertItems(IList list)
 			{
 				var newList = new List<string>(list.Count);
 				newList.AddRange(list.Cast<TemplatedItemsList<TView, TItem>>().Select(tl => tl.ShortName));
 				return newList;
 			}
 
-			void OnChildListPropertyChanged(object sender, PropertyChangedEventArgs e)
+			private void OnChildListPropertyChanged(object sender, PropertyChangedEventArgs e)
 			{
 				if (e.PropertyName != ShortNameProperty.PropertyName)
 					return;
@@ -1321,7 +1322,7 @@ namespace Xamarin.Forms.Internals
 				OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, list.ShortName, old, index));
 			}
 
-			void OnChildListPropertyChanging(object sender, PropertyChangingEventArgs e)
+			private void OnChildListPropertyChanging(object sender, PropertyChangingEventArgs e)
 			{
 				if (e.PropertyName != ShortNameProperty.PropertyName)
 					return;
@@ -1330,14 +1331,14 @@ namespace Xamarin.Forms.Internals
 				_oldNames[list] = list.ShortName;
 			}
 
-			void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+			private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
 			{
 				NotifyCollectionChangedEventHandler changed = CollectionChanged;
 				if (changed != null)
 					changed(this, e);
 			}
 
-			void OnItemsListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+			private void OnItemsListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 			{
 				switch (e.Action)
 				{
@@ -1361,7 +1362,7 @@ namespace Xamarin.Forms.Internals
 				OnCollectionChanged(e);
 			}
 
-			void ResetCore(bool raiseReset)
+			private void ResetCore(bool raiseReset)
 			{
 				foreach (TemplatedItemsList<TView, TItem> list in _attachedItems)
 				{

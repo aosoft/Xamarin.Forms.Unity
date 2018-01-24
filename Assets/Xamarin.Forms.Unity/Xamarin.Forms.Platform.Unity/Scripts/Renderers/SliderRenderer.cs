@@ -1,118 +1,111 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using UniRx;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class SliderRenderer : ViewRenderer<Slider, UnityEngine.UI.Slider>
-	{
-		/*-----------------------------------------------------------------*/
-		#region Field
+    public class SliderRenderer : ViewRenderer<Slider, UnityEngine.UI.Slider>
+    {
+        /*-----------------------------------------------------------------*/
 
-		#endregion
+        /*-----------------------------------------------------------------*/
 
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+        #region MonoBehavior
 
-		protected override void Awake()
-		{
-			base.Awake();
+        protected override void Awake()
+        {
+            base.Awake();
 
-			var slider = Control;
-			if (slider != null)
-			{
-				slider.OnValueChangedAsObservable()
-					.BlockReenter()
-					.Subscribe(value =>
-					{
-						if (Element != null)
-						{
-							Element.Value = value;
-						}
-					}).AddTo(slider);
+            var slider = Control;
+            if (slider != null)
+            {
+                slider.OnValueChangedAsObservable()
+                    .BlockReenter()
+                    .Subscribe(value =>
+                    {
+                        if (Element != null)
+                        {
+                            Element.Value = value;
+                        }
+                    }).AddTo(slider);
 
-				slider.ObserveEveryValueChanged(x => x.minValue)
-					.BlockReenter()
-					.Subscribe(value =>
-					{
-						if (Element != null)
-						{
-							Element.Minimum = value;
-						}
-					}).AddTo(slider);
+                slider.ObserveEveryValueChanged(x => x.minValue)
+                    .BlockReenter()
+                    .Subscribe(value =>
+                    {
+                        if (Element != null)
+                        {
+                            Element.Minimum = value;
+                        }
+                    }).AddTo(slider);
 
-				slider.ObserveEveryValueChanged(x => x.maxValue)
-					.BlockReenter()
-					.Subscribe(value =>
-					{
-						if (Element != null)
-						{
-							Element.Maximum = value;
-						}
-					}).AddTo(slider);
-			}
-		}
+                slider.ObserveEveryValueChanged(x => x.maxValue)
+                    .BlockReenter()
+                    .Subscribe(value =>
+                    {
+                        if (Element != null)
+                        {
+                            Element.Maximum = value;
+                        }
+                    }).AddTo(slider);
+            }
+        }
 
-		#endregion
+        #endregion MonoBehavior
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+        /*-----------------------------------------------------------------*/
 
-		protected override void OnElementChanged(ElementChangedEventArgs<Slider> e)
-		{
-			base.OnElementChanged(e);
+        #region Event Handler
 
-			if (e.NewElement != null)
-			{
-				UpdateValue();
-			}
-		}
+        protected override void OnElementChanged(ElementChangedEventArgs<Slider> e)
+        {
+            base.OnElementChanged(e);
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == Slider.ValueProperty.PropertyName)
-				UpdateValue();
-			else if (e.PropertyName == Slider.MinimumProperty.PropertyName)
-				UpdateMinimum();
-			else if (e.PropertyName == Slider.MaximumProperty.PropertyName)
-				UpdateMaximum();
-			base.OnElementPropertyChanged(sender, e);
-		}
+            if (e.NewElement != null)
+            {
+                UpdateValue();
+            }
+        }
 
-		#endregion
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == Slider.ValueProperty.PropertyName)
+                UpdateValue();
+            else if (e.PropertyName == Slider.MinimumProperty.PropertyName)
+                UpdateMinimum();
+            else if (e.PropertyName == Slider.MaximumProperty.PropertyName)
+                UpdateMaximum();
+            base.OnElementPropertyChanged(sender, e);
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Internals
+        #endregion Event Handler
 
-		void UpdateValue()
-		{
-			if (Control != null && Element != null)
-			{
-				Control.value = (float)Element.Value;
-			}
-		}
+        /*-----------------------------------------------------------------*/
 
-		void UpdateMinimum()
-		{
-			if (Control != null && Element != null)
-			{
-				Control.minValue = (float)Element.Minimum;
-			}
-		}
+        #region Internals
 
-		void UpdateMaximum()
-		{
-			if (Control != null && Element != null)
-			{
-				Control.maxValue = (float)Element.Maximum;
-			}
-		}
+        private void UpdateValue()
+        {
+            if (Control != null && Element != null)
+            {
+                Control.value = (float)Element.Value;
+            }
+        }
 
-		#endregion
-	}
+        private void UpdateMinimum()
+        {
+            if (Control != null && Element != null)
+            {
+                Control.minValue = (float)Element.Minimum;
+            }
+        }
+
+        private void UpdateMaximum()
+        {
+            if (Control != null && Element != null)
+            {
+                Control.maxValue = (float)Element.Maximum;
+            }
+        }
+
+        #endregion Internals
+    }
 }

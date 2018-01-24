@@ -7,9 +7,9 @@ namespace Xamarin.Forms
 {
 	public class BoundsConstraint
 	{
-		Func<Rectangle> _measureFunc;
+		private Func<Rectangle> _measureFunc;
 
-		BoundsConstraint()
+		private BoundsConstraint()
 		{
 		}
 

@@ -30,19 +30,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Cadenza.Collections
 {
 	internal sealed class OrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IList<KeyValuePair<TKey, TValue>>
 	{
-		readonly Dictionary<TKey, TValue> _dict;
-		readonly List<TKey> _keyOrder;
-		readonly ICollection<KeyValuePair<TKey, TValue>> _kvpCollection;
-		readonly ReadOnlyCollection<TKey> _roKeys;
+		private readonly Dictionary<TKey, TValue> _dict;
+		private readonly List<TKey> _keyOrder;
+		private readonly ICollection<KeyValuePair<TKey, TValue>> _kvpCollection;
+		private readonly ReadOnlyCollection<TKey> _roKeys;
 
-		readonly ReadOnlyValueCollection _roValues;
+		private readonly ReadOnlyValueCollection _roValues;
 
 		public OrderedDictionary() : this(0)
 		{
@@ -364,9 +363,9 @@ namespace Cadenza.Collections
 			_keyOrder.Insert(newIndex, key);
 		}
 
-		class ReadOnlyValueCollection : IList<TValue>
+		private class ReadOnlyValueCollection : IList<TValue>
 		{
-			readonly OrderedDictionary<TKey, TValue> _odict;
+			private readonly OrderedDictionary<TKey, TValue> _odict;
 
 			public ReadOnlyValueCollection(OrderedDictionary<TKey, TValue> dict)
 			{

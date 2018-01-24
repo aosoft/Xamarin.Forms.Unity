@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform;
@@ -11,19 +10,19 @@ namespace Xamarin.Forms
 	{
 		public static readonly BindableProperty IsGestureEnabledProperty = BindableProperty.Create("IsGestureEnabled", typeof(bool), typeof(MasterDetailPage), true);
 
-		public static readonly BindableProperty IsPresentedProperty = BindableProperty.Create("IsPresented", typeof(bool), typeof(MasterDetailPage),default(bool),
-			propertyChanged: OnIsPresentedPropertyChanged, propertyChanging: OnIsPresentedPropertyChanging, defaultValueCreator : GetDefaultValue);
+		public static readonly BindableProperty IsPresentedProperty = BindableProperty.Create("IsPresented", typeof(bool), typeof(MasterDetailPage), default(bool),
+			propertyChanged: OnIsPresentedPropertyChanged, propertyChanging: OnIsPresentedPropertyChanging, defaultValueCreator: GetDefaultValue);
 
 		public static readonly BindableProperty MasterBehaviorProperty = BindableProperty.Create("MasterBehavior", typeof(MasterBehavior), typeof(MasterDetailPage), default(MasterBehavior),
 			propertyChanged: OnMasterBehaviorPropertyChanged);
 
-		Page _detail;
+		private Page _detail;
 
-		Rectangle _detailBounds;
+		private Rectangle _detailBounds;
 
-		Page _master;
+		private Page _master;
 
-		Rectangle _masterBounds;
+		private Rectangle _masterBounds;
 
 		public Page Detail
 		{
@@ -219,7 +218,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void OnIsPresentedPropertyChanged(BindableObject sender, object oldValue, object newValue)
+		private static void OnIsPresentedPropertyChanged(BindableObject sender, object oldValue, object newValue)
 		{
 			var page = (MasterDetailPage)sender;
 			EventHandler handler = page.IsPresentedChanged;
@@ -227,20 +226,20 @@ namespace Xamarin.Forms
 				handler(page, EventArgs.Empty);
 		}
 
-		static void OnIsPresentedPropertyChanging(BindableObject sender, object oldValue, object newValue)
+		private static void OnIsPresentedPropertyChanging(BindableObject sender, object oldValue, object newValue)
 		{
 			var page = (MasterDetailPage)sender;
 			if (!page.CanChangeIsPresented)
 				throw new InvalidOperationException(string.Format("Can't change IsPresented when setting {0}", page.MasterBehavior));
 		}
 
-		static void OnMasterBehaviorPropertyChanged(BindableObject sender, object oldValue, object newValue)
+		private static void OnMasterBehaviorPropertyChanged(BindableObject sender, object oldValue, object newValue)
 		{
 			var page = (MasterDetailPage)sender;
 			UpdateMasterBehavior(page);
 		}
 
-		static object GetDefaultValue(BindableObject bindable)
+		private static object GetDefaultValue(BindableObject bindable)
 		{
 			return Device.RuntimePlatform == Device.macOS;
 		}
@@ -250,7 +249,7 @@ namespace Xamarin.Forms
 			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<MasterDetailPage>>(() => new PlatformConfigurationRegistry<MasterDetailPage>(this));
 		}
 
-		readonly Lazy<PlatformConfigurationRegistry<MasterDetailPage>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<MasterDetailPage>> _platformConfigurationRegistry;
 
 		public new IPlatformElementConfiguration<T, MasterDetailPage> On<T>() where T : IConfigPlatform
 		{

@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Xamarin.Forms.Platform.Unity
+﻿namespace Xamarin.Forms.Platform.Unity
 {
-	public class LayoutRenderer : ViewRenderer<Layout, UnityEngine.Canvas>
-	{
-	}
+    public class LayoutRenderer : ViewRenderer<Layout, UnityEngine.Canvas>
+    {
+    }
 }

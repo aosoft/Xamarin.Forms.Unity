@@ -47,7 +47,7 @@ namespace Xamarin.Forms
 			ApplyValues(item);
 		}
 
-		void ApplyBindings(object item)
+		private void ApplyBindings(object item)
 		{
 			if (Bindings == null)
 				return;
@@ -65,7 +65,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void ApplyValues(object item)
+		private void ApplyValues(object item)
 		{
 			if (Values == null)
 				return;

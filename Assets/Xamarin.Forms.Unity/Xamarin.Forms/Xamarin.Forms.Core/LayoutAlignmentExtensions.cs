@@ -10,8 +10,10 @@ namespace Xamarin.Forms
 			{
 				case LayoutAlignment.Start:
 					return 0;
+
 				case LayoutAlignment.Center:
 					return 0.5;
+
 				case LayoutAlignment.End:
 					return 1;
 			}

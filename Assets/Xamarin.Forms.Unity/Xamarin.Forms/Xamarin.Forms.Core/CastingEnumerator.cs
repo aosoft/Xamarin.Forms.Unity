@@ -5,9 +5,9 @@ namespace Xamarin.Forms
 {
 	internal class CastingEnumerator<T, TFrom> : IEnumerator<T> where T : class where TFrom : class
 	{
-		readonly IEnumerator<TFrom> _enumerator;
+		private readonly IEnumerator<TFrom> _enumerator;
 
-		bool _disposed;
+		private bool _disposed;
 
 		public CastingEnumerator(IEnumerator<TFrom> enumerator)
 		{

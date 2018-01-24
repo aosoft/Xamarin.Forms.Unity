@@ -9,13 +9,13 @@ namespace Xamarin.Forms
 	[ContentProperty("Actions")]
 	public sealed class EventTrigger : TriggerBase
 	{
-		static readonly MethodInfo s_handlerinfo = typeof(EventTrigger).GetRuntimeMethods().Single(mi => mi.Name == "OnEventTriggered" && mi.IsPublic == false);
-		readonly List<BindableObject> _associatedObjects = new List<BindableObject>();
+		private static readonly MethodInfo s_handlerinfo = typeof(EventTrigger).GetRuntimeMethods().Single(mi => mi.Name == "OnEventTriggered" && mi.IsPublic == false);
+		private readonly List<BindableObject> _associatedObjects = new List<BindableObject>();
 
-		EventInfo _eventinfo;
+		private EventInfo _eventinfo;
 
-		string _eventname;
-		Delegate _handlerdelegate;
+		private string _eventname;
+		private Delegate _handlerdelegate;
 
 		public EventTrigger() : base(typeof(BindableObject))
 		{
@@ -60,7 +60,7 @@ namespace Xamarin.Forms
 			((SealedList<TriggerAction>)Actions).IsReadOnly = true;
 		}
 
-		void AttachHandlerTo(BindableObject bindable)
+		private void AttachHandlerTo(BindableObject bindable)
 		{
 			try
 			{
@@ -75,14 +75,14 @@ namespace Xamarin.Forms
 				_eventinfo.AddEventHandler(bindable, _handlerdelegate);
 		}
 
-		void DetachHandlerFrom(BindableObject bindable)
+		private void DetachHandlerFrom(BindableObject bindable)
 		{
 			if (_eventinfo != null && _handlerdelegate != null)
 				_eventinfo.RemoveEventHandler(bindable, _handlerdelegate);
 		}
 
 		[Preserve]
-		void OnEventTriggered(object sender, EventArgs e)
+		private void OnEventTriggered(object sender, EventArgs e)
 		{
 			var bindable = (BindableObject)sender;
 			foreach (TriggerAction action in Actions)

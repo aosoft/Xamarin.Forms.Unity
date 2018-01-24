@@ -5,6 +5,7 @@
 	public static class TabbedPage
 	{
 		#region TabsStyle
+
 		public static readonly BindableProperty TabsStyleProperty = BindableProperty.Create("TabsStyle", typeof(TabsStyle), typeof(TabbedPage), TabsStyle.Default);
 
 		public static TabsStyle GetTabsStyle(BindableObject element)
@@ -45,6 +46,7 @@
 			SetTabsStyle(config.Element, TabsStyle.Hidden);
 			return config;
 		}
-		#endregion
+
+		#endregion TabsStyle
 	}
 }

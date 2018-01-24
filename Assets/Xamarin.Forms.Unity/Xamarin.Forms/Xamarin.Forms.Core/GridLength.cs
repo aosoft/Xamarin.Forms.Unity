@@ -56,7 +56,7 @@ namespace Xamarin.Forms
 			return obj != null && obj is GridLength && Equals((GridLength)obj);
 		}
 
-		bool Equals(GridLength other)
+		private bool Equals(GridLength other)
 		{
 			return GridUnitType == other.GridUnitType && Math.Abs(Value - other.Value) < double.Epsilon;
 		}

@@ -18,10 +18,12 @@ namespace Xamarin.Forms
 						if (double.TryParse(thickness[0], NumberStyles.Number, CultureInfo.InvariantCulture, out l))
 							return new Thickness(l);
 						break;
+
 					case 2:
 						if (double.TryParse(thickness[0], NumberStyles.Number, CultureInfo.InvariantCulture, out l) && double.TryParse(thickness[1], NumberStyles.Number, CultureInfo.InvariantCulture, out t))
 							return new Thickness(l, t);
 						break;
+
 					case 4:
 						if (double.TryParse(thickness[0], NumberStyles.Number, CultureInfo.InvariantCulture, out l) && double.TryParse(thickness[1], NumberStyles.Number, CultureInfo.InvariantCulture, out t) &&
 							double.TryParse(thickness[2], NumberStyles.Number, CultureInfo.InvariantCulture, out r) && double.TryParse(thickness[3], NumberStyles.Number, CultureInfo.InvariantCulture, out b))

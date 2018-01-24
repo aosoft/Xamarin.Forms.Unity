@@ -8,6 +8,7 @@ namespace Xamarin.Forms.PlatformConfiguration.macOSSpecific
 		public static readonly BindableProperty NavigationTransitionPopStyleProperty = BindableProperty.Create("NavigationTransitionPopStyle", typeof(NavigationTransitionStyle), typeof(NavigationPage), NavigationTransitionStyle.SlideBackward);
 
 		#region PushStyle
+
 		public static NavigationTransitionStyle GetNavigationTransitionPushStyle(BindableObject element)
 		{
 			return (NavigationTransitionStyle)element.GetValue(NavigationTransitionPushStyleProperty);
@@ -22,9 +23,11 @@ namespace Xamarin.Forms.PlatformConfiguration.macOSSpecific
 		{
 			return GetNavigationTransitionPushStyle(config.Element);
 		}
-		#endregion
+
+		#endregion PushStyle
 
 		#region PopStyle
+
 		public static NavigationTransitionStyle GetNavigationTransitionPopStyle(BindableObject element)
 		{
 			return (NavigationTransitionStyle)element.GetValue(NavigationTransitionPopStyleProperty);
@@ -39,7 +42,8 @@ namespace Xamarin.Forms.PlatformConfiguration.macOSSpecific
 		{
 			return GetNavigationTransitionPopStyle(config.Element);
 		}
-		#endregion
+
+		#endregion PopStyle
 
 		public static void SetNavigationTransitionStyle(BindableObject element, NavigationTransitionStyle pushStyle, NavigationTransitionStyle popStyle)
 		{

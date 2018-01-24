@@ -4,7 +4,7 @@ using Xamarin.Forms.Platform;
 namespace Xamarin.Forms
 {
 	[RenderWith(typeof(_DatePickerRenderer))]
-	public class DatePicker : View, ITextElement,IElementConfiguration<DatePicker>
+	public class DatePicker : View, ITextElement, IElementConfiguration<DatePicker>
 	{
 		public static readonly BindableProperty FormatProperty = BindableProperty.Create(nameof(Format), typeof(string), typeof(DatePicker), "d");
 
@@ -21,7 +21,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty TextColorProperty = TextElement.TextColorProperty;
 
-		readonly Lazy<PlatformConfigurationRegistry<DatePicker>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<DatePicker>> _platformConfigurationRegistry;
 
 		public DatePicker()
 		{
@@ -60,7 +60,7 @@ namespace Xamarin.Forms
 
 		public event EventHandler<DateChangedEventArgs> DateSelected;
 
-		static object CoerceDate(BindableObject bindable, object value)
+		private static object CoerceDate(BindableObject bindable, object value)
 		{
 			var picker = (DatePicker)bindable;
 			DateTime dateValue = ((DateTime)value).Date;
@@ -74,7 +74,7 @@ namespace Xamarin.Forms
 			return dateValue;
 		}
 
-		static object CoerceMaximumDate(BindableObject bindable, object value)
+		private static object CoerceMaximumDate(BindableObject bindable, object value)
 		{
 			DateTime dateValue = ((DateTime)value).Date;
 			var picker = (DatePicker)bindable;
@@ -84,7 +84,7 @@ namespace Xamarin.Forms
 			return dateValue;
 		}
 
-		static object CoerceMinimumDate(BindableObject bindable, object value)
+		private static object CoerceMinimumDate(BindableObject bindable, object value)
 		{
 			DateTime dateValue = ((DateTime)value).Date;
 			var picker = (DatePicker)bindable;
@@ -94,7 +94,7 @@ namespace Xamarin.Forms
 			return dateValue;
 		}
 
-		static void DatePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void DatePropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var datePicker = (DatePicker)bindable;
 			EventHandler<DateChangedEventArgs> selected = datePicker.DateSelected;
@@ -103,12 +103,12 @@ namespace Xamarin.Forms
 				selected(datePicker, new DateChangedEventArgs((DateTime)oldValue, (DateTime)newValue));
 		}
 
-		static bool ValidateMaximumDate(BindableObject bindable, object value)
+		private static bool ValidateMaximumDate(BindableObject bindable, object value)
 		{
 			return (DateTime)value >= ((DatePicker)bindable).MinimumDate;
 		}
 
-		static bool ValidateMinimumDate(BindableObject bindable, object value)
+		private static bool ValidateMinimumDate(BindableObject bindable, object value)
 		{
 			return (DateTime)value <= ((DatePicker)bindable).MaximumDate;
 		}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Xamarin.Forms
 {
-	static class ResourcesExtensions
+	internal static class ResourcesExtensions
 	{
 		public static IEnumerable<KeyValuePair<string, object>> GetMergedResources(this IElement element)
 		{

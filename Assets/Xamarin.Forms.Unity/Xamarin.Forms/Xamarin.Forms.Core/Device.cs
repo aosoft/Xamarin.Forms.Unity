@@ -21,10 +21,11 @@ namespace Xamarin.Forms
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static DeviceInfo info;
 
-		static IPlatformServices s_platformServices;
+		private static IPlatformServices s_platformServices;
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static void SetIdiom(TargetIdiom value) => Idiom = value;
+
 		public static TargetIdiom Idiom { get; internal set; }
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
@@ -49,6 +50,7 @@ namespace Xamarin.Forms
 				return TargetPlatform.Other;
 			}
 		}
+
 #pragma warning restore 0618
 
 		public static string RuntimePlatform => PlatformServices.RuntimePlatform;
@@ -118,12 +120,14 @@ namespace Xamarin.Forms
 					else if (Default != null)
 						Default();
 					break;
+
 				case TargetPlatform.Android:
 					if (Android != null)
 						Android();
 					else if (Default != null)
 						Default();
 					break;
+
 				case TargetPlatform.Windows:
 				case TargetPlatform.WinPhone:
 					if (WinPhone != null)
@@ -131,6 +135,7 @@ namespace Xamarin.Forms
 					else if (Default != null)
 						Default();
 					break;
+
 				case TargetPlatform.Other:
 					if (Default != null)
 						Default();
@@ -145,8 +150,10 @@ namespace Xamarin.Forms
 			{
 				case TargetPlatform.iOS:
 					return iOS;
+
 				case TargetPlatform.Android:
 					return Android;
+
 				case TargetPlatform.Windows:
 				case TargetPlatform.WinPhone:
 					return WinPhone;

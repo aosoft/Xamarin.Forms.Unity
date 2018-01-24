@@ -33,12 +33,12 @@ namespace Xamarin.Forms
 			base.OnBindingContextChanged();
 		}
 
-		void OnSourceChanged(object sender, EventArgs eventArgs)
+		private void OnSourceChanged(object sender, EventArgs eventArgs)
 		{
 			OnPropertyChanged(ImageSourceProperty.PropertyName);
 		}
 
-		void OnSourcePropertyChanged(ImageSource oldvalue, ImageSource newvalue)
+		private void OnSourcePropertyChanged(ImageSource oldvalue, ImageSource newvalue)
 		{
 			if (newvalue != null)
 			{
@@ -47,7 +47,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void OnSourcePropertyChanging(ImageSource oldvalue, ImageSource newvalue)
+		private void OnSourcePropertyChanging(ImageSource oldvalue, ImageSource newvalue)
 		{
 			if (oldvalue != null)
 				oldvalue.SourceChanged -= OnSourceChanged;

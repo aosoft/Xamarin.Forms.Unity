@@ -1,6 +1,6 @@
 ﻿namespace Xamarin.Forms
 {
-	static class BindingBaseExtensions
+	internal static class BindingBaseExtensions
 	{
 		public static BindingMode GetRealizedMode(this BindingBase self, BindableProperty property)
 		{

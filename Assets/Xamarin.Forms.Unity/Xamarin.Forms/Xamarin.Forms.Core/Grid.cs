@@ -51,13 +51,13 @@ namespace Xamarin.Forms
 				return rowDef;
 			});
 
-		readonly GridElementCollection _children;
-		readonly Lazy<PlatformConfigurationRegistry<Grid>> _platformConfigurationRegistry;
+		private readonly GridElementCollection _children;
+		private readonly Lazy<PlatformConfigurationRegistry<Grid>> _platformConfigurationRegistry;
 
 		public Grid()
 		{
 			_children = new GridElementCollection(InternalChildren, this) { Parent = this };
-			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<Grid>>(() => 
+			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<Grid>>(() =>
 				new PlatformConfigurationRegistry<Grid>(this));
 		}
 
@@ -225,6 +225,7 @@ namespace Xamarin.Forms
 		{
 			InvalidateMeasureInternal(trigger);
 		}
+
 		internal override void InvalidateMeasureInternal(InvalidationTrigger trigger)
 		{
 			base.InvalidateMeasureInternal(trigger);
@@ -232,14 +233,14 @@ namespace Xamarin.Forms
 			_rows = null;
 		}
 
-		void OnDefinitionChanged(object sender, EventArgs args)
+		private void OnDefinitionChanged(object sender, EventArgs args)
 		{
 			ComputeConstrainsForChildren();
 			UpdateInheritedBindingContexts();
 			InvalidateLayout();
 		}
 
-		void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == ColumnProperty.PropertyName || e.PropertyName == ColumnSpanProperty.PropertyName || e.PropertyName == RowProperty.PropertyName ||
 				e.PropertyName == RowSpanProperty.PropertyName)
@@ -254,7 +255,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void UpdateInheritedBindingContexts()
+		private void UpdateInheritedBindingContexts()
 		{
 			object bindingContext = BindingContext;
 			RowDefinitionCollection rowDefs = RowDefinitions;
@@ -281,14 +282,19 @@ namespace Xamarin.Forms
 		public interface IGridList<T> : IList<T> where T : View
 		{
 			void Add(View view, int left, int top);
+
 			void Add(View view, int left, int right, int top, int bottom);
+
 			void AddHorizontal(IEnumerable<View> views);
+
 			void AddHorizontal(View view);
+
 			void AddVertical(IEnumerable<View> views);
+
 			void AddVertical(View view);
 		}
 
-		class GridElementCollection : ElementCollection<View>, IGridList<View>
+		private class GridElementCollection : ElementCollection<View>, IGridList<View>
 		{
 			public GridElementCollection(ObservableCollection<Element> inner, Grid parent) : base(inner)
 			{

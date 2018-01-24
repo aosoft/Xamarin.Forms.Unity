@@ -7,8 +7,8 @@ namespace Xamarin.Forms
 	[TypeConverter(typeof(AcceleratorTypeConverter))]
 	public class Accelerator
 	{
-		const char Separator = '+';
-		string _text;
+		private const char Separator = '+';
+		private string _text;
 
 		internal Accelerator(string text)
 		{
@@ -50,7 +50,6 @@ namespace Xamarin.Forms
 					}
 				}
 				accelarat.Modifiers = modifiers;
-
 			}
 
 			var keys = text.Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
@@ -68,7 +67,7 @@ namespace Xamarin.Forms
 			return obj != null && obj is Accelerator && Equals((Accelerator)obj);
 		}
 
-		bool Equals(Accelerator other)
+		private bool Equals(Accelerator other)
 		{
 			return other.ToString() == ToString();
 		}

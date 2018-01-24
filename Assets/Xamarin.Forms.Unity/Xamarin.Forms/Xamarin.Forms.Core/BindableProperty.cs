@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
 namespace Xamarin.Forms
@@ -32,7 +31,7 @@ namespace Xamarin.Forms
 
 		public delegate bool ValidateValueDelegate<in TPropertyType>(BindableObject bindable, TPropertyType value);
 
-		static readonly Dictionary<Type, TypeConverter> WellKnownConvertTypes = new  Dictionary<Type,TypeConverter>
+		private static readonly Dictionary<Type, TypeConverter> WellKnownConvertTypes = new Dictionary<Type, TypeConverter>
 		{
 			{ typeof(Uri), new UriTypeConverter() },
 			{ typeof(Color), new ColorTypeConverter() },
@@ -40,7 +39,7 @@ namespace Xamarin.Forms
 
 		// more or less the encoding of this, without the need to reflect
 		// http://msdn.microsoft.com/en-us/library/y5b434w4.aspx
-		static readonly Dictionary<Type, Type[]> SimpleConvertTypes = new Dictionary<Type, Type[]>
+		private static readonly Dictionary<Type, Type[]> SimpleConvertTypes = new Dictionary<Type, Type[]>
 		{
 			{ typeof(sbyte), new[] { typeof(string), typeof(short), typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal) } },
 			{ typeof(byte), new[] { typeof(string), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
@@ -54,7 +53,7 @@ namespace Xamarin.Forms
 			{ typeof(ulong), new[] { typeof(string), typeof(float), typeof(double), typeof(decimal) } }
 		};
 
-		BindableProperty(string propertyName, Type returnType, Type declaringType, object defaultValue, BindingMode defaultBindingMode = BindingMode.OneWay,
+		private BindableProperty(string propertyName, Type returnType, Type declaringType, object defaultValue, BindingMode defaultBindingMode = BindingMode.OneWay,
 								 ValidateValueDelegate validateValue = null, BindingPropertyChangedDelegate propertyChanged = null, BindingPropertyChangingDelegate propertyChanging = null,
 								 CoerceValueDelegate coerceValue = null, BindablePropertyBindingChanging bindingChanging = null, bool isReadOnly = false, CreateDefaultValueDelegate defaultValueCreator = null)
 		{

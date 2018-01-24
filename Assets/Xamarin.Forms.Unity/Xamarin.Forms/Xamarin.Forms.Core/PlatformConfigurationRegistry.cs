@@ -10,8 +10,8 @@ namespace Xamarin.Forms
 	internal class PlatformConfigurationRegistry<TElement> : IElementConfiguration<TElement>
 		where TElement : Element
 	{
-		readonly TElement _element;
-		readonly Dictionary<Type, object> _platformSpecifics = new Dictionary<Type, object>();
+		private readonly TElement _element;
+		private readonly Dictionary<Type, object> _platformSpecifics = new Dictionary<Type, object>();
 
 		internal PlatformConfigurationRegistry(TElement element)
 		{

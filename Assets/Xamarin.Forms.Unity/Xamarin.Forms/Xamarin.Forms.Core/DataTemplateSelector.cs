@@ -5,7 +5,7 @@ namespace Xamarin.Forms
 {
 	public abstract class DataTemplateSelector : DataTemplate
 	{
-		Dictionary<Type, DataTemplate> _dataTemplates = new Dictionary<Type, DataTemplate>();
+		private Dictionary<Type, DataTemplate> _dataTemplates = new Dictionary<Type, DataTemplate>();
 
 		public DataTemplate SelectTemplate(object item, BindableObject container)
 		{

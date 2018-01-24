@@ -55,7 +55,7 @@ namespace Xamarin.Forms.Internals
 			return self.GetTypeInfo().IsAssignableFrom(o.GetType().GetTypeInfo());
 		}
 
-		static IEnumerable<T> GetParts<T>(Type type, Func<TypeInfo, IEnumerable<T>> selector)
+		private static IEnumerable<T> GetParts<T>(Type type, Func<TypeInfo, IEnumerable<T>> selector)
 		{
 			Type t = type;
 			while (t != null)

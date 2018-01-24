@@ -1,202 +1,201 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class VisualElementTracker<TElement, TNativeElement>
-		where TElement : VisualElement
-		where TNativeElement : UnityEngine.Component
-	{
-		/*-----------------------------------------------------------------*/
-		#region Private Field
+    public class VisualElementTracker<TElement, TNativeElement>
+        where TElement : VisualElement
+        where TNativeElement : UnityEngine.Component
+    {
+        /*-----------------------------------------------------------------*/
 
-		TNativeElement _control;
-		TElement _element;
-		VisualElementBehaviour _behaviour;
+        #region Private Field
 
-		bool _invalidateArrangeNeeded;
+        private TNativeElement _control;
+        private TElement _element;
+        private VisualElementBehaviour _behaviour;
 
-		#endregion
+        private bool _invalidateArrangeNeeded;
 
-		/*-----------------------------------------------------------------*/
-		#region Constructor
+        #endregion Private Field
 
-		public VisualElementTracker(TNativeElement control, VisualElementBehaviour behaviour)
-		{
-			_control = control;
-			_behaviour = behaviour;
+        /*-----------------------------------------------------------------*/
 
-			/*
+        #region Constructor
+
+        public VisualElementTracker(TNativeElement control, VisualElementBehaviour behaviour)
+        {
+            _control = control;
+            _behaviour = behaviour;
+
+            /*
 			_control.Tapped -= HandleTapped;
 			_control.DoubleTapped -= HandleDoubleTapped;
 			*/
-		}
+        }
 
-		#endregion
+        #endregion Constructor
 
-		/*-----------------------------------------------------------------*/
-		#region Property
+        /*-----------------------------------------------------------------*/
 
-		public TNativeElement Control
-		{
-			get { return _control; }
-		}
+        #region Property
 
-		public TElement Element
-		{
-			get { return _element; }
-			set
-			{
-				if (_element == value)
-					return;
+        public TNativeElement Control
+        {
+            get { return _control; }
+        }
 
-				if (_element != null)
-				{
-					_element.BatchCommitted -= OnRedrawNeeded;
-					_element.PropertyChanged -= OnPropertyChanged;
-				}
+        public TElement Element
+        {
+            get { return _element; }
+            set
+            {
+                if (_element == value)
+                    return;
 
-				_element = value;
+                if (_element != null)
+                {
+                    _element.BatchCommitted -= OnRedrawNeeded;
+                    _element.PropertyChanged -= OnPropertyChanged;
+                }
 
-				if (_element != null)
-				{
-					_element.BatchCommitted += OnRedrawNeeded;
-					_element.PropertyChanged += OnPropertyChanged;
-				}
+                _element = value;
 
-				UpdateNativeControl();
-			}
-		}
+                if (_element != null)
+                {
+                    _element.BatchCommitted += OnRedrawNeeded;
+                    _element.PropertyChanged += OnPropertyChanged;
+                }
 
-		public event EventHandler Updated;
+                UpdateNativeControl();
+            }
+        }
 
-		#endregion
+        public event EventHandler Updated;
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+        #endregion Property
 
-		protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (Element.Batched)
-			{
-				if (e.PropertyName == VisualElement.XProperty.PropertyName ||
-					e.PropertyName == VisualElement.YProperty.PropertyName ||
-					e.PropertyName == VisualElement.WidthProperty.PropertyName ||
-					e.PropertyName == VisualElement.HeightProperty.PropertyName ||
-					e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
-					e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
-				{
-					_invalidateArrangeNeeded = true;
-				}
-				return;
-			}
+        /*-----------------------------------------------------------------*/
 
-			if (e.PropertyName == VisualElement.XProperty.PropertyName ||
-				e.PropertyName == VisualElement.YProperty.PropertyName ||
-				e.PropertyName == VisualElement.WidthProperty.PropertyName ||
-				e.PropertyName == VisualElement.HeightProperty.PropertyName ||
-				e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
-				e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
-			{
-				MaybeInvalidate();
-			}
-			else if (e.PropertyName == VisualElement.ScaleProperty.PropertyName)
-			{
-				UpdateScale(Element, _behaviour.RectTransform);
-			}
-			else if (e.PropertyName == VisualElement.TranslationXProperty.PropertyName ||
-					 e.PropertyName == VisualElement.TranslationYProperty.PropertyName ||
-					 e.PropertyName == VisualElement.RotationProperty.PropertyName ||
-					 e.PropertyName == VisualElement.RotationXProperty.PropertyName ||
-					 e.PropertyName == VisualElement.RotationYProperty.PropertyName)
-			{
-				UpdateRotation(Element, _behaviour.RectTransform);
-			}
-			else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName)
-			{
-				UpdateVisibility(Element, _behaviour.RectTransform);
-			}
-			else if (e.PropertyName == VisualElement.OpacityProperty.PropertyName)
-			{
-				UpdateOpacity(Element, _behaviour);
-			}
-			else if (e.PropertyName == VisualElement.InputTransparentProperty.PropertyName)
-			{
-				UpdateInputTransparent(Element, _behaviour.RectTransform);
-			}
-		}
+        #region Event Handler
 
-		#endregion
+        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (Element.Batched)
+            {
+                if (e.PropertyName == VisualElement.XProperty.PropertyName ||
+                    e.PropertyName == VisualElement.YProperty.PropertyName ||
+                    e.PropertyName == VisualElement.WidthProperty.PropertyName ||
+                    e.PropertyName == VisualElement.HeightProperty.PropertyName ||
+                    e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
+                    e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
+                {
+                    _invalidateArrangeNeeded = true;
+                }
+                return;
+            }
 
-		/*-----------------------------------------------------------------*/
-		#region Internals
+            if (e.PropertyName == VisualElement.XProperty.PropertyName ||
+                e.PropertyName == VisualElement.YProperty.PropertyName ||
+                e.PropertyName == VisualElement.WidthProperty.PropertyName ||
+                e.PropertyName == VisualElement.HeightProperty.PropertyName ||
+                e.PropertyName == VisualElement.AnchorXProperty.PropertyName ||
+                e.PropertyName == VisualElement.AnchorYProperty.PropertyName)
+            {
+                MaybeInvalidate();
+            }
+            else if (e.PropertyName == VisualElement.ScaleProperty.PropertyName)
+            {
+                UpdateScale(Element, _behaviour.RectTransform);
+            }
+            else if (e.PropertyName == VisualElement.TranslationXProperty.PropertyName ||
+                     e.PropertyName == VisualElement.TranslationYProperty.PropertyName ||
+                     e.PropertyName == VisualElement.RotationProperty.PropertyName ||
+                     e.PropertyName == VisualElement.RotationXProperty.PropertyName ||
+                     e.PropertyName == VisualElement.RotationYProperty.PropertyName)
+            {
+                UpdateRotation(Element, _behaviour.RectTransform);
+            }
+            else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName)
+            {
+                UpdateVisibility(Element, _behaviour.RectTransform);
+            }
+            else if (e.PropertyName == VisualElement.OpacityProperty.PropertyName)
+            {
+                UpdateOpacity(Element, _behaviour);
+            }
+            else if (e.PropertyName == VisualElement.InputTransparentProperty.PropertyName)
+            {
+                UpdateInputTransparent(Element, _behaviour.RectTransform);
+            }
+        }
 
-		protected virtual void UpdateNativeControl()
-		{
-			if (Element == null || _behaviour == null)
-				return;
+        #endregion Event Handler
 
-			UpdateVisibility(Element, _behaviour.RectTransform);
-			UpdateOpacity(Element, _behaviour);
-			UpdatePositionSizeAnchor(Element, _behaviour.RectTransform);
-			UpdateScale(Element, _behaviour.RectTransform);
-			UpdateRotation(Element, _behaviour.RectTransform);
-			UpdateInputTransparent(Element, _behaviour.RectTransform);
+        /*-----------------------------------------------------------------*/
 
-			if (_invalidateArrangeNeeded)
-			{
-				MaybeInvalidate();
-			}
-			_invalidateArrangeNeeded = false;
+        #region Internals
 
-			OnUpdated();
-		}
+        protected virtual void UpdateNativeControl()
+        {
+            if (Element == null || _behaviour == null)
+                return;
 
-		void OnUpdated()
-		{
-			Updated?.Invoke(this, EventArgs.Empty);
-		}
+            UpdateVisibility(Element, _behaviour.RectTransform);
+            UpdateOpacity(Element, _behaviour);
+            UpdatePositionSizeAnchor(Element, _behaviour.RectTransform);
+            UpdateScale(Element, _behaviour.RectTransform);
+            UpdateRotation(Element, _behaviour.RectTransform);
+            UpdateInputTransparent(Element, _behaviour.RectTransform);
 
-		void OnRedrawNeeded(object sender, EventArgs e)
-		{
-			UpdateNativeControl();
-		}
+            if (_invalidateArrangeNeeded)
+            {
+                MaybeInvalidate();
+            }
+            _invalidateArrangeNeeded = false;
 
-		void MaybeInvalidate()
-		{
-			if (Element.IsInNativeLayout)
-				return;
+            OnUpdated();
+        }
 
-			//var parent = (Control)Container.Parent;
-			//parent?.InvalidateMeasure();
-			//Container.InvalidateMeasure();
-		}
+        private void OnUpdated()
+        {
+            Updated?.Invoke(this, EventArgs.Empty);
+        }
 
-		static void UpdateInputTransparent(VisualElement view, RectTransform rectTransform)
-		{
-			rectTransform.gameObject.SetActive(view.IsEnabled && view.IsVisible && !view.InputTransparent);
-		}
+        private void OnRedrawNeeded(object sender, EventArgs e)
+        {
+            UpdateNativeControl();
+        }
 
-		static void UpdateOpacity(VisualElement view, VisualElementBehaviour behaviour)
-		{
-			behaviour.Opacity = view.Opacity;
-		}
+        private void MaybeInvalidate()
+        {
+            if (Element.IsInNativeLayout)
+                return;
 
-		static void UpdatePositionSizeAnchor(VisualElement view, RectTransform rectTransform)
-		{
-			var position = new Vector2((float)view.X, (float)view.Y);
-			var size = new Vector2(Mathf.Max((float)view.Width, 0.0f), Mathf.Max((float)view.Height, 0.0f));
-			var pivot = new Vector2((float)view.AnchorX, (float)view.AnchorY);
-			var ap = new Vector2(position.x + size.x * pivot.x, -(position.y + size.y * pivot.y));
+            //var parent = (Control)Container.Parent;
+            //parent?.InvalidateMeasure();
+            //Container.InvalidateMeasure();
+        }
 
-			/*var parent = view.Parent as VisualElement;
+        private static void UpdateInputTransparent(VisualElement view, RectTransform rectTransform)
+        {
+            rectTransform.gameObject.SetActive(view.IsEnabled && view.IsVisible && !view.InputTransparent);
+        }
+
+        private static void UpdateOpacity(VisualElement view, VisualElementBehaviour behaviour)
+        {
+            behaviour.Opacity = view.Opacity;
+        }
+
+        private static void UpdatePositionSizeAnchor(VisualElement view, RectTransform rectTransform)
+        {
+            var position = new Vector2((float)view.X, (float)view.Y);
+            var size = new Vector2(Mathf.Max((float)view.Width, 0.0f), Mathf.Max((float)view.Height, 0.0f));
+            var pivot = new Vector2((float)view.AnchorX, (float)view.AnchorY);
+            var ap = new Vector2(position.x + size.x * pivot.x, -(position.y + size.y * pivot.y));
+
+            /*var parent = view.Parent as VisualElement;
 			if (parent != null)
 			{
 				var parentRenderer = Platform.GetRenderer(parent);
@@ -206,21 +205,21 @@ namespace Xamarin.Forms.Platform.Unity
 				}
 			}*/
 
-			rectTransform.anchorMin = new Vector2(0.0f, 1.0f);
-			rectTransform.anchorMax = new Vector2(0.0f, 1.0f);
-			rectTransform.anchoredPosition = ap;
-			rectTransform.sizeDelta = size;
-			rectTransform.pivot = pivot;
+            rectTransform.anchorMin = new Vector2(0.0f, 1.0f);
+            rectTransform.anchorMax = new Vector2(0.0f, 1.0f);
+            rectTransform.anchoredPosition = ap;
+            rectTransform.sizeDelta = size;
+            rectTransform.pivot = pivot;
 
-			//Debug.Log(string.Format("Layout: {0} ({1}) pt={2} sz={3} pivot={4} ancpt={5}",
-			//	view.GetType(), rectTransform.GetInstanceID(),
-			//	position, size, pivot, ap));
-		}
+            //Debug.Log(string.Format("Layout: {0} ({1}) pt={2} sz={3} pivot={4} ancpt={5}",
+            //	view.GetType(), rectTransform.GetInstanceID(),
+            //	position, size, pivot, ap));
+        }
 
-		static void UpdateRotation(VisualElement view, RectTransform rectTransform)
-		{
-			rectTransform.localEulerAngles = new Vector3((float)view.RotationX, (float)view.RotationY, (float)view.Rotation);
-			/*
+        private static void UpdateRotation(VisualElement view, RectTransform rectTransform)
+        {
+            rectTransform.localEulerAngles = new Vector3((float)view.RotationX, (float)view.RotationY, (float)view.Rotation);
+            /*
 			double anchorX = view.AnchorX;
 			double anchorY = view.AnchorY;
 			double rotationX = view.RotationX;
@@ -248,20 +247,20 @@ namespace Xamarin.Forms.Platform.Unity
 				};
 			}
 			*/
-		}
+        }
 
-		static void UpdateScale(VisualElement view, RectTransform rectTransform)
-		{
-			float scale = (float)view.Scale;
-			rectTransform.localScale = new Vector3(scale, scale, 0.0f);
-			rectTransform.localScale = new Vector3(scale, scale, 0.0f);
-		}
+        private static void UpdateScale(VisualElement view, RectTransform rectTransform)
+        {
+            float scale = (float)view.Scale;
+            rectTransform.localScale = new Vector3(scale, scale, 0.0f);
+            rectTransform.localScale = new Vector3(scale, scale, 0.0f);
+        }
 
-		static void UpdateVisibility(VisualElement view, RectTransform rectTransform)
-		{
-			UpdateInputTransparent(view, rectTransform);
-		}
+        private static void UpdateVisibility(VisualElement view, RectTransform rectTransform)
+        {
+            UpdateInputTransparent(view, rectTransform);
+        }
 
-		#endregion
-	}
+        #endregion Internals
+    }
 }

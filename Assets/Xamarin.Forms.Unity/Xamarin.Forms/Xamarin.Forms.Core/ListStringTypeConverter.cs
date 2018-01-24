@@ -10,8 +10,8 @@ namespace Xamarin.Forms
 		{
 			if (value == null)
 				return null;
-			
-			return value.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+
+			return value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
 		}
 	}
 }

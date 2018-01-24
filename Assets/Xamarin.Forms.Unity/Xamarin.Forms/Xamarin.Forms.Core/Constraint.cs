@@ -8,9 +8,9 @@ namespace Xamarin.Forms
 	[TypeConverter(typeof(ConstraintTypeConverter))]
 	public sealed class Constraint
 	{
-		Func<RelativeLayout, double> _measureFunc;
+		private Func<RelativeLayout, double> _measureFunc;
 
-		Constraint()
+		private Constraint()
 		{
 		}
 

@@ -8,7 +8,7 @@ namespace Xamarin.Forms
 {
 	public abstract class TableSectionBase<T> : TableSectionBase, IList<T>, INotifyCollectionChanged where T : BindableObject
 	{
-		readonly ObservableCollection<T> _children = new ObservableCollection<T>();
+		private readonly ObservableCollection<T> _children = new ObservableCollection<T>();
 
 		/// <summary>
 		///     Constructs a Section without an empty header.
@@ -112,7 +112,7 @@ namespace Xamarin.Forms
 				SetInheritedBindingContext(child, bc);
 		}
 
-		void OnChildrenChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+		private void OnChildrenChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
 		{
 			// We need to hook up the binding context for new items.
 			if (notifyCollectionChangedEventArgs.NewItems == null)

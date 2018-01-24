@@ -1,4 +1,3 @@
-
 namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 {
 	using FormsElement = Forms.NavigationPage;
@@ -6,6 +5,7 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 	public static class NavigationPage
 	{
 		#region Translucent
+
 		public static readonly BindableProperty IsNavigationBarTranslucentProperty =
 			BindableProperty.Create("IsNavigationBarTranslucent", typeof(bool),
 			typeof(NavigationPage), false);
@@ -42,10 +42,11 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 			SetIsNavigationBarTranslucent(config.Element, false);
 			return config;
 		}
-		#endregion
 
+		#endregion Translucent
 
 		#region StatusBarTextColorMode
+
 		public static readonly BindableProperty StatusBarTextColorModeProperty =
 			BindableProperty.Create("StatusBarColorTextMode", typeof(StatusBarTextColorMode),
 			typeof(NavigationPage), StatusBarTextColorMode.MatchNavigationBarTextLuminosity);
@@ -70,7 +71,8 @@ namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 			SetStatusBarTextColorMode(config.Element, value);
 			return config;
 		}
-		#endregion
+
+		#endregion StatusBarTextColorMode
 
 		public static readonly BindableProperty PrefersLargeTitlesProperty = BindableProperty.Create(nameof(PrefersLargeTitles), typeof(bool), typeof(Page), false);
 

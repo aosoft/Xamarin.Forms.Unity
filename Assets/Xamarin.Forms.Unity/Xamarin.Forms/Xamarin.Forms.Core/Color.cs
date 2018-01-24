@@ -10,9 +10,9 @@ namespace Xamarin.Forms
 	[TypeConverter(typeof(ColorTypeConverter))]
 	public struct Color
 	{
-		readonly Mode _mode;
+		private readonly Mode _mode;
 
-		enum Mode
+		private enum Mode
 		{
 			Default,
 			Rgb,
@@ -32,51 +32,52 @@ namespace Xamarin.Forms
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static void SetAccent(Color value) => Accent = value;
+
 		public static Color Accent { get; internal set; }
 
-		readonly float _a;
+		private readonly float _a;
 
 		public double A
 		{
 			get { return _a; }
 		}
 
-		readonly float _r;
+		private readonly float _r;
 
 		public double R
 		{
 			get { return _r; }
 		}
 
-		readonly float _g;
+		private readonly float _g;
 
 		public double G
 		{
 			get { return _g; }
 		}
 
-		readonly float _b;
+		private readonly float _b;
 
 		public double B
 		{
 			get { return _b; }
 		}
 
-		readonly float _hue;
+		private readonly float _hue;
 
 		public double Hue
 		{
 			get { return _hue; }
 		}
 
-		readonly float _saturation;
+		private readonly float _saturation;
 
 		public double Saturation
 		{
 			get { return _saturation; }
 		}
 
-		readonly float _luminosity;
+		private readonly float _luminosity;
 
 		public double Luminosity
 		{
@@ -87,7 +88,7 @@ namespace Xamarin.Forms
 		{
 		}
 
-		Color(double w, double x, double y, double z, Mode mode)
+		private Color(double w, double x, double y, double z, Mode mode)
 		{
 			_mode = mode;
 			switch (mode)
@@ -97,6 +98,7 @@ namespace Xamarin.Forms
 					_r = _g = _b = _a = -1;
 					_hue = _saturation = _luminosity = -1;
 					break;
+
 				case Mode.Rgb:
 					_r = (float)w.Clamp(0, 1);
 					_g = (float)x.Clamp(0, 1);
@@ -104,6 +106,7 @@ namespace Xamarin.Forms
 					_a = (float)z.Clamp(0, 1);
 					ConvertToHsl(_r, _g, _b, mode, out _hue, out _saturation, out _luminosity);
 					break;
+
 				case Mode.Hsl:
 					_hue = (float)w.Clamp(0, 1);
 					_saturation = (float)x.Clamp(0, 1);
@@ -131,6 +134,7 @@ namespace Xamarin.Forms
 					throw new InvalidOperationException("Invalid on Color.Default");
 				case Mode.Rgb:
 					return new Color(_r, _g, _b, _a * alpha, Mode.Rgb);
+
 				case Mode.Hsl:
 					return new Color(_hue, _saturation, _luminosity, _a * alpha, Mode.Hsl);
 			}
@@ -165,7 +169,7 @@ namespace Xamarin.Forms
 			return new Color(_hue, _saturation, luminosity, _a, Mode.Hsl);
 		}
 
-		static void ConvertToRgb(float hue, float saturation, float luminosity, Mode mode, out float r, out float g, out float b)
+		private static void ConvertToRgb(float hue, float saturation, float luminosity, Mode mode, out float r, out float g, out float b)
 		{
 			if (mode != Mode.Hsl)
 				throw new InvalidOperationException();
@@ -207,7 +211,7 @@ namespace Xamarin.Forms
 			b = clr[2];
 		}
 
-		static void ConvertToHsl(float r, float g, float b, Mode mode, out float h, out float s, out float l)
+		private static void ConvertToHsl(float r, float g, float b, Mode mode, out float h, out float s, out float l)
 		{
 			float v = Math.Max(r, g);
 			v = Math.Max(v, b);
@@ -285,7 +289,7 @@ namespace Xamarin.Forms
 			return base.Equals(obj);
 		}
 
-		static bool EqualsInner(Color color1, Color color2)
+		private static bool EqualsInner(Color color1, Color color2)
 		{
 			if (color1._mode == Mode.Default && color2._mode == Mode.Default)
 				return true;
@@ -301,7 +305,7 @@ namespace Xamarin.Forms
 			return string.Format(CultureInfo.InvariantCulture, "[Color: A={0}, R={1}, G={2}, B={3}, Hue={4}, Saturation={5}, Luminosity={6}]", A, R, G, B, Hue, Saturation, Luminosity);
 		}
 
-		static uint ToHex (char c)
+		private static uint ToHex(char c)
 		{
 			ushort x = (ushort)c;
 			if (x >= '0' && x <= '9')
@@ -313,48 +317,49 @@ namespace Xamarin.Forms
 			return 0;
 		}
 
-		static uint ToHexD (char c)
+		private static uint ToHexD(char c)
 		{
-			var j = ToHex (c);
+			var j = ToHex(c);
 			return (j << 4) | j;
 		}
 
-		public static Color FromHex (string hex)
+		public static Color FromHex(string hex)
 		{
 			// Undefined
 			if (hex.Length < 3)
 				return Default;
-			int idx = (hex [0] == '#') ? 1 : 0;
+			int idx = (hex[0] == '#') ? 1 : 0;
 
-			switch (hex.Length - idx) {
-			case 3: //#rgb => ffrrggbb
-				var t1 = ToHexD (hex [idx++]);
-				var t2 = ToHexD (hex [idx++]);
-				var t3 = ToHexD (hex [idx]);
+			switch (hex.Length - idx)
+			{
+				case 3: //#rgb => ffrrggbb
+					var t1 = ToHexD(hex[idx++]);
+					var t2 = ToHexD(hex[idx++]);
+					var t3 = ToHexD(hex[idx]);
 
-				return FromRgb ((int)t1, (int)t2, (int)t3);
+					return FromRgb((int)t1, (int)t2, (int)t3);
 
-			case 4: //#argb => aarrggbb
-				var f1 = ToHexD (hex [idx++]);
-				var f2 = ToHexD (hex [idx++]);
-				var f3 = ToHexD (hex [idx++]);
-				var f4 = ToHexD (hex [idx]);
-				return FromRgba ((int)f2, (int)f3, (int)f4, (int)f1);
+				case 4: //#argb => aarrggbb
+					var f1 = ToHexD(hex[idx++]);
+					var f2 = ToHexD(hex[idx++]);
+					var f3 = ToHexD(hex[idx++]);
+					var f4 = ToHexD(hex[idx]);
+					return FromRgba((int)f2, (int)f3, (int)f4, (int)f1);
 
-			case 6: //#rrggbb => ffrrggbb
-				return FromRgb ((int)(ToHex (hex [idx++]) << 4 | ToHex (hex [idx++])),
-						(int)(ToHex (hex [idx++]) << 4 | ToHex (hex [idx++])),
-						(int)(ToHex (hex [idx++]) << 4 | ToHex (hex [idx])));
-				
-			case 8: //#aarrggbb
-				var a1 = ToHex (hex [idx++]) << 4 | ToHex (hex [idx++]);
-				return FromRgba ((int)(ToHex (hex [idx++]) << 4 | ToHex (hex [idx++])),
-						(int)(ToHex (hex [idx++]) << 4 | ToHex (hex [idx++])),
-						(int)(ToHex (hex [idx++]) << 4 | ToHex (hex [idx])),
-						(int)a1);
-				
-			default: //everything else will result in unexpected results
-				return Default;
+				case 6: //#rrggbb => ffrrggbb
+					return FromRgb((int)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx++])),
+							(int)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx++])),
+							(int)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx])));
+
+				case 8: //#aarrggbb
+					var a1 = ToHex(hex[idx++]) << 4 | ToHex(hex[idx++]);
+					return FromRgba((int)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx++])),
+							(int)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx++])),
+							(int)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx])),
+							(int)a1);
+
+				default: //everything else will result in unexpected results
+					return Default;
 			}
 		}
 
@@ -396,6 +401,7 @@ namespace Xamarin.Forms
 
 		// matches colors in WPF's System.Windows.Media.Colors
 		public static readonly Color AliceBlue = FromRgb(240, 248, 255);
+
 		public static readonly Color AntiqueWhite = FromRgb(250, 235, 215);
 		public static readonly Color Aqua = FromRgb(0, 255, 255);
 		public static readonly Color Aquamarine = FromRgb(127, 255, 212);
@@ -441,8 +447,10 @@ namespace Xamarin.Forms
 		public static readonly Color FloralWhite = FromRgb(255, 250, 240);
 		public static readonly Color ForestGreen = FromRgb(34, 139, 34);
 		public static readonly Color Fuchsia = FromRgb(255, 0, 255);
+
 		[Obsolete("Fuschia is obsolete as of version 1.3.0. Please use Fuchsia instead.")]
 		public static readonly Color Fuschia = FromRgb(255, 0, 255);
+
 		public static readonly Color Gainsboro = FromRgb(220, 220, 220);
 		public static readonly Color GhostWhite = FromRgb(248, 248, 255);
 		public static readonly Color Gold = FromRgb(255, 215, 0);
@@ -539,6 +547,6 @@ namespace Xamarin.Forms
 		public static readonly Color Yellow = FromRgb(255, 255, 0);
 		public static readonly Color YellowGreen = FromRgb(154, 205, 50);
 
-		#endregion
+		#endregion Color Definitions
 	}
 }

@@ -9,10 +9,10 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class NavigationProxy : INavigation
 	{
-		INavigation _inner;
-		Lazy<List<Page>> _modalStack = new Lazy<List<Page>>(() => new List<Page>());
+		private INavigation _inner;
+		private Lazy<List<Page>> _modalStack = new Lazy<List<Page>>(() => new List<Page>());
 
-		Lazy<List<Page>> _pushStack = new Lazy<List<Page>>(() => new List<Page>());
+		private Lazy<List<Page>> _pushStack = new Lazy<List<Page>>(() => new List<Page>());
 
 		public INavigation Inner
 		{
@@ -216,7 +216,7 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		Page Pop()
+		private Page Pop()
 		{
 			List<Page> list = _pushStack.Value;
 			Page result = list[list.Count - 1];
@@ -224,7 +224,7 @@ namespace Xamarin.Forms.Internals
 			return result;
 		}
 
-		Page PopModal()
+		private Page PopModal()
 		{
 			List<Page> list = _modalStack.Value;
 			Page result = list[list.Count - 1];

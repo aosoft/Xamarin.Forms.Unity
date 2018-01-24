@@ -12,42 +12,54 @@ namespace Xamarin.Forms
 			Platforms = new List<On>();
 		}
 
-		bool useLegacyFallback;
-		T android;
+		private bool useLegacyFallback;
+		private T android;
+
 		[Obsolete]
-		public T Android {
+		public T Android
+		{
 			get { return android; }
-			set {
+			set
+			{
 				useLegacyFallback = true;
 				android = value;
 			}
 		}
 
-		T ios;
+		private T ios;
+
 		[Obsolete]
-		public T iOS {
+		public T iOS
+		{
 			get { return ios; }
-			set {
+			set
+			{
 				useLegacyFallback = true;
 				ios = value;
 			}
 		}
 
-		T winPhone;
+		private T winPhone;
+
 		[Obsolete]
-		public T WinPhone {
+		public T WinPhone
+		{
 			get { return winPhone; }
-			set {
+			set
+			{
 				useLegacyFallback = true;
 				winPhone = value;
 			}
 		}
 
-		bool hasDefault;
-		T @default;
-		public T Default {
+		private bool hasDefault;
+		private T @default;
+
+		public T Default
+		{
 			get { return @default; }
-			set {
+			set
+			{
 				hasDefault = true;
 				@default = value;
 			}
@@ -56,12 +68,13 @@ namespace Xamarin.Forms
 		public IList<On> Platforms { get; private set; }
 
 #pragma warning disable RECS0108 // Warns about static fields in generic types
-		static readonly IValueConverterProvider s_valueConverter = DependencyService.Get<IValueConverterProvider>();
+		private static readonly IValueConverterProvider s_valueConverter = DependencyService.Get<IValueConverterProvider>();
 #pragma warning restore RECS0108 // Warns about static fields in generic types
 
 		public static implicit operator T(OnPlatform<T> onPlatform)
 		{
-			foreach (var onPlat in onPlatform.Platforms) {
+			foreach (var onPlat in onPlatform.Platforms)
+			{
 				if (onPlat.Platform == null)
 					continue;
 				if (!onPlat.Platform.Contains(Device.RuntimePlatform))
@@ -86,6 +99,7 @@ namespace Xamarin.Forms
 	{
 		[TypeConverter(typeof(ListStringTypeConverter))]
 		public IList<string> Platform { get; set; }
+
 		public object Value { get; set; }
 	}
 }

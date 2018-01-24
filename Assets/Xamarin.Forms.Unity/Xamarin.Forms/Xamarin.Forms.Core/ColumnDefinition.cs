@@ -24,7 +24,7 @@ namespace Xamarin.Forms
 
 		public event EventHandler SizeChanged;
 
-		void OnSizeChanged()
+		private void OnSizeChanged()
 		{
 			EventHandler eh = SizeChanged;
 			if (eh != null)

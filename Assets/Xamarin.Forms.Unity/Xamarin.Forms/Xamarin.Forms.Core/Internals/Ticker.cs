@@ -9,12 +9,12 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public abstract class Ticker
 	{
-		static Ticker s_ticker;
-		readonly Stopwatch _stopwatch;
-		readonly List<Tuple<int, Func<long, bool>>> _timeouts;
+		private static Ticker s_ticker;
+		private readonly Stopwatch _stopwatch;
+		private readonly List<Tuple<int, Func<long, bool>>> _timeouts;
 
-		int _count;
-		bool _enabled;
+		private int _count;
+		private bool _enabled;
 
 		protected Ticker()
 		{
@@ -25,10 +25,11 @@ namespace Xamarin.Forms.Internals
 		}
 
 		public static void SetDefault(Ticker ticker) => Default = ticker;
+
 		public static Ticker Default
 		{
 			internal set { s_ticker = value; }
-			get { return s_ticker ?? (s_ticker =  Device.PlatformServices.CreateTicker()); }
+			get { return s_ticker ?? (s_ticker = Device.PlatformServices.CreateTicker()); }
 		}
 
 		public virtual int Insert(Func<long, bool> timeout)
@@ -62,7 +63,7 @@ namespace Xamarin.Forms.Internals
 		protected abstract void DisableTimer();
 
 		protected abstract void EnableTimer();
-		
+
 		protected void SendSignals(int timestep = -1)
 		{
 			long step = timestep >= 0 ? timestep : _stopwatch.ElapsedMilliseconds;
@@ -84,13 +85,13 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		void Disable()
+		private void Disable()
 		{
 			_stopwatch.Reset();
 			DisableTimer();
 		}
 
-		void Enable()
+		private void Enable()
 		{
 			_stopwatch.Start();
 			EnableTimer();

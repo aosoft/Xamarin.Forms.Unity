@@ -7,8 +7,8 @@ namespace Xamarin.Forms
 {
 	internal class SynchronizedList<T> : IList<T>, IReadOnlyList<T>
 	{
-		readonly List<T> _list = new List<T>();
-		ReadOnlyCollection<T> _snapshot;
+		private readonly List<T> _list = new List<T>();
+		private ReadOnlyCollection<T> _snapshot;
 
 		public void Add(T item)
 		{

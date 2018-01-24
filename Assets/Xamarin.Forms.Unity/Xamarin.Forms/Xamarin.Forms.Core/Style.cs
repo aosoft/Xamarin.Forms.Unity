@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
@@ -10,18 +9,18 @@ namespace Xamarin.Forms
 	{
 		internal const string StyleClassPrefix = "Xamarin.Forms.StyleClass.";
 
-		readonly BindableProperty _basedOnResourceProperty = BindableProperty.CreateAttached("BasedOnResource", typeof(Style), typeof(Style), default(Style),
+		private readonly BindableProperty _basedOnResourceProperty = BindableProperty.CreateAttached("BasedOnResource", typeof(Style), typeof(Style), default(Style),
 			propertyChanged: OnBasedOnResourceChanged);
 
-		readonly List<WeakReference<BindableObject>> _targets = new List<WeakReference<BindableObject>>(4);
+		private readonly List<WeakReference<BindableObject>> _targets = new List<WeakReference<BindableObject>>(4);
 
-		Style _basedOnStyle;
+		private Style _basedOnStyle;
 
-		string _baseResourceKey;
+		private string _baseResourceKey;
 
-		IList<Behavior> _behaviors;
+		private IList<Behavior> _behaviors;
 
-		IList<TriggerBase> _triggers;
+		private IList<TriggerBase> _triggers;
 
 		public Style([TypeConverter(typeof(TypeTypeConverter))] [Parameter("TargetType")] Type targetType)
 		{
@@ -126,7 +125,7 @@ namespace Xamarin.Forms
 			return false;
 		}
 
-		void ApplyCore(BindableObject bindable, Style basedOn)
+		private void ApplyCore(BindableObject bindable, Style basedOn)
 		{
 			if (basedOn != null)
 				((IStyle)basedOn).Apply(bindable);
@@ -137,7 +136,7 @@ namespace Xamarin.Forms
 			((AttachedCollection<TriggerBase>)Triggers).AttachTo(bindable);
 		}
 
-		void BasedOnChanged(Style oldValue, Style newValue)
+		private void BasedOnChanged(Style oldValue, Style newValue)
 		{
 			foreach (WeakReference<BindableObject> bindableRef in _targets)
 			{
@@ -150,12 +149,12 @@ namespace Xamarin.Forms
 			}
 		}
 
-		Style GetBasedOnResource(BindableObject bindable)
+		private Style GetBasedOnResource(BindableObject bindable)
 		{
 			return (Style)bindable.GetValue(_basedOnResourceProperty);
 		}
 
-		static void OnBasedOnResourceChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnBasedOnResourceChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			Style style = (bindable as VisualElement).Style;
 			if (style == null)
@@ -164,7 +163,7 @@ namespace Xamarin.Forms
 			style.ApplyCore(bindable, (Style)newValue);
 		}
 
-		void UnApplyCore(BindableObject bindable, Style basedOn)
+		private void UnApplyCore(BindableObject bindable, Style basedOn)
 		{
 			((AttachedCollection<TriggerBase>)Triggers).DetachFrom(bindable);
 			((AttachedCollection<Behavior>)Behaviors).DetachFrom(bindable);
@@ -175,7 +174,7 @@ namespace Xamarin.Forms
 				((IStyle)basedOn).UnApply(bindable);
 		}
 
-		bool ValidateBasedOn(Style value)
+		private bool ValidateBasedOn(Style value)
 		{
 			if (value == null)
 				return true;

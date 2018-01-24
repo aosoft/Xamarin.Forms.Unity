@@ -36,16 +36,16 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty IconProperty = BindableProperty.Create("Icon", typeof(FileImageSource), typeof(Page), default(FileImageSource));
 
-		readonly Lazy<PlatformConfigurationRegistry<Page>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Page>> _platformConfigurationRegistry;
 
-		bool _allocatedFlag;
-		Rectangle _containerArea;
+		private bool _allocatedFlag;
+		private Rectangle _containerArea;
 
-		bool _containerAreaSet;
+		private bool _containerAreaSet;
 
-		bool _hasAppeared;
+		private bool _hasAppeared;
 
-		ReadOnlyCollection<Element> _logicalChildren;
+		private ReadOnlyCollection<Element> _logicalChildren;
 
 		public Page()
 		{
@@ -88,8 +88,8 @@ namespace Xamarin.Forms
 
 		public IList<ToolbarItem> ToolbarItems { get; internal set; }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Rectangle ContainerArea
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public Rectangle ContainerArea
 		{
 			get { return _containerArea; }
 			set
@@ -102,17 +102,17 @@ namespace Xamarin.Forms
 			}
 		}
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool IgnoresContainerArea
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool IgnoresContainerArea
 		{
 			get { return (bool)GetValue(IgnoresContainerAreaProperty); }
 			set { SetValue(IgnoresContainerAreaProperty, value); }
 		}
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public ObservableCollection<Element> InternalChildren { get; } = new ObservableCollection<Element>();
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public ObservableCollection<Element> InternalChildren { get; } = new ObservableCollection<Element>();
 
-		internal override ReadOnlyCollection<Element> LogicalChildrenInternal => 
+		internal override ReadOnlyCollection<Element> LogicalChildrenInternal =>
 			_logicalChildren ?? (_logicalChildren = new ReadOnlyCollection<Element>(InternalChildren));
 
 		public event EventHandler LayoutChanged;
@@ -293,8 +293,8 @@ namespace Xamarin.Forms
 			}
 		}
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void SendAppearing()
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public void SendAppearing()
 		{
 			if (_hasAppeared)
 				return;
@@ -313,8 +313,8 @@ namespace Xamarin.Forms
 			pageContainer?.CurrentPage?.SendAppearing();
 		}
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void SendDisappearing()
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public void SendDisappearing()
 		{
 			if (!_hasAppeared)
 				return;
@@ -333,7 +333,7 @@ namespace Xamarin.Forms
 				handler(this, EventArgs.Empty);
 		}
 
-		void InternalChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void InternalChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.OldItems != null)
 			{
@@ -348,7 +348,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void OnInternalAdded(VisualElement view)
+		private void OnInternalAdded(VisualElement view)
 		{
 			view.MeasureInvalidated += OnChildMeasureInvalidated;
 
@@ -356,14 +356,14 @@ namespace Xamarin.Forms
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 		}
 
-		void OnInternalRemoved(VisualElement view)
+		private void OnInternalRemoved(VisualElement view)
 		{
 			view.MeasureInvalidated -= OnChildMeasureInvalidated;
 
 			OnChildRemoved(view);
 		}
 
-		void OnPageBusyChanged()
+		private void OnPageBusyChanged()
 		{
 			if (!_hasAppeared)
 				return;
@@ -371,7 +371,7 @@ namespace Xamarin.Forms
 			MessagingCenter.Send(this, BusySetSignalName, IsBusy);
 		}
 
-		void OnToolbarItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+		private void OnToolbarItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
 		{
 			if (args.Action != NotifyCollectionChangedAction.Add)
 				return;
@@ -379,7 +379,7 @@ namespace Xamarin.Forms
 				item.Parent = this;
 		}
 
-		bool ShouldLayoutChildren()
+		private bool ShouldLayoutChildren()
 		{
 			if (!LogicalChildren.Any() || Width <= 0 || Height <= 0 || !IsNativeStateConsistent)
 				return false;

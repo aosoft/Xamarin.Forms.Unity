@@ -1,10 +1,9 @@
 #define DO_NOT_CHECK_FOR_BINDING_REUSE
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Collections.Generic;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Internals
 {
@@ -12,38 +11,46 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public abstract class TypedBindingBase : BindingBase
 	{
-		IValueConverter _converter;
-		object _converterParameter;
-		object _source;
-		string _updateSourceEventName;
+		private IValueConverter _converter;
+		private object _converterParameter;
+		private object _source;
+		private string _updateSourceEventName;
 
-		public IValueConverter Converter {
+		public IValueConverter Converter
+		{
 			get { return _converter; }
-			set {
+			set
+			{
 				ThrowIfApplied();
 				_converter = value;
 			}
 		}
 
-		public object ConverterParameter {
+		public object ConverterParameter
+		{
 			get { return _converterParameter; }
-			set {
+			set
+			{
 				ThrowIfApplied();
 				_converterParameter = value;
 			}
 		}
 
-		public object Source {
+		public object Source
+		{
 			get { return _source; }
-			set {
+			set
+			{
 				ThrowIfApplied();
 				_source = value;
 			}
 		}
 
-		internal string UpdateSourceEventName {
+		internal string UpdateSourceEventName
+		{
 			get { return _updateSourceEventName; }
-			set {
+			set
+			{
 				ThrowIfApplied();
 				_updateSourceEventName = value;
 			}
@@ -57,11 +64,11 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public sealed class TypedBinding<TSource, TProperty> : TypedBindingBase
 	{
-		readonly Func<TSource, TProperty> _getter;
-		readonly Action<TSource, TProperty> _setter;
-		readonly PropertyChangedProxy [] _handlers;
+		private readonly Func<TSource, TProperty> _getter;
+		private readonly Action<TSource, TProperty> _setter;
+		private readonly PropertyChangedProxy[] _handlers;
 
-		public TypedBinding(Func<TSource, TProperty> getter, Action<TSource, TProperty> setter, Tuple<Func<TSource, object>, string> [] handlers)
+		public TypedBinding(Func<TSource, TProperty> getter, Action<TSource, TProperty> setter, Tuple<Func<TSource, object>, string>[] handlers)
 		{
 			if (getter == null)
 				throw new ArgumentNullException(nameof(getter));
@@ -72,14 +79,14 @@ namespace Xamarin.Forms.Internals
 			if (handlers == null)
 				return;
 
-			_handlers = new PropertyChangedProxy [handlers.Length];
+			_handlers = new PropertyChangedProxy[handlers.Length];
 			for (var i = 0; i < handlers.Length; i++)
-				_handlers [i] = new PropertyChangedProxy(handlers [i].Item1, handlers [i].Item2, this);
+				_handlers[i] = new PropertyChangedProxy(handlers[i].Item1, handlers[i].Item2, this);
 		}
 
-		readonly WeakReference<object> _weakSource = new WeakReference<object>(null);
-		readonly WeakReference<BindableObject> _weakTarget = new WeakReference<BindableObject>(null);
-		BindableProperty _targetProperty;
+		private readonly WeakReference<object> _weakSource = new WeakReference<object>(null);
+		private readonly WeakReference<BindableObject> _weakTarget = new WeakReference<BindableObject>(null);
+		private BindableProperty _targetProperty;
 
 		// Applies the binding to a previously set source and target.
 		internal override void Apply(bool fromTarget = false)
@@ -126,12 +133,14 @@ namespace Xamarin.Forms.Internals
 
 		internal override BindingBase Clone()
 		{
-			Tuple<Func<TSource, object>, string> [] handlers = _handlers == null ? null : new Tuple<Func<TSource, object>, string> [_handlers.Length];
-			if (handlers != null) {
+			Tuple<Func<TSource, object>, string>[] handlers = _handlers == null ? null : new Tuple<Func<TSource, object>, string>[_handlers.Length];
+			if (handlers != null)
+			{
 				for (var i = 0; i < _handlers.Length; i++)
-					handlers [i] = new Tuple<Func<TSource, object>, string>(_handlers [i].PartGetter, _handlers [i].PropertyName);
+					handlers[i] = new Tuple<Func<TSource, object>, string>(_handlers[i].PartGetter, _handlers[i].PropertyName);
 			}
-			return new TypedBinding<TSource, TProperty>(_getter, _setter, handlers) {
+			return new TypedBinding<TSource, TProperty>(_getter, _setter, handlers)
+			{
 				Mode = Mode,
 				Converter = Converter,
 				ConverterParameter = ConverterParameter,
@@ -169,7 +178,7 @@ namespace Xamarin.Forms.Internals
 #endif
 			if (_handlers != null)
 				Unsubscribe();
-			
+
 #if (!DO_NOT_CHECK_FOR_BINDING_REUSE)
 			_weakSource.SetTarget(null);
 			_weakTarget.SetTarget(null);
@@ -191,15 +200,21 @@ namespace Xamarin.Forms.Internals
 			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
 				Subscribe((TSource)sourceObject);
 
-			if (needsGetter) {
+			if (needsGetter)
+			{
 				var value = property.DefaultValue;
-				if (isTSource) {
-					try {
+				if (isTSource)
+				{
+					try
+					{
 						value = GetSourceValue(_getter((TSource)sourceObject), property.ReturnType);
-					} catch (Exception ex) when (ex is NullReferenceException || ex is KeyNotFoundException) {
+					}
+					catch (Exception ex) when (ex is NullReferenceException || ex is KeyNotFoundException)
+					{
 					}
 				}
-				if (!TryConvert(ref value, property, property.ReturnType, true)) {
+				if (!TryConvert(ref value, property, property.ReturnType, true))
+				{
 					Log.Warning("Binding", "{0} can not be converted to type '{1}'", value, property.ReturnType);
 					return;
 				}
@@ -208,9 +223,11 @@ namespace Xamarin.Forms.Internals
 			}
 
 			var needsSetter = (mode == BindingMode.TwoWay && fromTarget) || mode == BindingMode.OneWayToSource;
-			if (needsSetter && _setter != null && isTSource) {
+			if (needsSetter && _setter != null && isTSource)
+			{
 				var value = GetTargetValue(target.GetValue(property), typeof(TProperty));
-				if (!TryConvert(ref value, property, typeof(TProperty), false)) {
+				if (!TryConvert(ref value, property, typeof(TProperty), false))
+				{
 					Log.Warning("Binding", "{0} can not be converted to type '{1}'", value, typeof(TProperty));
 					return;
 				}
@@ -218,7 +235,7 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		static bool TryConvert(ref object value, BindableProperty targetProperty, Type convertTo, bool toTarget)
+		private static bool TryConvert(ref object value, BindableProperty targetProperty, Type convertTo, bool toTarget)
 		{
 			if (value == null)
 				return true;
@@ -226,31 +243,37 @@ namespace Xamarin.Forms.Internals
 				return true;
 
 			object original = value;
-			try {
+			try
+			{
 				value = Convert.ChangeType(value, convertTo, CultureInfo.InvariantCulture);
 				return true;
-			} catch (Exception ex ) when (ex is InvalidCastException || ex is FormatException||ex is OverflowException) {
+			}
+			catch (Exception ex) when (ex is InvalidCastException || ex is FormatException || ex is OverflowException)
+			{
 				value = original;
 				return false;
 			}
 		}
 
-		class PropertyChangedProxy
+		private class PropertyChangedProxy
 		{
 			public Func<TSource, object> PartGetter { get; }
 			public string PropertyName { get; }
 			public BindingExpression.WeakPropertyChangedProxy Listener { get; }
-			WeakReference<INotifyPropertyChanged> _weakPart = new WeakReference<INotifyPropertyChanged>(null);
-			readonly BindingBase _binding;
+			private WeakReference<INotifyPropertyChanged> _weakPart = new WeakReference<INotifyPropertyChanged>(null);
+			private readonly BindingBase _binding;
 
-			public INotifyPropertyChanged Part {
-				get {
+			public INotifyPropertyChanged Part
+			{
+				get
+				{
 					INotifyPropertyChanged target;
 					if (_weakPart.TryGetTarget(out target))
 						return target;
 					return null;
-				} 
-				set {
+				}
+				set
+				{
 					_weakPart.SetTarget(value);
 					Listener.SubscribeTo(value, OnPropertyChanged);
 				}
@@ -264,7 +287,7 @@ namespace Xamarin.Forms.Internals
 				Listener = new BindingExpression.WeakPropertyChangedProxy();
 			}
 
-			void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+			private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 			{
 				if (!string.IsNullOrEmpty(e.PropertyName) && string.CompareOrdinal(e.PropertyName, PropertyName) != 0)
 					return;
@@ -272,23 +295,24 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		void Subscribe(TSource sourceObject)
+		private void Subscribe(TSource sourceObject)
 		{
-			for (var i = 0; i < _handlers.Length; i++) {
-				var part = _handlers [i].PartGetter(sourceObject);
+			for (var i = 0; i < _handlers.Length; i++)
+			{
+				var part = _handlers[i].PartGetter(sourceObject);
 				if (part == null)
 					break;
 				var inpc = part as INotifyPropertyChanged;
 				if (inpc == null)
 					continue;
-				_handlers [i].Part = (inpc);
+				_handlers[i].Part = (inpc);
 			}
 		}
 
-		void Unsubscribe()
+		private void Unsubscribe()
 		{
 			for (var i = 0; i < _handlers.Length; i++)
-				_handlers [i].Listener.Unsubscribe();
+				_handlers[i].Listener.Unsubscribe();
 		}
 	}
 }

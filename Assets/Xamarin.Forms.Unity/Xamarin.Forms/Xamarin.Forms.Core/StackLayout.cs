@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
@@ -12,12 +11,12 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty SpacingProperty = BindableProperty.Create("Spacing", typeof(double), typeof(StackLayout), 6d,
 			propertyChanged: (bindable, oldvalue, newvalue) => ((StackLayout)bindable).InvalidateLayout());
 
-		LayoutInformation _layoutInformation = new LayoutInformation();
-		readonly Lazy<PlatformConfigurationRegistry<StackLayout>> _platformConfigurationRegistry;
+		private LayoutInformation _layoutInformation = new LayoutInformation();
+		private readonly Lazy<PlatformConfigurationRegistry<StackLayout>> _platformConfigurationRegistry;
 
 		public StackLayout()
 		{
-			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<StackLayout>>(() => 
+			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<StackLayout>>(() =>
 				new PlatformConfigurationRegistry<StackLayout>(this));
 		}
 
@@ -93,7 +92,7 @@ namespace Xamarin.Forms
 			base.InvalidateMeasureInternal(trigger);
 		}
 
-		void AlignOffAxis(LayoutInformation layout, StackOrientation orientation, double widthConstraint, double heightConstraint)
+		private void AlignOffAxis(LayoutInformation layout, StackOrientation orientation, double widthConstraint, double heightConstraint)
 		{
 			for (var i = 0; i < layout.Plots.Length; i++)
 			{
@@ -110,7 +109,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void CalculateLayout(LayoutInformation layout, double x, double y, double widthConstraint, double heightConstraint, bool processExpanders)
+		private void CalculateLayout(LayoutInformation layout, double x, double y, double widthConstraint, double heightConstraint, bool processExpanders)
 		{
 			layout.Constraint = new Size(widthConstraint, heightConstraint);
 			layout.Expanders = 0;
@@ -130,7 +129,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void CalculateNaiveLayout(LayoutInformation layout, StackOrientation orientation, double x, double y, double widthConstraint, double heightConstraint)
+		private void CalculateNaiveLayout(LayoutInformation layout, StackOrientation orientation, double x, double y, double widthConstraint, double heightConstraint)
 		{
 			layout.CompressionSpace = 0;
 
@@ -217,7 +216,7 @@ namespace Xamarin.Forms
 			layout.MinimumSize = new Size(minimumWidth, minimumHeight);
 		}
 
-		void CompressHorizontalLayout(LayoutInformation layout, double widthConstraint, double heightConstraint)
+		private void CompressHorizontalLayout(LayoutInformation layout, double widthConstraint, double heightConstraint)
 		{
 			double xOffset = 0;
 
@@ -274,7 +273,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void CompressNaiveLayout(LayoutInformation layout, StackOrientation orientation, double widthConstraint, double heightConstraint)
+		private void CompressNaiveLayout(LayoutInformation layout, StackOrientation orientation, double widthConstraint, double heightConstraint)
 		{
 			if (layout.CompressionSpace <= 0)
 				return;
@@ -289,7 +288,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void CompressVerticalLayout(LayoutInformation layout, double widthConstraint, double heightConstraint)
+		private void CompressVerticalLayout(LayoutInformation layout, double widthConstraint, double heightConstraint)
 		{
 			double yOffset = 0;
 
@@ -346,7 +345,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void ComputeConstraintForView(View view, bool isOnlyExpander)
+		private void ComputeConstraintForView(View view, bool isOnlyExpander)
 		{
 			if (Orientation == StackOrientation.Horizontal)
 			{
@@ -386,7 +385,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		bool HasVisibileChildren()
+		private bool HasVisibileChildren()
 		{
 			for (var index = 0; index < InternalChildren.Count; index++)
 			{
@@ -397,7 +396,7 @@ namespace Xamarin.Forms
 			return false;
 		}
 
-		void ProcessExpanders(LayoutInformation layout, StackOrientation orientation, double x, double y, double widthConstraint, double heightConstraint)
+		private void ProcessExpanders(LayoutInformation layout, StackOrientation orientation, double x, double y, double widthConstraint, double heightConstraint)
 		{
 			if (layout.Expanders <= 0)
 				return;
@@ -460,7 +459,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		class LayoutInformation
+		private class LayoutInformation
 		{
 			public Rectangle Bounds;
 			public double CompressionSpace;

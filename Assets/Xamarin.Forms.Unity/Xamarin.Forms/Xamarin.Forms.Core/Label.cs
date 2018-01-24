@@ -50,7 +50,7 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty LineBreakModeProperty = BindableProperty.Create("LineBreakMode", typeof(LineBreakMode), typeof(Label), LineBreakMode.WordWrap,
 			propertyChanged: (bindable, oldvalue, newvalue) => ((Label)bindable).InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged));
 
-		readonly Lazy<PlatformConfigurationRegistry<Label>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Label>> _platformConfigurationRegistry;
 
 		public Label()
 		{
@@ -148,13 +148,13 @@ namespace Xamarin.Forms
 		void IFontElement.OnFontChanged(Font oldValue, Font newValue) =>
 			 InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 
-		void OnFormattedTextChanged(object sender, PropertyChangedEventArgs e)
+		private void OnFormattedTextChanged(object sender, PropertyChangedEventArgs e)
 		{
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 			OnPropertyChanged("FormattedText");
 		}
 
-		static void OnHorizontalTextAlignmentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnHorizontalTextAlignmentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var label = (Label)bindable;
 #pragma warning disable 0618 // retain until XAlign removed
@@ -162,7 +162,7 @@ namespace Xamarin.Forms
 #pragma warning restore 0618
 		}
 
-		static void OnTextPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		private static void OnTextPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			var label = (Label)bindable;
 			LineBreakMode breakMode = label.LineBreakMode;
@@ -174,7 +174,7 @@ namespace Xamarin.Forms
 				((Label)bindable).FormattedText = null;
 		}
 
-		static void OnVerticalTextAlignmentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnVerticalTextAlignmentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var label = (Label)bindable;
 #pragma warning disable 0618 // retain until YAlign removed

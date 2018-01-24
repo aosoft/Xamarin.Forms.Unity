@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
@@ -33,7 +32,7 @@ namespace Xamarin.Forms
 			return result;
 		}
 
-		#endregion
+		#endregion Statics
 
 		// Received after Control/Container/Element made valid
 		protected abstract void OnAttached();

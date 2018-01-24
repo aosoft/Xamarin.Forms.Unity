@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
+﻿namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 {
-    using FormsElement = Forms.Page;
+	using FormsElement = Forms.Page;
 
-    public static class Page
-    {
-        #region ToolbarPlacement
+	public static class Page
+	{
+		#region ToolbarPlacement
 
 		public static readonly BindableProperty ToolbarPlacementProperty =
 			BindableProperty.CreateAttached("ToolbarPlacement", typeof(ToolbarPlacement),
@@ -30,7 +24,7 @@ namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 		{
 			return (ToolbarPlacement)config.Element.GetValue(ToolbarPlacementProperty);
 		}
-		
+
 		public static IPlatformElementConfiguration<Windows, FormsElement> SetToolbarPlacement(
 			this IPlatformElementConfiguration<Windows, FormsElement> config, ToolbarPlacement value)
 		{
@@ -38,6 +32,6 @@ namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 			return config;
 		}
 
-		#endregion
-    }
+		#endregion ToolbarPlacement
+	}
 }

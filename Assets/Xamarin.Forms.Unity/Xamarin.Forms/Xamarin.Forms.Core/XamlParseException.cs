@@ -5,7 +5,7 @@ namespace Xamarin.Forms.Xaml
 {
 	public class XamlParseException : Exception
 	{
-		readonly string _unformattedMessage;
+		private readonly string _unformattedMessage;
 
 		public XamlParseException(string message, IXmlLineInfo xmlInfo, Exception innerException = null) : base(FormatMessage(message, xmlInfo), innerException)
 		{
@@ -20,7 +20,7 @@ namespace Xamarin.Forms.Xaml
 			get { return _unformattedMessage ?? Message; }
 		}
 
-		static string FormatMessage(string message, IXmlLineInfo xmlinfo)
+		private static string FormatMessage(string message, IXmlLineInfo xmlinfo)
 		{
 			if (xmlinfo == null || !xmlinfo.HasLineInfo())
 				return message;

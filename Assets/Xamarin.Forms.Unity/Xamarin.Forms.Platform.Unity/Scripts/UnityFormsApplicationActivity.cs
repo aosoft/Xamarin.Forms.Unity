@@ -1,10 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.UI;
-using Xamarin.Forms.Internals;
-
 using Xamarin.Forms.Platform.Unity;
 
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Label), typeof(LabelRenderer))]
@@ -20,145 +17,147 @@ using Xamarin.Forms.Platform.Unity;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	/// <summary>
-	/// Xamarin.Forms の初期化をする MonoBehavior のベースクラス。
-	/// UI の生成元となる Prefab をここで管理する。
-	/// </summary>
-	[DisallowMultipleComponent]
-	public abstract class UnityFormsApplicationActivity : MonoBehaviour
-	{
-		public UnityEngine.UI.Button _prefabButton;
-		public UnityEngine.UI.Text _prefabText;
-		public UnityEngine.UI.Slider _prefabSlider;
-		public UnityEngine.UI.InputField _prefabInputField;
-		public UnityEngine.CanvasRenderer _prefabPanel;
-		public UnityEngine.Canvas _prefabCanvas;
-		public UnityEngine.UI.Toggle _prefabToggle;
-		public UnityEngine.UI.Dropdown _prefabDropdown;
-		public UnityEngine.UI.ScrollRect _prefabScrollView;
+    /// <summary>
+    /// Xamarin.Forms の初期化をする MonoBehavior のベースクラス。
+    /// UI の生成元となる Prefab をここで管理する。
+    /// </summary>
+    [DisallowMultipleComponent]
+    public abstract class UnityFormsApplicationActivity : MonoBehaviour
+    {
+        public UnityEngine.UI.Button _prefabButton;
+        public UnityEngine.UI.Text _prefabText;
+        public UnityEngine.UI.Slider _prefabSlider;
+        public UnityEngine.UI.InputField _prefabInputField;
+        public UnityEngine.CanvasRenderer _prefabPanel;
+        public UnityEngine.Canvas _prefabCanvas;
+        public UnityEngine.UI.Toggle _prefabToggle;
+        public UnityEngine.UI.Dropdown _prefabDropdown;
+        public UnityEngine.UI.ScrollRect _prefabScrollView;
 
-		Dictionary<Type, UnityEngine.Component> _prefabs;
+        private Dictionary<Type, UnityEngine.Component> _prefabs;
 
-		protected virtual void Awake()
-		{
-			_prefabs = new Dictionary<Type, UnityEngine.Component>();
-			InternalAddPrefab(_prefabButton);
-			InternalAddPrefab(_prefabText);
-			InternalAddPrefab(_prefabSlider);
-			InternalAddPrefab(_prefabInputField);
-			InternalAddPrefab(_prefabPanel);
-			InternalAddPrefab(_prefabCanvas);
-			InternalAddPrefab(_prefabToggle);
-			InternalAddPrefab(_prefabDropdown);
-			InternalAddPrefab(_prefabScrollView);
-		}
+        protected virtual void Awake()
+        {
+            _prefabs = new Dictionary<Type, UnityEngine.Component>();
+            InternalAddPrefab(_prefabButton);
+            InternalAddPrefab(_prefabText);
+            InternalAddPrefab(_prefabSlider);
+            InternalAddPrefab(_prefabInputField);
+            InternalAddPrefab(_prefabPanel);
+            InternalAddPrefab(_prefabCanvas);
+            InternalAddPrefab(_prefabToggle);
+            InternalAddPrefab(_prefabDropdown);
+            InternalAddPrefab(_prefabScrollView);
+        }
 
-		void InternalAddPrefab(UnityEngine.Component o)
-		{
-			if (o != null)
-			{
-				_prefabs.Add(o.GetType(), o);
-			}
-		}
+        private void InternalAddPrefab(UnityEngine.Component o)
+        {
+            if (o != null)
+            {
+                _prefabs.Add(o.GetType(), o);
+            }
+        }
 
-		/// <summary>
-		/// 指定の型に対応する基底コンポーネントを Prefab から生成する。
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <returns></returns>
-		public T CreateBaseComponent<T>() where T : UnityEngine.Component
-		{
-			var t = typeof(T);
-			if (_prefabs.ContainsKey(t))
-			{
-				return UnityEngine.Object.Instantiate<T>(_prefabs[t] as T);
-			}
-			return null;
-		}
-	}
+        /// <summary>
+        /// 指定の型に対応する基底コンポーネントを Prefab から生成する。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T CreateBaseComponent<T>() where T : UnityEngine.Component
+        {
+            var t = typeof(T);
+            if (_prefabs.ContainsKey(t))
+            {
+                return UnityEngine.Object.Instantiate<T>(_prefabs[t] as T);
+            }
+            return null;
+        }
+    }
 
-	/// <summary>
-	/// Xamarin.Forms の初期化をする MonoBehavior。
-	/// </summary>
-	[DisallowMultipleComponent]
-	public class UnityFormsApplicationActivity<T> : UnityFormsApplicationActivity
-		where T : Application, new()
-	{
-		/*-----------------------------------------------------------------*/
-		#region Field
+    /// <summary>
+    /// Xamarin.Forms の初期化をする MonoBehavior。
+    /// </summary>
+    [DisallowMultipleComponent]
+    public class UnityFormsApplicationActivity<T> : UnityFormsApplicationActivity
+        where T : Application, new()
+    {
+        /*-----------------------------------------------------------------*/
 
-		Platform _platform;
+        #region Field
 
-		//	Platform / PlatformRenderer が使用する Root Canvas
-		public Canvas _xamarinFormsPlatformCanvas;
+        private Platform _platform;
 
-		#endregion
+        //	Platform / PlatformRenderer が使用する Root Canvas
+        public Canvas _xamarinFormsPlatformCanvas;
 
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+        #endregion Field
 
-		protected override void Awake()
-		{
-			base.Awake();
+        /*-----------------------------------------------------------------*/
 
-			Forms.Init(this);
-			_platform = new Platform(this, _xamarinFormsPlatformCanvas);
-		}
+        #region MonoBehavior
 
-		private void Start()
-		{
-			LoadApplication(new T());
-		}
+        protected override void Awake()
+        {
+            base.Awake();
 
-		private void OnDestroy()
-		{
-			_platform?.Dispose();
-			_platform = null;
-			Forms.Uninit();
-		}
+            Forms.Init(this);
+            _platform = new Platform(this, _xamarinFormsPlatformCanvas);
+        }
 
-		private void OnApplicationFocus(bool focus)
-		{
-			
-		}
+        private void Start()
+        {
+            LoadApplication(new T());
+        }
 
-		private void OnApplicationPause(bool pause)
-		{
-			if (pause)
-			{
-				Application.Current?.SendSleepAsync();
-			}
-			else
-			{
-				Application.Current?.SendResume();
-			}
-		}
+        private void OnDestroy()
+        {
+            _platform?.Dispose();
+            _platform = null;
+            Forms.Uninit();
+        }
 
-		#endregion
+        private void OnApplicationFocus(bool focus)
+        {
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Protected Method
+        private void OnApplicationPause(bool pause)
+        {
+            if (pause)
+            {
+                Application.Current?.SendSleepAsync();
+            }
+            else
+            {
+                Application.Current?.SendResume();
+            }
+        }
 
-		protected void LoadApplication(T app)
-		{
+        #endregion MonoBehavior
 
-			Application.SetCurrentApplication(app);
-			_platform.SetPage(Application.Current.MainPage);
-			app.PropertyChanged += OnApplicationPropertyChanged;
-			Application.Current.SendStart();
-		}
+        /*-----------------------------------------------------------------*/
 
-		#endregion
+        #region Protected Method
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+        protected void LoadApplication(T app)
+        {
+            Application.SetCurrentApplication(app);
+            _platform.SetPage(Application.Current.MainPage);
+            app.PropertyChanged += OnApplicationPropertyChanged;
+            Application.Current.SendStart();
+        }
 
-		void OnApplicationPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == "MainPage")
-				_platform.SetPage(Application.Current.MainPage);
-		}
+        #endregion Protected Method
 
-		#endregion
-	}
+        /*-----------------------------------------------------------------*/
+
+        #region Event Handler
+
+        private void OnApplicationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MainPage")
+                _platform.SetPage(Application.Current.MainPage);
+        }
+
+        #endregion Event Handler
+    }
 }

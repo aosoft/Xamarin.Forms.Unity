@@ -7,8 +7,8 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public abstract class DeviceInfo : INotifyPropertyChanged, IDisposable
 	{
-		DeviceOrientation _currentOrientation;
-		bool _disposed;
+		private DeviceOrientation _currentOrientation;
+		private bool _disposed;
 
 		public DeviceOrientation CurrentOrientation
 		{

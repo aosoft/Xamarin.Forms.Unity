@@ -10,12 +10,12 @@ namespace Xamarin.Forms
 	[TypeConverter(typeof(ImageSourceConverter))]
 	public abstract class ImageSource : Element
 	{
-		readonly object _synchandle = new object();
-		CancellationTokenSource _cancellationTokenSource;
+		private readonly object _synchandle = new object();
+		private CancellationTokenSource _cancellationTokenSource;
 
-		TaskCompletionSource<bool> _completionSource;
+		private TaskCompletionSource<bool> _completionSource;
 
-		readonly WeakEventManager _weakEventManager = new WeakEventManager();
+		private readonly WeakEventManager _weakEventManager = new WeakEventManager();
 
 		protected ImageSource()
 		{
@@ -34,7 +34,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		bool IsLoading
+		private bool IsLoading
 		{
 			get { return _cancellationTokenSource != null; }
 		}
@@ -141,7 +141,7 @@ namespace Xamarin.Forms
 		internal event EventHandler SourceChanged
 		{
 			add { _weakEventManager.AddEventHandler(nameof(SourceChanged), value); }
-			remove { _weakEventManager.RemoveEventHandler(nameof(SourceChanged), value);}
+			remove { _weakEventManager.RemoveEventHandler(nameof(SourceChanged), value); }
 		}
 	}
 }

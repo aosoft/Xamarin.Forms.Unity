@@ -2,9 +2,9 @@
 
 namespace XamlPad
 {
-	[DisallowMultipleComponent]
-	public class XamlPadApplicationActivity :
-		Xamarin.Forms.Platform.Unity.UnityFormsApplicationActivity<App>
-	{
-	}
+    [DisallowMultipleComponent]
+    public class XamlPadApplicationActivity :
+        Xamarin.Forms.Platform.Unity.UnityFormsApplicationActivity<App>
+    {
+    }
 }

@@ -11,7 +11,7 @@ namespace Xamarin.Forms.Internals
 	{
 		public static readonly BindableProperty NameScopeProperty = BindableProperty.CreateAttached("NameScope", typeof(INameScope), typeof(NameScope), default(INameScope));
 
-		readonly Dictionary<string, object> _names = new Dictionary<string, object>();
+		private readonly Dictionary<string, object> _names = new Dictionary<string, object>();
 
 		object INameScope.FindByName(string name)
 		{

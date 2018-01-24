@@ -1,63 +1,60 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms.Internals;
+﻿using System.Collections;
 using UnityEngine;
+using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class UnityTicker : Ticker
-	{
-		/*-----------------------------------------------------------------*/
-		#region Private Field
+    public class UnityTicker : Ticker
+    {
+        /*-----------------------------------------------------------------*/
 
-		IEnumerator _coroutine = null;
+        #region Private Field
 
-		#endregion
+        private IEnumerator _coroutine = null;
 
-		/*-----------------------------------------------------------------*/
-		#region Constructor
+        #endregion Private Field
 
-		public UnityTicker()
-		{
-		}
+        /*-----------------------------------------------------------------*/
 
-		#endregion
+        #region Constructor
 
-		/*-----------------------------------------------------------------*/
-		#region Ticker
+        public UnityTicker()
+        {
+        }
 
-		protected override void DisableTimer()
-		{
-			if (_coroutine != null)
-			{
-				Forms.Activity.StopCoroutine(_coroutine);
-				_coroutine = null;
-			}
-		}
+        #endregion Constructor
 
-		protected override void EnableTimer()
-		{
-			if (_coroutine == null)
-			{
-				_coroutine = TimerCorutine();
-				Forms.Activity.StartCoroutine(_coroutine);
-			}
-		}
+        /*-----------------------------------------------------------------*/
 
-		IEnumerator TimerCorutine()
-		{
-			while (true)
-			{
-				yield return new WaitForSeconds(0.01f);
-				SendSignals();
-			}
-		}
+        #region Ticker
 
-		#endregion
+        protected override void DisableTimer()
+        {
+            if (_coroutine != null)
+            {
+                Forms.Activity.StopCoroutine(_coroutine);
+                _coroutine = null;
+            }
+        }
 
-	}
+        protected override void EnableTimer()
+        {
+            if (_coroutine == null)
+            {
+                _coroutine = TimerCorutine();
+                Forms.Activity.StartCoroutine(_coroutine);
+            }
+        }
+
+        private IEnumerator TimerCorutine()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(0.01f);
+                SendSignals();
+            }
+        }
+
+        #endregion Ticker
+    }
 }

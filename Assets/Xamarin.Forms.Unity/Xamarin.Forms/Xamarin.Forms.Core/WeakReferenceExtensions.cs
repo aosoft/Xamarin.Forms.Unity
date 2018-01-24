@@ -2,7 +2,7 @@
 
 namespace Xamarin.Forms
 {
-	static class WeakReferenceExtensions
+	internal static class WeakReferenceExtensions
 	{
 		internal static bool TryGetTarget<T>(this WeakReference self, out T target) where T : class
 		{

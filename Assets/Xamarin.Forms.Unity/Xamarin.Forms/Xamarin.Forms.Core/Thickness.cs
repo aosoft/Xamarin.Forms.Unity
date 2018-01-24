@@ -55,7 +55,7 @@ namespace Xamarin.Forms
 			return new Thickness(uniformSize);
 		}
 
-		bool Equals(Thickness other)
+		private bool Equals(Thickness other)
 		{
 			return Left.Equals(other.Left) && Top.Equals(other.Top) && Right.Equals(other.Right) && Bottom.Equals(other.Bottom);
 		}

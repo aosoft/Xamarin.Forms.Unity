@@ -5,7 +5,7 @@ namespace Xamarin.Forms
 {
 	internal class StreamWrapper : Stream
 	{
-		readonly Stream _wrapped;
+		private readonly Stream _wrapped;
 
 		public StreamWrapper(Stream wrapped)
 		{

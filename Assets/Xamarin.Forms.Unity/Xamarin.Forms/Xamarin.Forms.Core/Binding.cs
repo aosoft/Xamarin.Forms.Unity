@@ -6,20 +6,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
 	public sealed class Binding : BindingBase
 	{
 		internal const string SelfPath = ".";
-		IValueConverter _converter;
-		object _converterParameter;
+		private IValueConverter _converter;
+		private object _converterParameter;
 
-		BindingExpression _expression;
-		string _path;
-		object _source;
-		string _updateSourceEventName;
+		private BindingExpression _expression;
+		private string _path;
+		private object _source;
+		private string _updateSourceEventName;
 
 		public Binding()
 		{
@@ -85,9 +84,11 @@ namespace Xamarin.Forms
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public string UpdateSourceEventName {
+		public string UpdateSourceEventName
+		{
 			get { return _updateSourceEventName; }
-			set {
+			set
+			{
 				ThrowIfApplied();
 				_updateSourceEventName = value;
 			}
@@ -156,7 +157,7 @@ namespace Xamarin.Forms
 		}
 
 		[Obsolete]
-		static string GetBindingPath<TSource>(Expression<Func<TSource, object>> propertyGetter)
+		private static string GetBindingPath<TSource>(Expression<Func<TSource, object>> propertyGetter)
 		{
 			Expression expr = propertyGetter.Body;
 

@@ -60,7 +60,6 @@ namespace Xamarin.Forms
 				cmd.Execute(parameter);
 
 			Clicked?.Invoke(sender, new ClickedEventArgs(buttons, parameter));
-
 		}
 	}
 }

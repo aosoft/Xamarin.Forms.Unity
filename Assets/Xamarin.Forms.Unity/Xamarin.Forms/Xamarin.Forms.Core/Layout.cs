@@ -11,7 +11,7 @@ namespace Xamarin.Forms
 	[ContentProperty("Children")]
 	public abstract class Layout<T> : Layout, IViewContainer<T> where T : View
 	{
-		readonly ElementCollection<T> _children;
+		private readonly ElementCollection<T> _children;
 
 		protected Layout()
 		{
@@ -55,19 +55,20 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty IsClippedToBoundsProperty = BindableProperty.Create("IsClippedToBounds", typeof(bool), typeof(Layout), false);
 
 		public static readonly BindableProperty PaddingProperty = BindableProperty.Create("Padding", typeof(Thickness), typeof(Layout), default(Thickness),
-									propertyChanged: (bindable, old, newValue) => {
+									propertyChanged: (bindable, old, newValue) =>
+									{
 										var layout = (Layout)bindable;
 										layout.UpdateChildrenLayout();
 									}, defaultValueCreator: (bindable) => ((Layout)bindable).CreateDefaultPadding());
 
-		static IList<KeyValuePair<Layout, int>> s_resolutionList = new List<KeyValuePair<Layout, int>>();
-		static bool s_relayoutInProgress;
-		bool _allocatedFlag;
+		private static IList<KeyValuePair<Layout, int>> s_resolutionList = new List<KeyValuePair<Layout, int>>();
+		private static bool s_relayoutInProgress;
+		private bool _allocatedFlag;
 
-		bool _hasDoneLayout;
-		Size _lastLayoutSize = new Size(-1, -1);
+		private bool _hasDoneLayout;
+		private Size _lastLayoutSize = new Size(-1, -1);
 
-		ReadOnlyCollection<Element> _logicalChildren;
+		private ReadOnlyCollection<Element> _logicalChildren;
 
 		protected Layout()
 		{
@@ -362,7 +363,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static int GetElementDepth(Element view)
+		private static int GetElementDepth(Element view)
 		{
 			var result = 0;
 			while (view.Parent != null)
@@ -373,7 +374,7 @@ namespace Xamarin.Forms
 			return result;
 		}
 
-		void InternalChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void InternalChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Move)
 			{
@@ -408,7 +409,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void OnInternalAdded(View view)
+		private void OnInternalAdded(View view)
 		{
 			var parent = view.Parent as Layout;
 			parent?.InternalChildren.Remove(view);
@@ -420,7 +421,7 @@ namespace Xamarin.Forms
 			view.MeasureInvalidated += OnChildMeasureInvalidated;
 		}
 
-		void OnInternalRemoved(View view)
+		private void OnInternalRemoved(View view)
 		{
 			view.MeasureInvalidated -= OnChildMeasureInvalidated;
 
@@ -429,7 +430,7 @@ namespace Xamarin.Forms
 				InvalidateLayout();
 		}
 
-		bool ShouldLayoutChildren()
+		private bool ShouldLayoutChildren()
 		{
 			if (Width <= 0 || Height <= 0 || !LogicalChildrenInternal.Any() || !IsVisible || !IsNativeStateConsistent || DisableLayout)
 				return false;

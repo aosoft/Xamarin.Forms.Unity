@@ -13,7 +13,7 @@ namespace Xamarin.Forms
 				eh(bindable, new ToggledEventArgs((bool)newValue));
 		}, defaultBindingMode: BindingMode.TwoWay);
 
-		readonly Lazy<PlatformConfigurationRegistry<Switch>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Switch>> _platformConfigurationRegistry;
 
 		public Switch()
 		{

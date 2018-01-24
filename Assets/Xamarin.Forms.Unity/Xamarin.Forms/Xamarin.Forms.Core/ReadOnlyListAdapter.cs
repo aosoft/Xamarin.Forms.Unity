@@ -8,8 +8,8 @@ namespace Xamarin.Forms
 {
 	internal sealed class ReadOnlyListAdapter : IList
 	{
-		readonly IReadOnlyCollection<object> _collection;
-		readonly IReadOnlyList<object> _list;
+		private readonly IReadOnlyCollection<object> _collection;
+		private readonly IReadOnlyList<object> _list;
 
 		public ReadOnlyListAdapter(IReadOnlyList<object> list)
 		{

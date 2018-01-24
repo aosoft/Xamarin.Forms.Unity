@@ -1,12 +1,12 @@
 namespace Xamarin.Forms
 {
-	static class TextElement
+	internal static class TextElement
 	{
 		public static readonly BindableProperty TextColorProperty =
 			BindableProperty.Create("TextColor", typeof(Color), typeof(ITextElement), Color.Default,
 									propertyChanged: OnTextColorPropertyChanged);
 
-		static void OnTextColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnTextColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			((ITextElement)bindable).OnTextColorPropertyChanged((Color)oldValue, (Color)newValue);
 		}

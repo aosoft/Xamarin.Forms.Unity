@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Xamarin.Forms
 {
-	[Xaml.ProvideCompiled ("Xamarin.Forms.Core.XamlC.BoundsTypeConverter")]
+	[Xaml.ProvideCompiled("Xamarin.Forms.Core.XamlC.BoundsTypeConverter")]
 	public sealed class BoundsTypeConverter : TypeConverter
 	{
 		public override object ConvertFromInvariantString(string value)

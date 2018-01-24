@@ -7,7 +7,7 @@ namespace Xamarin.Forms
 {
 	internal class WeakEventManager
 	{
-		readonly Dictionary<string, List<Subscription>> _eventHandlers =
+		private readonly Dictionary<string, List<Subscription>> _eventHandlers =
 			new Dictionary<string, List<Subscription>>();
 
 		public void AddEventHandler<TEventArgs>(string eventName, EventHandler<TEventArgs> handler)
@@ -115,7 +115,7 @@ namespace Xamarin.Forms
 			RemoveEventHandler(eventName, handler.Target, handler.GetMethodInfo());
 		}
 
-		void AddEventHandler(string eventName, object handlerTarget, MethodInfo methodInfo)
+		private void AddEventHandler(string eventName, object handlerTarget, MethodInfo methodInfo)
 		{
 			List<Subscription> targets;
 			if (!_eventHandlers.TryGetValue(eventName, out targets))
@@ -134,7 +134,7 @@ namespace Xamarin.Forms
 			targets.Add(new Subscription(new WeakReference(handlerTarget), methodInfo));
 		}
 
-		void RemoveEventHandler(string eventName, object handlerTarget, MemberInfo methodInfo)
+		private void RemoveEventHandler(string eventName, object handlerTarget, MemberInfo methodInfo)
 		{
 			List<Subscription> subscriptions;
 			if (!_eventHandlers.TryGetValue(eventName, out subscriptions))
@@ -147,7 +147,7 @@ namespace Xamarin.Forms
 				Subscription current = subscriptions[n - 1];
 
 				if (current.Subscriber != handlerTarget
-				    || current.Handler.Name != methodInfo.Name)
+					|| current.Handler.Name != methodInfo.Name)
 				{
 					continue;
 				}
@@ -156,7 +156,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		struct Subscription
+		private struct Subscription
 		{
 			public Subscription(WeakReference subscriber, MethodInfo handler)
 			{

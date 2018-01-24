@@ -45,22 +45,22 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty SeparatorColorProperty = BindableProperty.Create("SeparatorColor", typeof(Color), typeof(ListView), Color.Default);
 
-		readonly Lazy<PlatformConfigurationRegistry<ListView>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<ListView>> _platformConfigurationRegistry;
 
-		BindingBase _groupDisplayBinding;
+		private BindingBase _groupDisplayBinding;
 
-		BindingBase _groupShortNameBinding;
-		Element _headerElement;
-		Element _footerElement;
+		private BindingBase _groupShortNameBinding;
+		private Element _headerElement;
+		private Element _footerElement;
 
-		ScrollToRequestedEventArgs _pendingScroll;
-		int _previousGroupSelected = -1;
-		int _previousRowSelected = -1;
+		private ScrollToRequestedEventArgs _pendingScroll;
+		private int _previousGroupSelected = -1;
+		private int _previousRowSelected = -1;
 
 		/// <summary>
 		///     Controls whether anything happens in BeginRefresh(), is set based on RefreshCommand.CanExecute
 		/// </summary>
-		bool _refreshAllowed = true;
+		private bool _refreshAllowed = true;
 
 		public ListView()
 		{
@@ -74,9 +74,9 @@ namespace Xamarin.Forms
 		public ListView([Parameter("CachingStrategy")] ListViewCachingStrategy cachingStrategy) : this()
 		{
 			// null => UnitTest "platform"
-			if (Device.RuntimePlatform == null || 
-				Device.RuntimePlatform == Device.Android || 
-				Device.RuntimePlatform == Device.iOS || 
+			if (Device.RuntimePlatform == null ||
+				Device.RuntimePlatform == Device.Android ||
+				Device.RuntimePlatform == Device.iOS ||
 				Device.RuntimePlatform == Device.macOS)
 				CachingStrategy = cachingStrategy;
 		}
@@ -360,7 +360,6 @@ namespace Xamarin.Forms
 			if (viewCell != null && viewCell.View != null && HasUnevenRows)
 				viewCell.View.ComputedConstraint = LayoutConstraint.None;
 			content.Parent = this;
-
 		}
 
 		protected override void UnhookContent(Cell content)
@@ -446,24 +445,24 @@ namespace Xamarin.Forms
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public event EventHandler<ScrollToRequestedEventArgs> ScrollToRequested;
 
-		void OnCommandCanExecuteChanged(object sender, EventArgs eventArgs)
+		private void OnCommandCanExecuteChanged(object sender, EventArgs eventArgs)
 		{
 			RefreshAllowed = RefreshCommand.CanExecute(null);
 		}
 
-		static void OnFooterChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnFooterChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var lv = (ListView)bindable;
 			lv.OnHeaderOrFooterChanged(ref lv._footerElement, "FooterElement", newValue, lv.FooterTemplate, false);
 		}
 
-		static void OnFooterTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnFooterTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var lv = (ListView)bindable;
 			lv.OnHeaderOrFooterChanged(ref lv._footerElement, "FooterElement", lv.Footer, (DataTemplate)newValue, true);
 		}
 
-		static void OnGroupDisplayBindingChanged(BindableObject bindable, BindingBase oldValue, BindingBase newValue)
+		private static void OnGroupDisplayBindingChanged(BindableObject bindable, BindingBase oldValue, BindingBase newValue)
 		{
 			var lv = (ListView)bindable;
 			if (newValue != null && lv.GroupHeaderTemplate != null)
@@ -473,7 +472,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void OnGroupHeaderTemplateChanged(BindableObject bindable, object oldvalue, object newValue)
+		private static void OnGroupHeaderTemplateChanged(BindableObject bindable, object oldvalue, object newValue)
 		{
 			var lv = (ListView)bindable;
 			if (newValue != null && lv.GroupDisplayBinding != null)
@@ -483,13 +482,13 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void OnHeaderChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnHeaderChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var lv = (ListView)bindable;
 			lv.OnHeaderOrFooterChanged(ref lv._headerElement, "HeaderElement", newValue, lv.HeaderTemplate, false);
 		}
 
-		void OnHeaderOrFooterChanged(ref Element storage, string property, object dataObject, DataTemplate template, bool templateChanged)
+		private void OnHeaderOrFooterChanged(ref Element storage, string property, object dataObject, DataTemplate template, bool templateChanged)
 		{
 			if (dataObject == null)
 			{
@@ -531,13 +530,13 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void OnHeaderTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnHeaderTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var lv = (ListView)bindable;
 			lv.OnHeaderOrFooterChanged(ref lv._headerElement, "HeaderElement", lv.Header, (DataTemplate)newValue, true);
 		}
 
-		static void OnRefreshCommandChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnRefreshCommandChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var lv = (ListView)bindable;
 			var oldCommand = (ICommand)oldValue;
@@ -546,7 +545,7 @@ namespace Xamarin.Forms
 			lv.OnRefreshCommandChanged(oldCommand, command);
 		}
 
-		void OnRefreshCommandChanged(ICommand oldCommand, ICommand newCommand)
+		private void OnRefreshCommandChanged(ICommand oldCommand, ICommand newCommand)
 		{
 			if (oldCommand != null)
 			{
@@ -564,28 +563,28 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void OnRefreshing(EventArgs e)
+		private void OnRefreshing(EventArgs e)
 		{
 			EventHandler handler = Refreshing;
 			if (handler != null)
 				handler(this, e);
 		}
 
-		void OnScrollToRequested(ScrollToRequestedEventArgs e)
+		private void OnScrollToRequested(ScrollToRequestedEventArgs e)
 		{
 			EventHandler<ScrollToRequestedEventArgs> handler = ScrollToRequested;
 			if (handler != null)
 				handler(this, e);
 		}
 
-		static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var list = (ListView)bindable;
 			if (list.ItemSelected != null)
 				list.ItemSelected(list, new SelectedItemChangedEventArgs(newValue));
 		}
 
-		static bool ValidateHeaderFooterTemplate(BindableObject bindable, object value)
+		private static bool ValidateHeaderFooterTemplate(BindableObject bindable, object value)
 		{
 			if (value == null)
 				return true;

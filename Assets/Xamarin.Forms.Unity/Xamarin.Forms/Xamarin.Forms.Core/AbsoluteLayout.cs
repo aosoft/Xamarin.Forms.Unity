@@ -12,13 +12,13 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty LayoutBoundsProperty = BindableProperty.CreateAttached("LayoutBounds", typeof(Rectangle), typeof(AbsoluteLayout), new Rectangle(0, 0, AutoSize, AutoSize));
 
-		readonly AbsoluteElementCollection _children;
-		readonly Lazy<PlatformConfigurationRegistry<AbsoluteLayout>> _platformConfigurationRegistry;
+		private readonly AbsoluteElementCollection _children;
+		private readonly Lazy<PlatformConfigurationRegistry<AbsoluteLayout>> _platformConfigurationRegistry;
 
 		public AbsoluteLayout()
 		{
 			_children = new AbsoluteElementCollection(InternalChildren, this);
-			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<AbsoluteLayout>>(() => 
+			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<AbsoluteLayout>>(() =>
 				new PlatformConfigurationRegistry<AbsoluteLayout>(this));
 		}
 
@@ -140,7 +140,7 @@ namespace Xamarin.Forms
 			view.ComputedConstraint = result;
 		}
 
-		void ChildOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void ChildOnPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == LayoutFlagsProperty.PropertyName || e.PropertyName == LayoutBoundsProperty.PropertyName)
 			{
@@ -149,7 +149,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static SizeRequest ComputeBoundingRegionDesiredSize(View view)
+		private static SizeRequest ComputeBoundingRegionDesiredSize(View view)
 		{
 			var width = 0.0;
 			var height = 0.0;
@@ -218,7 +218,7 @@ namespace Xamarin.Forms
 			return new SizeRequest(new Size(width, height), new Size(minWidth, minHeight));
 		}
 
-		static Rectangle ComputeLayoutForRegion(View view, Size region)
+		private static Rectangle ComputeLayoutForRegion(View view, Size region)
 		{
 			var result = new Rectangle();
 
@@ -299,7 +299,7 @@ namespace Xamarin.Forms
 			void Add(View view, Point position);
 		}
 
-		class AbsoluteElementCollection : ElementCollection<View>, IAbsoluteList<View>
+		private class AbsoluteElementCollection : ElementCollection<View>, IAbsoluteList<View>
 		{
 			public AbsoluteElementCollection(ObservableCollection<Element> inner, AbsoluteLayout parent) : base(inner)
 			{

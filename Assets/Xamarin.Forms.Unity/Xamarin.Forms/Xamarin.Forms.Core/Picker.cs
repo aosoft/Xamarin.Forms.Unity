@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform;
 
@@ -30,7 +27,7 @@ namespace Xamarin.Forms
 			BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(Picker), null, BindingMode.TwoWay,
 									propertyChanged: OnSelectedItemChanged);
 
-		readonly Lazy<PlatformConfigurationRegistry<Picker>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Picker>> _platformConfigurationRegistry;
 
 		public Picker()
 		{
@@ -58,20 +55,25 @@ namespace Xamarin.Forms
 			set { SetValue(SelectedItemProperty, value); }
 		}
 
-		public Color TextColor {
+		public Color TextColor
+		{
 			get { return (Color)GetValue(TextElement.TextColorProperty); }
 			set { SetValue(TextElement.TextColorProperty, value); }
 		}
 
-		public string Title {
+		public string Title
+		{
 			get { return (string)GetValue(TitleProperty); }
 			set { SetValue(TitleProperty, value); }
 		}
 
-		BindingBase _itemDisplayBinding;
-		public BindingBase ItemDisplayBinding {
+		private BindingBase _itemDisplayBinding;
+
+		public BindingBase ItemDisplayBinding
+		{
 			get { return _itemDisplayBinding; }
-			set {
+			set
+			{
 				if (_itemDisplayBinding == value)
 					return;
 
@@ -85,10 +87,10 @@ namespace Xamarin.Forms
 
 		public event EventHandler SelectedIndexChanged;
 
-		static readonly BindableProperty s_displayProperty =
+		private static readonly BindableProperty s_displayProperty =
 			BindableProperty.Create("Display", typeof(string), typeof(Picker), default(string));
 
-		string GetDisplayMember(object item)
+		private string GetDisplayMember(object item)
 		{
 			if (ItemDisplayBinding == null)
 				return item.ToString();
@@ -98,77 +100,85 @@ namespace Xamarin.Forms
 			return (string)GetValue(s_displayProperty);
 		}
 
-		static object CoerceSelectedIndex(BindableObject bindable, object value)
+		private static object CoerceSelectedIndex(BindableObject bindable, object value)
 		{
 			var picker = (Picker)bindable;
 			return picker.Items == null ? -1 : ((int)value).Clamp(-1, picker.Items.Count - 1);
 		}
 
-		void OnItemDisplayBindingChanged(BindingBase oldValue, BindingBase newValue)
+		private void OnItemDisplayBindingChanged(BindingBase oldValue, BindingBase newValue)
 		{
 			ResetItems();
 		}
 
-		void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			SelectedIndex = SelectedIndex.Clamp(-1, Items.Count - 1);
 			UpdateSelectedItem();
 		}
 
-		static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			((Picker)bindable).OnItemsSourceChanged((IList)oldValue, (IList)newValue);
 		}
 
-		void OnItemsSourceChanged(IList oldValue, IList newValue)
-		{ 
+		private void OnItemsSourceChanged(IList oldValue, IList newValue)
+		{
 			var oldObservable = oldValue as INotifyCollectionChanged;
 			if (oldObservable != null)
 				oldObservable.CollectionChanged -= CollectionChanged;
 
 			var newObservable = newValue as INotifyCollectionChanged;
-			if (newObservable != null) {
+			if (newObservable != null)
+			{
 				newObservable.CollectionChanged += CollectionChanged;
 			}
 
-			if (newValue != null) {
+			if (newValue != null)
+			{
 				((LockableObservableListWrapper)Items).IsLocked = true;
 				ResetItems();
-			} else {
+			}
+			else
+			{
 				((LockableObservableListWrapper)Items).InternalClear();
 				((LockableObservableListWrapper)Items).IsLocked = false;
 			}
 		}
 
-		void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			switch (e.Action) {
-			case NotifyCollectionChangedAction.Add:
-				AddItems(e);
-				break;
-			case NotifyCollectionChangedAction.Remove:
-				RemoveItems(e);
-				break;
-			default: //Move, Replace, Reset
-				ResetItems();
-				break;
+			switch (e.Action)
+			{
+				case NotifyCollectionChangedAction.Add:
+					AddItems(e);
+					break;
+
+				case NotifyCollectionChangedAction.Remove:
+					RemoveItems(e);
+					break;
+
+				default: //Move, Replace, Reset
+					ResetItems();
+					break;
 			}
 		}
-		void AddItems(NotifyCollectionChangedEventArgs e)
+
+		private void AddItems(NotifyCollectionChangedEventArgs e)
 		{
 			int index = e.NewStartingIndex < 0 ? Items.Count : e.NewStartingIndex;
 			foreach (object newItem in e.NewItems)
 				((LockableObservableListWrapper)Items).InternalInsert(index++, GetDisplayMember(newItem));
 		}
 
-		void RemoveItems(NotifyCollectionChangedEventArgs e)
+		private void RemoveItems(NotifyCollectionChangedEventArgs e)
 		{
 			int index = e.OldStartingIndex < Items.Count ? e.OldStartingIndex : Items.Count;
 			foreach (object _ in e.OldItems)
 				((LockableObservableListWrapper)Items).InternalRemoveAt(index--);
 		}
 
-		void ResetItems()
+		private void ResetItems()
 		{
 			if (ItemsSource == null)
 				return;
@@ -178,41 +188,44 @@ namespace Xamarin.Forms
 			UpdateSelectedItem();
 		}
 
-		static void OnSelectedIndexChanged(object bindable, object oldValue, object newValue)
+		private static void OnSelectedIndexChanged(object bindable, object oldValue, object newValue)
 		{
 			var picker = (Picker)bindable;
 			picker.UpdateSelectedItem();
 			picker.SelectedIndexChanged?.Invoke(bindable, EventArgs.Empty);
 		}
 
-		static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var picker = (Picker)bindable;
 			picker.UpdateSelectedIndex(newValue);
 		}
 
-		void UpdateSelectedIndex(object selectedItem)
+		private void UpdateSelectedIndex(object selectedItem)
 		{
-			if (ItemsSource != null) {
+			if (ItemsSource != null)
+			{
 				SelectedIndex = ItemsSource.IndexOf(selectedItem);
 				return;
 			}
 			SelectedIndex = Items.IndexOf(selectedItem);
 		}
 
-		void UpdateSelectedItem()
+		private void UpdateSelectedItem()
 		{
-			if (SelectedIndex == -1) {
+			if (SelectedIndex == -1)
+			{
 				SelectedItem = null;
 				return;
 			}
 
-			if (ItemsSource != null) {
-				SelectedItem = ItemsSource [SelectedIndex];
+			if (ItemsSource != null)
+			{
+				SelectedItem = ItemsSource[SelectedIndex];
 				return;
 			}
 
-			SelectedItem = Items [SelectedIndex];
+			SelectedItem = Items[SelectedIndex];
 		}
 
 		public IPlatformElementConfiguration<T, Picker> On<T>() where T : IConfigPlatform
