@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Xamarin.Forms.Xaml
 {
-	class PruneIgnoredNodesVisitor : IXamlNodeVisitor
+	internal class PruneIgnoredNodesVisitor : IXamlNodeVisitor
 	{
 		public TreeVisitingMode VisitingMode => TreeVisitingMode.TopDown;
 		public bool StopOnDataTemplate => false;

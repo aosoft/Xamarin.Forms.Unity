@@ -4,7 +4,6 @@ using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
-
 	public abstract class ItemsView<TVisual> : View, ITemplatedItemsView<TVisual> where TVisual : BindableObject
 	{
 		/*
@@ -78,7 +77,7 @@ namespace Xamarin.Forms
 		{
 		}
 
-		static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var element = newValue as Element;
 			if (element == null)
@@ -86,7 +85,7 @@ namespace Xamarin.Forms
 			element.Parent = (Element)bindable;
 		}
 
-		static bool ValidateItemTemplate(BindableObject bindable, object value)
+		private static bool ValidateItemTemplate(BindableObject bindable, object value)
 		{
 			var listView = bindable as ListView;
 			if (listView == null)

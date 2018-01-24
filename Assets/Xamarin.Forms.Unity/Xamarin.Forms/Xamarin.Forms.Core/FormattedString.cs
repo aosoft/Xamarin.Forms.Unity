@@ -11,7 +11,7 @@ namespace Xamarin.Forms
 	[ContentProperty("Spans")]
 	public class FormattedString : INotifyPropertyChanged
 	{
-		readonly SpanCollection _spans = new SpanCollection();
+		private readonly SpanCollection _spans = new SpanCollection();
 
 		public FormattedString()
 		{
@@ -40,7 +40,7 @@ namespace Xamarin.Forms
 			return string.Concat(Spans.Select(span => span.Text));
 		}
 
-		void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.OldItems != null)
 			{
@@ -65,19 +65,19 @@ namespace Xamarin.Forms
 			OnPropertyChanged("Spans");
 		}
 
-		void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			OnPropertyChanged("Spans");
 		}
 
-		void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChangedEventHandler handler = PropertyChanged;
 			if (handler != null)
 				handler(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		class SpanCollection : ObservableCollection<Span>
+		private class SpanCollection : ObservableCollection<Span>
 		{
 			protected override void InsertItem(int index, Span item)
 			{

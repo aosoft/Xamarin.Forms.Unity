@@ -47,7 +47,7 @@ namespace Xamarin.Forms
 		public static readonly Easing SpringIn = new Easing(x => x * x * ((1.70158f + 1) * x - 1.70158f));
 		public static readonly Easing SpringOut = new Easing(x => (x - 1) * (x - 1) * ((1.70158f + 1) * (x - 1) + 1.70158f) + 1);
 
-		readonly Func<double, double> _easingFunc;
+		private readonly Func<double, double> _easingFunc;
 
 		static Easing()
 		{

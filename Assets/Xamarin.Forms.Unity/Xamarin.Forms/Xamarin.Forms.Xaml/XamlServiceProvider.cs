@@ -8,7 +8,7 @@ namespace Xamarin.Forms.Xaml.Internals
 {
 	public class XamlServiceProvider : IServiceProvider
 	{
-		readonly Dictionary<Type, object> services = new Dictionary<Type, object>();
+		private readonly Dictionary<Type, object> services = new Dictionary<Type, object>();
 
 		internal XamlServiceProvider(INode node, HydrationContext context)
 		{
@@ -43,38 +43,38 @@ namespace Xamarin.Forms.Xaml.Internals
 
 		internal IProvideValueTarget IProvideValueTarget
 		{
-			get { return (IProvideValueTarget)GetService(typeof (IProvideValueTarget)); }
-			set { services[typeof (IProvideValueTarget)] = value; }
+			get { return (IProvideValueTarget)GetService(typeof(IProvideValueTarget)); }
+			set { services[typeof(IProvideValueTarget)] = value; }
 		}
 
 		internal IXamlTypeResolver IXamlTypeResolver
 		{
-			get { return (IXamlTypeResolver)GetService(typeof (IXamlTypeResolver)); }
-			set { services[typeof (IXamlTypeResolver)] = value; }
+			get { return (IXamlTypeResolver)GetService(typeof(IXamlTypeResolver)); }
+			set { services[typeof(IXamlTypeResolver)] = value; }
 		}
 
 		internal IRootObjectProvider IRootObjectProvider
 		{
-			get { return (IRootObjectProvider)GetService(typeof (IRootObjectProvider)); }
-			set { services[typeof (IRootObjectProvider)] = value; }
+			get { return (IRootObjectProvider)GetService(typeof(IRootObjectProvider)); }
+			set { services[typeof(IRootObjectProvider)] = value; }
 		}
 
 		internal IXmlLineInfoProvider IXmlLineInfoProvider
 		{
-			get { return (IXmlLineInfoProvider)GetService(typeof (IXmlLineInfoProvider)); }
-			set { services[typeof (IXmlLineInfoProvider)] = value; }
+			get { return (IXmlLineInfoProvider)GetService(typeof(IXmlLineInfoProvider)); }
+			set { services[typeof(IXmlLineInfoProvider)] = value; }
 		}
 
 		internal INameScopeProvider INameScopeProvider
 		{
-			get { return (INameScopeProvider)GetService(typeof (INameScopeProvider)); }
-			set { services[typeof (INameScopeProvider)] = value; }
+			get { return (INameScopeProvider)GetService(typeof(INameScopeProvider)); }
+			set { services[typeof(INameScopeProvider)] = value; }
 		}
 
 		internal IValueConverterProvider IValueConverterProvider
 		{
-			get { return (IValueConverterProvider)GetService(typeof (IValueConverterProvider)); }
-			set { services[typeof (IValueConverterProvider)] = value; }
+			get { return (IValueConverterProvider)GetService(typeof(IValueConverterProvider)); }
+			set { services[typeof(IValueConverterProvider)] = value; }
 		}
 
 		public object GetService(Type serviceType)
@@ -89,7 +89,7 @@ namespace Xamarin.Forms.Xaml.Internals
 		}
 	}
 
-	class XamlValueTargetProvider : IProvideParentValues, IProvideValueTarget
+	internal class XamlValueTargetProvider : IProvideParentValues, IProvideValueTarget
 	{
 		public XamlValueTargetProvider(object targetObject, INode node, HydrationContext context, object targetProperty)
 		{
@@ -99,9 +99,9 @@ namespace Xamarin.Forms.Xaml.Internals
 			TargetProperty = targetProperty;
 		}
 
-		INode Node { get; }
+		private INode Node { get; }
 
-		HydrationContext Context { get; }
+		private HydrationContext Context { get; }
 		public object TargetObject { get; }
 		public object TargetProperty { get; internal set; } = null;
 
@@ -134,11 +134,11 @@ namespace Xamarin.Forms.Xaml.Internals
 
 	public class SimpleValueTargetProvider : IProvideParentValues, IProvideValueTarget
 	{
-		readonly object[] objectAndParents;
-		readonly object targetProperty;
+		private readonly object[] objectAndParents;
+		private readonly object targetProperty;
 
 		[Obsolete("SimpleValueTargetProvider(object[] objectAndParents) is obsolete as of version 2.3.4. Please use SimpleValueTargetProvider(object[] objectAndParents, object targetProperty) instead.")]
-		public SimpleValueTargetProvider(object[] objectAndParents) : this (objectAndParents, null)
+		public SimpleValueTargetProvider(object[] objectAndParents) : this(objectAndParents, null)
 		{
 		}
 
@@ -171,9 +171,9 @@ namespace Xamarin.Forms.Xaml.Internals
 
 	public class XamlTypeResolver : IXamlTypeResolver
 	{
-		readonly Assembly currentAssembly;
-		readonly GetTypeFromXmlName getTypeFromXmlName;
-		readonly IXmlNamespaceResolver namespaceResolver;
+		private readonly Assembly currentAssembly;
+		private readonly GetTypeFromXmlName getTypeFromXmlName;
+		private readonly IXmlNamespaceResolver namespaceResolver;
 
 		public XamlTypeResolver(IXmlNamespaceResolver namespaceResolver, Assembly currentAssembly)
 			: this(namespaceResolver, XamlParser.GetElementType, currentAssembly)
@@ -209,7 +209,7 @@ namespace Xamarin.Forms.Xaml.Internals
 			return exception == null;
 		}
 
-		Type Resolve(string qualifiedTypeName, IServiceProvider serviceProvider, out XamlParseException exception)
+		private Type Resolve(string qualifiedTypeName, IServiceProvider serviceProvider, out XamlParseException exception)
 		{
 			exception = null;
 			var split = qualifiedTypeName.Split(':');
@@ -231,7 +231,7 @@ namespace Xamarin.Forms.Xaml.Internals
 			IXmlLineInfo xmlLineInfo = null;
 			if (serviceProvider != null)
 			{
-				var lineInfoProvider = serviceProvider.GetService(typeof (IXmlLineInfoProvider)) as IXmlLineInfoProvider;
+				var lineInfoProvider = serviceProvider.GetService(typeof(IXmlLineInfoProvider)) as IXmlLineInfoProvider;
 				if (lineInfoProvider != null)
 					xmlLineInfo = lineInfoProvider.XmlLineInfo;
 			}
@@ -250,7 +250,7 @@ namespace Xamarin.Forms.Xaml.Internals
 			XmlType xmlType, IXmlLineInfo xmlInfo, Assembly currentAssembly, out XamlParseException exception);
 	}
 
-	class XamlRootObjectProvider : IRootObjectProvider
+	internal class XamlRootObjectProvider : IRootObjectProvider
 	{
 		public XamlRootObjectProvider(object rootObject)
 		{
@@ -270,7 +270,7 @@ namespace Xamarin.Forms.Xaml.Internals
 		public IXmlLineInfo XmlLineInfo { get; }
 	}
 
-	interface INameScopeProvider
+	internal interface INameScopeProvider
 	{
 		INameScope NameScope { get; }
 	}
@@ -282,7 +282,7 @@ namespace Xamarin.Forms.Xaml.Internals
 
 	public class XmlNamespaceResolver : IXmlNamespaceResolver
 	{
-		readonly Dictionary<string, string> namespaces = new Dictionary<string, string>();
+		private readonly Dictionary<string, string> namespaces = new Dictionary<string, string>();
 
 		public IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope)
 		{

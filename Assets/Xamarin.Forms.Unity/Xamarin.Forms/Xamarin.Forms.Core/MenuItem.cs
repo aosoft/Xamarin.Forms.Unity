@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Xamarin.Forms
 {
-
 	public class MenuItem : BaseMenuItem, IMenuItemController
 	{
 		public static readonly BindableProperty AcceleratorProperty = BindableProperty.CreateAttached(nameof(Accelerator), typeof(Accelerator), typeof(MenuItem), null);
@@ -75,7 +73,7 @@ namespace Xamarin.Forms
 			set { SetValue(IsEnabledProperty, value); }
 		}
 
-		bool IsEnabledCore
+		private bool IsEnabledCore
 		{
 			set { SetValueCore(IsEnabledProperty, value); }
 		}
@@ -101,12 +99,12 @@ namespace Xamarin.Forms
 			OnClicked();
 		}
 
-		void OnCommandCanExecuteChanged(object sender, EventArgs eventArgs)
+		private void OnCommandCanExecuteChanged(object sender, EventArgs eventArgs)
 		{
 			IsEnabledCore = Command.CanExecute(CommandParameter);
 		}
 
-		void OnCommandChanged()
+		private void OnCommandChanged()
 		{
 			if (Command == null)
 			{
@@ -119,7 +117,7 @@ namespace Xamarin.Forms
 			Command.CanExecuteChanged += OnCommandCanExecuteChanged;
 		}
 
-		void OnCommandChanging()
+		private void OnCommandChanging()
 		{
 			if (Command == null)
 				return;
@@ -127,7 +125,7 @@ namespace Xamarin.Forms
 			Command.CanExecuteChanged -= OnCommandCanExecuteChanged;
 		}
 
-		void OnCommandParameterChanged()
+		private void OnCommandParameterChanged()
 		{
 			if (Command == null)
 				return;

@@ -41,9 +41,9 @@ namespace Xamarin.Forms
 			propertyChanging: (bindable, oldvalue, newvalue) => ((Button)bindable).OnSourcePropertyChanging((ImageSource)oldvalue, (ImageSource)newvalue),
 			propertyChanged: (bindable, oldvalue, newvalue) => ((Button)bindable).OnSourcePropertyChanged((ImageSource)oldvalue, (ImageSource)newvalue));
 
-		readonly Lazy<PlatformConfigurationRegistry<Button>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Button>> _platformConfigurationRegistry;
 
-		const double DefaultSpacing = 10;
+		private const double DefaultSpacing = 10;
 
 		public Color BorderColor
 		{
@@ -105,7 +105,7 @@ namespace Xamarin.Forms
 			set { SetValue(TextElement.TextColorProperty, value); }
 		}
 
-		bool IsEnabledCore
+		private bool IsEnabledCore
 		{
 			set { SetValueCore(IsEnabledProperty, value); }
 		}
@@ -185,7 +185,7 @@ namespace Xamarin.Forms
 			base.OnPropertyChanging(propertyName);
 		}
 
-		void CommandCanExecuteChanged(object sender, EventArgs eventArgs)
+		private void CommandCanExecuteChanged(object sender, EventArgs eventArgs)
 		{
 			ICommand cmd = Command;
 			if (cmd != null)
@@ -207,7 +207,7 @@ namespace Xamarin.Forms
 		void IFontElement.OnFontChanged(Font oldValue, Font newValue) =>
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 
-		void OnCommandChanged()
+		private void OnCommandChanged()
 		{
 			if (Command != null)
 			{
@@ -218,13 +218,13 @@ namespace Xamarin.Forms
 				IsEnabledCore = true;
 		}
 
-		void OnSourceChanged(object sender, EventArgs eventArgs)
+		private void OnSourceChanged(object sender, EventArgs eventArgs)
 		{
 			OnPropertyChanged(ImageProperty.PropertyName);
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 		}
 
-		void OnSourcePropertyChanged(ImageSource oldvalue, ImageSource newvalue)
+		private void OnSourcePropertyChanged(ImageSource oldvalue, ImageSource newvalue)
 		{
 			if (newvalue != null)
 			{
@@ -234,12 +234,11 @@ namespace Xamarin.Forms
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 		}
 
-		void OnSourcePropertyChanging(ImageSource oldvalue, ImageSource newvalue)
+		private void OnSourcePropertyChanging(ImageSource oldvalue, ImageSource newvalue)
 		{
 			if (oldvalue != null)
 				oldvalue.SourceChanged -= OnSourceChanged;
 		}
-
 
 		void ITextElement.OnTextColorPropertyChanged(Color oldValue, Color newValue)
 		{

@@ -1,11 +1,10 @@
 using System;
 using System.ComponentModel;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms.Internals
 {
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public abstract class TableModel: ITableModel
+	public abstract class TableModel : ITableModel
 	{
 		public virtual Cell GetCell(int section, int row)
 		{

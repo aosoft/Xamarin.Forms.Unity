@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform;
 
@@ -10,7 +8,7 @@ namespace Xamarin.Forms
 	[RenderWith(typeof(_ImageRenderer))]
 	public class Image : View, IImageController, IElementConfiguration<Image>
 	{
-		public static readonly BindableProperty SourceProperty = BindableProperty.Create("Source", typeof(ImageSource), typeof(Image), default(ImageSource), 
+		public static readonly BindableProperty SourceProperty = BindableProperty.Create("Source", typeof(ImageSource), typeof(Image), default(ImageSource),
 			propertyChanging: OnSourcePropertyChanging, propertyChanged: OnSourcePropertyChanged);
 
 		public static readonly BindableProperty AspectProperty = BindableProperty.Create("Aspect", typeof(Aspect), typeof(Image), Aspect.AspectFit);
@@ -21,7 +19,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty IsLoadingProperty = IsLoadingPropertyKey.BindableProperty;
 
-		readonly Lazy<PlatformConfigurationRegistry<Image>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Image>> _platformConfigurationRegistry;
 
 		public Image()
 		{
@@ -86,6 +84,7 @@ namespace Xamarin.Forms
 						height = Math.Min(desiredHeight, heightConstraint);
 						width = desiredWidth * (height / desiredHeight);
 						break;
+
 					case Aspect.Fill:
 						width = Math.Min(desiredWidth, widthConstraint);
 						height = desiredHeight * (width / desiredWidth);
@@ -102,6 +101,7 @@ namespace Xamarin.Forms
 						width = Math.Min(desiredWidth, widthConstraint);
 						height = desiredHeight * (width / desiredWidth);
 						break;
+
 					case Aspect.Fill:
 						height = Math.Min(desiredHeight, heightConstraint);
 						width = desiredWidth * (height / desiredHeight);
@@ -118,18 +118,18 @@ namespace Xamarin.Forms
 			return new SizeRequest(new Size(width, height));
 		}
 
-		void OnSourceChanged(object sender, EventArgs eventArgs)
+		private void OnSourceChanged(object sender, EventArgs eventArgs)
 		{
 			OnPropertyChanged(SourceProperty.PropertyName);
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 		}
 
-		static void OnSourcePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		private static void OnSourcePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			((Image)bindable).OnSourcePropertyChanged((ImageSource)oldvalue, (ImageSource)newvalue);
 		}
 
-		void OnSourcePropertyChanged(ImageSource oldvalue, ImageSource newvalue)
+		private void OnSourcePropertyChanged(ImageSource oldvalue, ImageSource newvalue)
 		{
 			if (newvalue != null)
 			{
@@ -140,23 +140,23 @@ namespace Xamarin.Forms
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 		}
 
-		static void OnSourcePropertyChanging(BindableObject bindable, object oldvalue, object newvalue)
+		private static void OnSourcePropertyChanging(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			((Image)bindable).OnSourcePropertyChanging((ImageSource)oldvalue, (ImageSource)newvalue);
 		}
 
-		async void OnSourcePropertyChanging(ImageSource oldvalue, ImageSource newvalue)
+		private async void OnSourcePropertyChanging(ImageSource oldvalue, ImageSource newvalue)
 		{
 			if (oldvalue == null)
 				return;
-			
+
 			oldvalue.SourceChanged -= OnSourceChanged;
 			try
 			{
 				await oldvalue.Cancel();
 			}
-			catch(ObjectDisposedException)
-			{ 
+			catch (ObjectDisposedException)
+			{
 				// Workaround bugzilla 37792 https://bugzilla.xamarin.com/show_bug.cgi?id=37792
 			}
 		}

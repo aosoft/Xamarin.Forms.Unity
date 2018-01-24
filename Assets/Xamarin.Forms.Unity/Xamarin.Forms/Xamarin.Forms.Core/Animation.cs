@@ -32,13 +32,13 @@ namespace Xamarin.Forms
 {
 	public class Animation : IEnumerable
 	{
-		readonly List<Animation> _children;
-		readonly Easing _easing;
-		readonly Action _finished;
-		readonly Action<double> _step;
-		double _beginAt;
-		double _finishAt;
-		bool _finishedTriggered;
+		private readonly List<Animation> _children;
+		private readonly Easing _easing;
+		private readonly Action _finished;
+		private readonly Action<double> _step;
+		private double _beginAt;
+		private double _finishAt;
+		private bool _finishedTriggered;
 
 		public Animation()
 		{

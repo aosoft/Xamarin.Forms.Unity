@@ -1,71 +1,70 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using UnityEngine;
+﻿using System.Threading;
 using Xamarin.Forms.Internals;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Xamarin.Forms.Platform.Unity.UnitySystemResourcesProvider))]
 
-
 namespace Xamarin.Forms.Platform.Unity
 {
-	/// <summary>
-	/// Xamarin.Forms の Forms 実装。
-	/// </summary>
-	public class Forms
-	{
-		/*-----------------------------------------------------------------*/
-		#region Private Field
+    /// <summary>
+    /// Xamarin.Forms の Forms 実装。
+    /// </summary>
+    public class Forms
+    {
+        /*-----------------------------------------------------------------*/
 
-		static bool _isInitialized = false;
-		static Thread _mainThread;
-		static UnityFormsApplicationActivity _activity;
+        #region Private Field
 
-		#endregion
+        private static bool _isInitialized = false;
+        private static Thread _mainThread;
+        private static UnityFormsApplicationActivity _activity;
 
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+        #endregion Private Field
 
-		static public void Init(UnityFormsApplicationActivity activity)
-		{
-			if (_isInitialized)
-			{
-				return;
-			}
+        /*-----------------------------------------------------------------*/
 
-			_mainThread = Thread.CurrentThread;
-			_activity = activity;
+        #region MonoBehavior
 
-			Device.PlatformServices = new UnityPlatformServices();
-			Device.SetIdiom(TargetIdiom.Desktop);
-			Device.Info = new UnityDeviceInfo();
+        static public void Init(UnityFormsApplicationActivity activity)
+        {
+            if (_isInitialized)
+            {
+                return;
+            }
 
-			Registrar.RegisterAll(new[]
-				{ typeof(ExportRendererAttribute), typeof(ExportCellAttribute), typeof(ExportImageSourceHandlerAttribute) });
-			ExpressionSearch.Default = new UnityExpressionSearch();
+            _mainThread = Thread.CurrentThread;
+            _activity = activity;
 
-			_isInitialized = true;
-		}
+            Device.PlatformServices = new UnityPlatformServices();
+            Device.SetIdiom(TargetIdiom.Desktop);
+            Device.Info = new UnityDeviceInfo();
 
-		static public void Uninit()
-		{
-			Device.PlatformServices = null;
-			Device.SetIdiom(TargetIdiom.Unsupported);
-			Device.Info = null;
+            Registrar.RegisterAll(new[]
+                { typeof(ExportRendererAttribute), typeof(ExportCellAttribute), typeof(ExportImageSourceHandlerAttribute) });
+            ExpressionSearch.Default = new UnityExpressionSearch();
 
-			_mainThread = null;
-			_activity = null;
-			_isInitialized = false;
-		}
+            _isInitialized = true;
+        }
 
-		#endregion
+        static public void Uninit()
+        {
+            Device.PlatformServices = null;
+            Device.SetIdiom(TargetIdiom.Unsupported);
+            Device.Info = null;
 
-		/*-----------------------------------------------------------------*/
-		#region Property
+            _mainThread = null;
+            _activity = null;
+            _isInitialized = false;
+        }
 
-		static public Thread MainThread => _mainThread;
-		static public UnityFormsApplicationActivity Activity => _activity;
+        #endregion MonoBehavior
 
-		#endregion
-	}
+        /*-----------------------------------------------------------------*/
+
+        #region Property
+
+        public static Thread MainThread => _mainThread;
+        public static UnityFormsApplicationActivity Activity => _activity;
+
+        #endregion Property
+    }
 }

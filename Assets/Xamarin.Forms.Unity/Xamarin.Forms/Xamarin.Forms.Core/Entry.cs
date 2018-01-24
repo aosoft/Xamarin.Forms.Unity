@@ -26,7 +26,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty FontAttributesProperty = FontElement.FontAttributesProperty;
 
-		readonly Lazy<PlatformConfigurationRegistry<Entry>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Entry>> _platformConfigurationRegistry;
 
 		public Entry()
 		{
@@ -102,7 +102,7 @@ namespace Xamarin.Forms
 
 		void IFontElement.OnFontChanged(Font oldValue, Font newValue) =>
 			 InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
-		
+
 		public event EventHandler Completed;
 
 		public event EventHandler<TextChangedEventArgs> TextChanged;
@@ -113,7 +113,7 @@ namespace Xamarin.Forms
 			Completed?.Invoke(this, EventArgs.Empty);
 		}
 
-		static void OnTextChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnTextChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var entry = (Entry)bindable;
 

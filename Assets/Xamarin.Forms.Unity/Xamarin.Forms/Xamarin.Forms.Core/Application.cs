@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform;
@@ -11,18 +11,18 @@ namespace Xamarin.Forms
 {
 	public class Application : Element, IResourcesProvider, IApplicationController, IElementConfiguration<Application>
 	{
-		static Application s_current;
-		Task<IDictionary<string, object>> _propertiesTask;
-		readonly Lazy<PlatformConfigurationRegistry<Application>> _platformConfigurationRegistry;
+		private static Application s_current;
+		private Task<IDictionary<string, object>> _propertiesTask;
+		private readonly Lazy<PlatformConfigurationRegistry<Application>> _platformConfigurationRegistry;
 
-		IAppIndexingProvider _appIndexProvider;
+		private IAppIndexingProvider _appIndexProvider;
 
-		ReadOnlyCollection<Element> _logicalChildren;
+		private ReadOnlyCollection<Element> _logicalChildren;
 
-		Page _mainPage;
+		private Page _mainPage;
 
-		ResourceDictionary _resources;
-		static SemaphoreSlim SaveSemaphore = new SemaphoreSlim(1, 1);
+		private ResourceDictionary _resources;
+		private static SemaphoreSlim SaveSemaphore = new SemaphoreSlim(1, 1);
 
 		protected Application()
 		{
@@ -60,7 +60,7 @@ namespace Xamarin.Forms
 		public static Application Current
 		{
 			get { return s_current; }
-			set 
+			set
 			{
 				if (s_current == value)
 					return;
@@ -126,7 +126,7 @@ namespace Xamarin.Forms
 
 		internal IResourceDictionary SystemResources { get; }
 
-		ObservableCollection<Element> InternalChildren { get; } = new ObservableCollection<Element>();
+		private ObservableCollection<Element> InternalChildren { get; } = new ObservableCollection<Element>();
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public void SetAppIndexingProvider(IAppIndexingProvider provider)
@@ -254,7 +254,7 @@ namespace Xamarin.Forms
 			OnStart();
 		}
 
-		async Task<IDictionary<string, object>> GetPropertiesAsync()
+		private async Task<IDictionary<string, object>> GetPropertiesAsync()
 		{
 			var deserializer = DependencyService.Get<IDeserializer>();
 			if (deserializer == null)
@@ -270,14 +270,14 @@ namespace Xamarin.Forms
 			return properties;
 		}
 
-		void OnModalPopped(Page modalPage)
+		private void OnModalPopped(Page modalPage)
 		{
 			EventHandler<ModalPoppedEventArgs> handler = ModalPopped;
 			if (handler != null)
 				handler(this, new ModalPoppedEventArgs(modalPage));
 		}
 
-		bool OnModalPopping(Page modalPage)
+		private bool OnModalPopping(Page modalPage)
 		{
 			EventHandler<ModalPoppingEventArgs> handler = ModalPopping;
 			var args = new ModalPoppingEventArgs(modalPage);
@@ -286,44 +286,43 @@ namespace Xamarin.Forms
 			return args.Cancel;
 		}
 
-		void OnModalPushed(Page modalPage)
+		private void OnModalPushed(Page modalPage)
 		{
 			EventHandler<ModalPushedEventArgs> handler = ModalPushed;
 			if (handler != null)
 				handler(this, new ModalPushedEventArgs(modalPage));
 		}
 
-		void OnModalPushing(Page modalPage)
+		private void OnModalPushing(Page modalPage)
 		{
 			EventHandler<ModalPushingEventArgs> handler = ModalPushing;
 			if (handler != null)
 				handler(this, new ModalPushingEventArgs(modalPage));
 		}
 
-		void OnPopCanceled()
+		private void OnPopCanceled()
 		{
 			EventHandler handler = PopCanceled;
 			if (handler != null)
 				handler(this, EventArgs.Empty);
 		}
 
-		async Task SetPropertiesAsync()
+		private async Task SetPropertiesAsync()
 		{
 			await SaveSemaphore.WaitAsync();
-            try
-            {
-                await DependencyService.Get<IDeserializer>().SerializePropertiesAsync(Properties);
-            }
-            finally
-            {
-                SaveSemaphore.Release();
-            }
-
+			try
+			{
+				await DependencyService.Get<IDeserializer>().SerializePropertiesAsync(Properties);
+			}
+			finally
+			{
+				SaveSemaphore.Release();
+			}
 		}
 
-		class NavigationImpl : NavigationProxy
+		private class NavigationImpl : NavigationProxy
 		{
-			readonly Application _owner;
+			private readonly Application _owner;
 
 			public NavigationImpl(Application owner)
 			{

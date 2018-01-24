@@ -1,7 +1,3 @@
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 // Information about this assembly is defined by the following attributes.
@@ -29,7 +25,6 @@ using Xamarin.Forms.Internals;
 [assembly: InternalsVisibleTo("Xamarin.Forms.Build.Tasks")]
 [assembly: InternalsVisibleTo("Xamarin.Forms.Xaml.Design")]
 [assembly: Preserve]
-
 #endif
 
 [assembly: XmlnsDefinition("http://xamarin.com/schemas/2014/forms", "Xamarin.Forms.Xaml")]

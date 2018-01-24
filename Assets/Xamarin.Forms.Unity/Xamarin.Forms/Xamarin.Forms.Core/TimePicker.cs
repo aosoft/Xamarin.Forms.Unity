@@ -16,7 +16,7 @@ namespace Xamarin.Forms
 			return time.TotalHours < 24 && time.TotalMilliseconds >= 0;
 		});
 
-		readonly Lazy<PlatformConfigurationRegistry<TimePicker>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<TimePicker>> _platformConfigurationRegistry;
 
 		public TimePicker()
 		{

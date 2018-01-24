@@ -12,11 +12,11 @@ namespace Xamarin.Forms
 		public const int DefaultCellHeight = 40;
 		public static readonly BindableProperty IsEnabledProperty = BindableProperty.Create("IsEnabled", typeof(bool), typeof(Cell), true, propertyChanged: OnIsEnabledPropertyChanged);
 
-		ObservableCollection<MenuItem> _contextActions;
+		private ObservableCollection<MenuItem> _contextActions;
 
-		double _height = -1;
+		private double _height = -1;
 
-		bool _nextCallToForceUpdateSizeQueued;
+		private bool _nextCallToForceUpdateSizeQueued;
 
 		public IList<MenuItem> ContextActions
 		{
@@ -172,7 +172,7 @@ namespace Xamarin.Forms
 				container.SendCellDisappearing(this);
 		}
 
-		void OnContextActionsChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnContextActionsChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			for (var i = 0; i < _contextActions.Count; i++)
 				SetInheritedBindingContext(_contextActions[i], BindingContext);
@@ -180,7 +180,7 @@ namespace Xamarin.Forms
 			OnPropertyChanged("HasContextActions");
 		}
 
-		async void OnForceUpdateSizeRequested()
+		private async void OnForceUpdateSizeRequested()
 		{
 			// don't run more than once per 16 milliseconds
 			await Task.Delay(TimeSpan.FromMilliseconds(16));
@@ -191,12 +191,12 @@ namespace Xamarin.Forms
 			_nextCallToForceUpdateSizeQueued = false;
 		}
 
-		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		private static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			(bindable as Cell).OnPropertyChanged("HasContextActions");
 		}
 
-		void OnParentPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnParentPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			// Technically we might be raising this even if it didn't change, but I'm taking the bet that
 			// its uncommon enough that we don't want to take the penalty of N GetValue calls to verify.
@@ -204,7 +204,7 @@ namespace Xamarin.Forms
 				OnPropertyChanged("RenderHeight");
 		}
 
-		void OnParentPropertyChanging(object sender, PropertyChangingEventArgs e)
+		private void OnParentPropertyChanging(object sender, PropertyChangingEventArgs e)
 		{
 			if (e.PropertyName == "RowHeight")
 				OnPropertyChanging("RenderHeight");

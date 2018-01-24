@@ -55,7 +55,7 @@ namespace Xamarin.Forms
 					type = (parent as TriggerBase).TargetType;
 
 				if (type == null)
-					throw new XamlParseException($"Can't resolve {parts [0]}", lineinfo);
+					throw new XamlParseException($"Can't resolve {parts[0]}", lineinfo);
 
 				return ConvertFrom(type, parts[0], lineinfo);
 			}
@@ -90,7 +90,7 @@ namespace Xamarin.Forms
 			return ConvertFrom(type, parts[1], null);
 		}
 
-		BindableProperty ConvertFrom(Type type, string propertyName, IXmlLineInfo lineinfo)
+		private BindableProperty ConvertFrom(Type type, string propertyName, IXmlLineInfo lineinfo)
 		{
 			string name = propertyName + "Property";
 			FieldInfo bpinfo = type.GetField(fi => fi.Name == name && fi.IsStatic && fi.IsPublic && fi.FieldType == typeof(BindableProperty));

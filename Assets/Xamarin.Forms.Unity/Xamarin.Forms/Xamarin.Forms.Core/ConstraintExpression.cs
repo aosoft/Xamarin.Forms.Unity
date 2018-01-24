@@ -39,8 +39,10 @@ namespace Xamarin.Forms
 						return null;
 					minfo = typeof(View).GetProperties().First(pi => pi.Name == Property && pi.CanRead && pi.GetMethod.IsPublic).GetMethod;
 					return Constraint.RelativeToParent(p => (double)minfo.Invoke(p, new object[] { }) * Factor + Constant);
+
 				case ConstraintType.Constant:
 					return Constraint.Constant(Constant);
+
 				case ConstraintType.RelativeToView:
 					if (string.IsNullOrEmpty(Property))
 						return null;
@@ -51,7 +53,7 @@ namespace Xamarin.Forms
 					if (valueProvider == null || !(valueProvider.TargetObject is INameScope))
 						return null;
 					var view = ((INameScope)valueProvider.TargetObject).FindByName<View>(ElementName);
-					return Constraint.RelativeToView(view, delegate(RelativeLayout p, View v) { return (double)minfo.Invoke(v, new object[] { }) * Factor + Constant; });
+					return Constraint.RelativeToView(view, delegate (RelativeLayout p, View v) { return (double)minfo.Invoke(v, new object[] { }) * Factor + Constant; });
 			}
 		}
 	}

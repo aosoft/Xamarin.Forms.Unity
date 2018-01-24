@@ -38,7 +38,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty PlaceholderColorProperty = BindableProperty.Create("PlaceholderColor", typeof(Color), typeof(SearchBar), Color.Default);
 
-		readonly Lazy<PlatformConfigurationRegistry<SearchBar>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<SearchBar>> _platformConfigurationRegistry;
 
 		public Color CancelButtonColor
 		{
@@ -88,7 +88,7 @@ namespace Xamarin.Forms
 			set { SetValue(TextElement.TextColorProperty, value); }
 		}
 
-		bool IsEnabledCore
+		private bool IsEnabledCore
 		{
 			set { SetValueCore(IsEnabledProperty, value); }
 		}
@@ -152,14 +152,14 @@ namespace Xamarin.Forms
 			SearchButtonPressed?.Invoke(this, EventArgs.Empty);
 		}
 
-		void CommandCanExecuteChanged(object sender, EventArgs eventArgs)
+		private void CommandCanExecuteChanged(object sender, EventArgs eventArgs)
 		{
 			ICommand cmd = SearchCommand;
 			if (cmd != null)
 				IsEnabledCore = cmd.CanExecute(SearchCommandParameter);
 		}
 
-		static void OnCommandChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnCommandChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var self = (SearchBar)bindable;
 			var newCommand = (ICommand)newValue;

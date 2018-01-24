@@ -11,7 +11,6 @@ namespace Xamarin.Forms
 {
 	public abstract class Element : BindableObject, IElement, INameScope, IElementController
 	{
-
 		public static readonly BindableProperty MenuProperty = BindableProperty.CreateAttached(nameof(Menu), typeof(Menu), typeof(Element), null);
 
 		public static Menu GetMenu(BindableObject bindable)
@@ -28,25 +27,25 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty ClassIdProperty = BindableProperty.Create("ClassId", typeof(string), typeof(View), null);
 
-		string _automationId;
+		private string _automationId;
 
-		IList<BindableObject> _bindableResources;
+		private IList<BindableObject> _bindableResources;
 
-		List<Action<object, ResourcesChangedEventArgs>> _changeHandlers;
+		private List<Action<object, ResourcesChangedEventArgs>> _changeHandlers;
 
-		Dictionary<BindableProperty, string> _dynamicResources;
+		private Dictionary<BindableProperty, string> _dynamicResources;
 
-		IEffectControlProvider _effectControlProvider;
+		private IEffectControlProvider _effectControlProvider;
 
-		TrackableCollection<Effect> _effects;
+		private TrackableCollection<Effect> _effects;
 
-		Guid? _id;
+		private Guid? _id;
 
-		Element _parentOverride;
+		private Element _parentOverride;
 
-		IPlatform _platform;
+		private IPlatform _platform;
 
-		string _styleId;
+		private string _styleId;
 
 		public string AutomationId
 		{
@@ -176,7 +175,7 @@ namespace Xamarin.Forms
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public Element RealParent { get; private set; }
 
-		Dictionary<BindableProperty, string> DynamicResources
+		private Dictionary<BindableProperty, string> DynamicResources
 		{
 			get { return _dynamicResources ?? (_dynamicResources = new Dictionary<BindableProperty, string>()); }
 		}
@@ -262,6 +261,7 @@ namespace Xamarin.Forms
 		}
 
 		void IElementController.SetValueFromRenderer(BindableProperty property, object value) => SetValueFromRenderer(property, value);
+
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public void SetValueFromRenderer(BindableProperty property, object value)
 		{
@@ -530,7 +530,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void AttachEffect(Effect effect)
+		private void AttachEffect(Effect effect)
 		{
 			if (_effectControlProvider == null)
 				return;
@@ -545,7 +545,7 @@ namespace Xamarin.Forms
 			effect.SendAttached();
 		}
 
-		void EffectsOnClearing(object sender, EventArgs eventArgs)
+		private void EffectsOnClearing(object sender, EventArgs eventArgs)
 		{
 			foreach (Effect effect in _effects)
 			{
@@ -553,7 +553,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void EffectsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void EffectsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			switch (e.Action)
 			{
@@ -563,14 +563,17 @@ namespace Xamarin.Forms
 						AttachEffect(effect);
 					}
 					break;
+
 				case NotifyCollectionChangedAction.Move:
 					break;
+
 				case NotifyCollectionChangedAction.Remove:
 					foreach (Effect effect in e.OldItems)
 					{
 						effect.ClearEffect();
 					}
 					break;
+
 				case NotifyCollectionChangedAction.Replace:
 					foreach (Effect effect in e.NewItems)
 					{
@@ -581,6 +584,7 @@ namespace Xamarin.Forms
 						effect.ClearEffect();
 					}
 					break;
+
 				case NotifyCollectionChangedAction.Reset:
 					if (e.NewItems != null)
 					{
@@ -597,12 +601,13 @@ namespace Xamarin.Forms
 						}
 					}
 					break;
+
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
 
-		INameScope GetNameScope()
+		private INameScope GetNameScope()
 		{
 			INameScope namescope = NameScope.GetNameScope(this);
 			Element p = RealParent;
@@ -614,7 +619,7 @@ namespace Xamarin.Forms
 			return namescope;
 		}
 
-		void OnDescendantAdded(Element child)
+		private void OnDescendantAdded(Element child)
 		{
 			if (DescendantAdded != null)
 				DescendantAdded(this, new ElementEventArgs(child));
@@ -623,7 +628,7 @@ namespace Xamarin.Forms
 				RealParent.OnDescendantAdded(child);
 		}
 
-		void OnDescendantRemoved(Element child)
+		private void OnDescendantRemoved(Element child)
 		{
 			if (DescendantRemoved != null)
 				DescendantRemoved(this, new ElementEventArgs(child));
@@ -632,7 +637,7 @@ namespace Xamarin.Forms
 				RealParent.OnDescendantRemoved(child);
 		}
 
-		void OnResourceChanged(BindableProperty property, object value)
+		private void OnResourceChanged(BindableProperty property, object value)
 		{
 			SetValueCore(property, value, SetValueFlags.ClearOneWayBindings | SetValueFlags.ClearTwoWayBindings);
 		}

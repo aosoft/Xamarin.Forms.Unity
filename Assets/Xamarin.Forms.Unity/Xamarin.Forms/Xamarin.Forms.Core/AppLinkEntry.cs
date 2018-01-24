@@ -5,7 +5,7 @@ namespace Xamarin.Forms
 {
 	public class AppLinkEntry : Element, IAppLinkEntry
 	{
-		readonly Dictionary<string, string> keyValues;
+		private readonly Dictionary<string, string> keyValues;
 
 		public AppLinkEntry()
 		{

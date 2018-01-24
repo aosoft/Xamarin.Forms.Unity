@@ -69,7 +69,7 @@ namespace Xamarin.Forms
 			// We never want to use the standard inheritance mechanism, we will get this set by our parent
 		}
 
-		static async void OnContentChanged(BindableObject bindable, object oldValue, object newValue)
+		private static async void OnContentChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var self = (ContentPresenter)bindable;
 

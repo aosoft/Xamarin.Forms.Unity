@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,9 +6,9 @@ namespace Xamarin.Forms
 {
 	public class Menu : BaseMenuItem, IList<Menu>
 	{
-		readonly ObservableCollection<Menu> _menus = new ObservableCollection<Menu>();
+		private readonly ObservableCollection<Menu> _menus = new ObservableCollection<Menu>();
 
-		readonly ObservableCollection<MenuItem> _items = new ObservableCollection<MenuItem>();
+		private readonly ObservableCollection<MenuItem> _items = new ObservableCollection<MenuItem>();
 
 		public Menu()
 		{

@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Xamarin.Forms.Internals
 {
 	public static class ResourceLoader

@@ -41,7 +41,7 @@ namespace Xamarin.Forms
 				eh(slider, new ValueChangedEventArgs((double)oldValue, (double)newValue));
 		});
 
-		readonly Lazy<PlatformConfigurationRegistry<Slider>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<Slider>> _platformConfigurationRegistry;
 
 		public Slider()
 		{

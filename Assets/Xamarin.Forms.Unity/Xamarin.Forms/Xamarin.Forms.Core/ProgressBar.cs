@@ -10,7 +10,7 @@ namespace Xamarin.Forms
 	{
 		public static readonly BindableProperty ProgressProperty = BindableProperty.Create("Progress", typeof(double), typeof(ProgressBar), 0d, coerceValue: (bo, v) => ((double)v).Clamp(0, 1));
 
-		readonly Lazy<PlatformConfigurationRegistry<ProgressBar>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<ProgressBar>> _platformConfigurationRegistry;
 
 		public ProgressBar()
 		{

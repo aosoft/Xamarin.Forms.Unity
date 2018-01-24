@@ -10,7 +10,7 @@ namespace Xamarin.Forms.Xaml
 			Values = context.Values;
 		}
 
-		Dictionary<INode, object> Values { get; }
+		private Dictionary<INode, object> Values { get; }
 
 		public TreeVisitingMode VisitingMode => TreeVisitingMode.TopDown;
 		public bool StopOnDataTemplate => true;
@@ -49,7 +49,7 @@ namespace Xamarin.Forms.Xaml
 		{
 		}
 
-		static bool IsXNameProperty(ValueNode node, INode parentNode)
+		private static bool IsXNameProperty(ValueNode node, INode parentNode)
 		{
 			var parentElement = parentNode as IElementNode;
 			INode xNameNode;

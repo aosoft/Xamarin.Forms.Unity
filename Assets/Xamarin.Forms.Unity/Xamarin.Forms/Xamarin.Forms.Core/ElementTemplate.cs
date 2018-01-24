@@ -5,12 +5,13 @@ using Xamarin.Forms.Internals;
 namespace Xamarin.Forms
 {
 #pragma warning disable 612
+
 	public class ElementTemplate : IElement, IDataTemplate
 #pragma warning restore 612
 	{
-		List<Action<object, ResourcesChangedEventArgs>> _changeHandlers;
-		Element _parent;
-		bool _canRecycle; // aka IsDeclarative
+		private List<Action<object, ResourcesChangedEventArgs>> _changeHandlers;
+		private Element _parent;
+		private bool _canRecycle; // aka IsDeclarative
 
 		internal ElementTemplate()
 		{
@@ -34,8 +35,9 @@ namespace Xamarin.Forms
 			LoadTemplate = loadTemplate;
 		}
 
-		Func<object> LoadTemplate { get; set; }
+		private Func<object> LoadTemplate { get; set; }
 #pragma warning disable 0612
+
 		Func<object> IDataTemplate.LoadTemplate
 		{
 #pragma warning restore 0612
@@ -50,6 +52,7 @@ namespace Xamarin.Forms
 		}
 
 		internal bool CanRecycle => _canRecycle;
+
 		Element IElement.Parent
 		{
 			get { return _parent; }
@@ -89,7 +92,7 @@ namespace Xamarin.Forms
 		{
 		}
 
-		void OnResourcesChanged(object sender, ResourcesChangedEventArgs e)
+		private void OnResourcesChanged(object sender, ResourcesChangedEventArgs e)
 		{
 			if (_changeHandlers == null)
 				return;

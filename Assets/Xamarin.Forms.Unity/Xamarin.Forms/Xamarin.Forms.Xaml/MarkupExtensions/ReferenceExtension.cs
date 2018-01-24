@@ -13,10 +13,10 @@ namespace Xamarin.Forms.Xaml
 		{
 			if (serviceProvider == null)
 				throw new ArgumentNullException("serviceProvider");
-			var valueProvider = serviceProvider.GetService(typeof (IProvideValueTarget)) as IProvideParentValues;
+			var valueProvider = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideParentValues;
 			if (valueProvider == null)
 				throw new ArgumentException("serviceProvider does not provide an IProvideValueTarget");
-			var namescopeprovider = serviceProvider.GetService(typeof (INameScopeProvider)) as INameScopeProvider;
+			var namescopeprovider = serviceProvider.GetService(typeof(INameScopeProvider)) as INameScopeProvider;
 			if (namescopeprovider != null && namescopeprovider.NameScope != null)
 			{
 				var value = namescopeprovider.NameScope.FindByName(Name);

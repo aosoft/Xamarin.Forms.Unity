@@ -6,9 +6,9 @@ namespace Xamarin.Forms
 	[ContentProperty("View")]
 	public class ViewCell : Cell
 	{
-		ReadOnlyCollection<Element> _logicalChildren;
+		private ReadOnlyCollection<Element> _logicalChildren;
 
-		View _view;
+		private View _view;
 
 		public View View
 		{

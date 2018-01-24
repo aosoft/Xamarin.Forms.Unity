@@ -24,21 +24,21 @@ namespace Xamarin.Forms
 	{
 		public static IMessagingCenter Instance { get; } = new MessagingCenter();
 
-		class Sender : Tuple<string, Type, Type>
+		private class Sender : Tuple<string, Type, Type>
 		{
 			public Sender(string message, Type senderType, Type argType) : base(message, senderType, argType)
 			{
 			}
 		}
 
-		delegate bool Filter(object sender);
+		private delegate bool Filter(object sender);
 
-		class MaybeWeakReference
+		private class MaybeWeakReference
 		{
-			WeakReference DelegateWeakReference { get; }
-			object DelegateStrongReference { get; }
+			private WeakReference DelegateWeakReference { get; }
+			private object DelegateStrongReference { get; }
 
-			readonly bool _isStrongReference;
+			private readonly bool _isStrongReference;
 
 			public MaybeWeakReference(object subscriber, object delegateSource)
 			{
@@ -59,7 +59,7 @@ namespace Xamarin.Forms
 			public bool IsAlive => _isStrongReference || DelegateWeakReference.IsAlive;
 		}
 
-		class Subscription : Tuple<WeakReference, MaybeWeakReference, MethodInfo, Filter>
+		private class Subscription : Tuple<WeakReference, MaybeWeakReference, MethodInfo, Filter>
 		{
 			public Subscription(object subscriber, object delegateSource, MethodInfo methodInfo, Filter filter)
 				: base(new WeakReference(subscriber), new MaybeWeakReference(subscriber, delegateSource), methodInfo, filter)
@@ -67,9 +67,9 @@ namespace Xamarin.Forms
 			}
 
 			public WeakReference Subscriber => Item1;
-			MaybeWeakReference DelegateSource => Item2;
-			MethodInfo MethodInfo => Item3;
-			Filter Filter => Item4;
+			private MaybeWeakReference DelegateSource => Item2;
+			private MethodInfo MethodInfo => Item3;
+			private Filter Filter => Item4;
 
 			public void InvokeCallback(object sender, object args)
 			{
@@ -88,7 +88,7 @@ namespace Xamarin.Forms
 
 				if (target == null)
 				{
-					return; // Collected 
+					return; // Collected
 				}
 
 				MethodInfo.Invoke(target, MethodInfo.GetParameters().Length == 1 ? new[] { sender } : new[] { sender, args });
@@ -100,7 +100,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		readonly Dictionary<Sender, List<Subscription>> _subscriptions =
+		private readonly Dictionary<Sender, List<Subscription>> _subscriptions =
 			new Dictionary<Sender, List<Subscription>>();
 
 		public static void Send<TSender, TArgs>(TSender sender, string message, TArgs args) where TSender : class
@@ -193,7 +193,7 @@ namespace Xamarin.Forms
 			InnerUnsubscribe(message, typeof(TSender), null, subscriber);
 		}
 
-		void InnerSend(string message, Type senderType, Type argType, object sender, object args)
+		private void InnerSend(string message, Type senderType, Type argType, object sender, object args)
 		{
 			if (message == null)
 				throw new ArgumentNullException(nameof(message));
@@ -206,7 +206,7 @@ namespace Xamarin.Forms
 
 			// ok so this code looks a bit funky but here is the gist of the problem. It is possible that in the course
 			// of executing the callbacks for this message someone will subscribe/unsubscribe from the same message in
-			// the callback. This would invalidate the enumerator. To work around this we make a copy. However if you unsubscribe 
+			// the callback. This would invalidate the enumerator. To work around this we make a copy. However if you unsubscribe
 			// from a message you can fairly reasonably expect that you will therefor not receive a call. To fix this we then
 			// check that the item we are about to send the message to actually exists in the live list.
 			List<Subscription> subscriptionsCopy = subcriptions.ToList();
@@ -219,7 +219,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void InnerSubscribe(object subscriber, string message, Type senderType, Type argType, object target, MethodInfo methodInfo, Filter filter)
+		private void InnerSubscribe(object subscriber, string message, Type senderType, Type argType, object target, MethodInfo methodInfo, Filter filter)
 		{
 			if (message == null)
 				throw new ArgumentNullException(nameof(message));
@@ -236,7 +236,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void InnerUnsubscribe(string message, Type senderType, Type argType, object subscriber)
+		private void InnerUnsubscribe(string message, Type senderType, Type argType, object subscriber)
 		{
 			if (subscriber == null)
 				throw new ArgumentNullException(nameof(subscriber));
@@ -253,7 +253,7 @@ namespace Xamarin.Forms
 
 		// This is a bit gross; it only exists to support the unit tests in PageTests
 		// because the implementations of ActionSheet, Alert, and IsBusy are all very
-		// tightly coupled to the MessagingCenter singleton 
+		// tightly coupled to the MessagingCenter singleton
 		internal static void ClearSubscribers()
 		{
 			(Instance as MessagingCenter)?._subscriptions.Clear();

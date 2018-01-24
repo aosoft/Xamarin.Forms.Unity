@@ -11,7 +11,7 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public static class Performance
 	{
-		static readonly Dictionary<string, Stats> Statistics = new Dictionary<string, Stats>();
+		private static readonly Dictionary<string, Stats> Statistics = new Dictionary<string, Stats>();
 
 		[Conditional("PERF")]
 		public static void Clear()
@@ -76,7 +76,7 @@ namespace Xamarin.Forms.Internals
 				stats.TotalTime += stop - start;
 		}
 
-		static string ShortenPath(string path)
+		private static string ShortenPath(string path)
 		{
 			int index = path.IndexOf("Xamarin.Forms.");
 			if (index > -1)
@@ -85,7 +85,7 @@ namespace Xamarin.Forms.Internals
 			return path;
 		}
 
-		class Stats
+		private class Stats
 		{
 			public readonly Stack<long> StartTimes = new Stack<long>();
 			public int CallCount;

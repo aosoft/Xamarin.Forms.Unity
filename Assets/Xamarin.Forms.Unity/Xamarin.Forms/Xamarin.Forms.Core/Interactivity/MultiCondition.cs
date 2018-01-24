@@ -4,7 +4,7 @@ namespace Xamarin.Forms
 {
 	internal sealed class MultiCondition : Condition
 	{
-		readonly BindableProperty _aggregatedStateProperty;
+		private readonly BindableProperty _aggregatedStateProperty;
 
 		public MultiCondition()
 		{
@@ -38,7 +38,7 @@ namespace Xamarin.Forms
 				condition.TearDown(bindable);
 		}
 
-		void OnAggregatedStatePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private void OnAggregatedStatePropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			if ((bool)oldValue == (bool)newValue)
 				return;
@@ -47,7 +47,7 @@ namespace Xamarin.Forms
 				ConditionChanged(bindable, (bool)oldValue, (bool)newValue);
 		}
 
-		void OnConditionChanged(BindableObject bindable, bool oldValue, bool newValue)
+		private void OnConditionChanged(BindableObject bindable, bool oldValue, bool newValue)
 		{
 			var oldState = (bool)bindable.GetValue(_aggregatedStateProperty);
 			var newState = true;

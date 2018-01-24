@@ -13,11 +13,11 @@ namespace Xamarin.Forms
 	{
 		internal const string PropertyNotFoundErrorMessage = "'{0}' property not found on '{1}', target property: '{2}.{3}'";
 
-		readonly List<BindingExpressionPart> _parts = new List<BindingExpressionPart>();
+		private readonly List<BindingExpressionPart> _parts = new List<BindingExpressionPart>();
 
-		BindableProperty _targetProperty;
-		WeakReference<object> _weakSource;
-		WeakReference<BindableObject> _weakTarget;
+		private BindableProperty _targetProperty;
+		private WeakReference<object> _weakSource;
+		private WeakReference<BindableObject> _weakTarget;
 
 		internal BindingExpression(BindingBase binding, string path)
 		{
@@ -102,7 +102,7 @@ namespace Xamarin.Forms
 		/// <summary>
 		///     Applies the binding expression to a previously set source or target.
 		/// </summary>
-		void ApplyCore(object sourceObject, BindableObject target, BindableProperty property, bool fromTarget = false)
+		private void ApplyCore(object sourceObject, BindableObject target, BindableProperty property, bool fromTarget = false)
 		{
 			BindingMode mode = Binding.GetRealizedMode(_targetProperty);
 			if (mode == BindingMode.OneWay && fromTarget)
@@ -122,7 +122,7 @@ namespace Xamarin.Forms
 
 				if (!part.IsSelf && current != null)
 				{
-					// Allow the object instance itself to provide its own TypeInfo 
+					// Allow the object instance itself to provide its own TypeInfo
 					var reflectable = current as IReflectableType;
 					TypeInfo currentType = reflectable != null ? reflectable.GetTypeInfo() : current.GetType().GetTypeInfo();
 					if (part.LastGetter == null || !part.LastGetter.DeclaringType.GetTypeInfo().IsAssignableFrom(currentType))
@@ -203,7 +203,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		IEnumerable<BindingExpressionPart> GetPart(string part)
+		private IEnumerable<BindingExpressionPart> GetPart(string part)
 		{
 			part = part.Trim();
 			if (part == string.Empty)
@@ -235,7 +235,7 @@ namespace Xamarin.Forms
 				yield return indexer;
 		}
 
-		void ParsePath()
+		private void ParsePath()
 		{
 			string p = Path.Trim();
 
@@ -262,7 +262,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void SetupPart(TypeInfo sourceType, BindingExpressionPart part)
+		private void SetupPart(TypeInfo sourceType, BindingExpressionPart part)
 		{
 			part.Arguments = null;
 			part.LastGetter = null;
@@ -361,8 +361,9 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static Type[] DecimalTypes = new[] { typeof(float), typeof(decimal), typeof(double) };
-		bool TryConvert(BindingExpressionPart part, ref object value, Type convertTo, bool toTarget)
+		private static Type[] DecimalTypes = new[] { typeof(float), typeof(decimal), typeof(double) };
+
+		private bool TryConvert(BindingExpressionPart part, ref object value, Type convertTo, bool toTarget)
 		{
 			if (value == null)
 				return true;
@@ -402,7 +403,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		class BindingPair
+		private class BindingPair
 		{
 			public BindingPair(BindingExpressionPart part, object source, bool isLast)
 			{
@@ -420,9 +421,9 @@ namespace Xamarin.Forms
 
 		internal class WeakPropertyChangedProxy
 		{
-			readonly WeakReference<INotifyPropertyChanged> _source = new WeakReference<INotifyPropertyChanged>(null);
-			readonly WeakReference<PropertyChangedEventHandler> _listener = new WeakReference<PropertyChangedEventHandler>(null);
-			readonly PropertyChangedEventHandler _handler;
+			private readonly WeakReference<INotifyPropertyChanged> _source = new WeakReference<INotifyPropertyChanged>(null);
+			private readonly WeakReference<PropertyChangedEventHandler> _listener = new WeakReference<PropertyChangedEventHandler>(null);
+			private readonly PropertyChangedEventHandler _handler;
 			internal WeakReference<INotifyPropertyChanged> Source => _source;
 
 			public WeakPropertyChangedProxy()
@@ -436,7 +437,7 @@ namespace Xamarin.Forms
 			}
 
 			public void SubscribeTo(INotifyPropertyChanged source, PropertyChangedEventHandler listener)
-			{ 
+			{
 				source.PropertyChanged += _handler;
 				_source.SetTarget(source);
 				_listener.SetTarget(listener);
@@ -445,13 +446,13 @@ namespace Xamarin.Forms
 			public void Unsubscribe()
 			{
 				INotifyPropertyChanged source;
-				if (_source.TryGetTarget(out source) && source!=null)
+				if (_source.TryGetTarget(out source) && source != null)
 					source.PropertyChanged -= _handler;
 				_source.SetTarget(null);
 				_listener.SetTarget(null);
 			}
 
-			void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+			private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 			{
 				PropertyChangedEventHandler handler;
 				if (_listener.TryGetTarget(out handler) && handler != null)
@@ -461,11 +462,11 @@ namespace Xamarin.Forms
 			}
 		}
 
-		class BindingExpressionPart
+		private class BindingExpressionPart
 		{
-			readonly BindingExpression _expression;
-			readonly PropertyChangedEventHandler _changeHandler;
-			WeakPropertyChangedProxy _listener;
+			private readonly BindingExpression _expression;
+			private readonly PropertyChangedEventHandler _changeHandler;
+			private WeakPropertyChangedProxy _listener;
 
 			public BindingExpressionPart(BindingExpression expression, string content, bool isIndexer = false)
 			{

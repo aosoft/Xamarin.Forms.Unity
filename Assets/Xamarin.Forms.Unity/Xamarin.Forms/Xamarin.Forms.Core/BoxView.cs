@@ -8,7 +8,7 @@ namespace Xamarin.Forms
 	{
 		public static readonly BindableProperty ColorProperty = BindableProperty.Create("Color", typeof(Color), typeof(BoxView), Color.Default);
 
-		readonly Lazy<PlatformConfigurationRegistry<BoxView>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<BoxView>> _platformConfigurationRegistry;
 
 		public BoxView()
 		{

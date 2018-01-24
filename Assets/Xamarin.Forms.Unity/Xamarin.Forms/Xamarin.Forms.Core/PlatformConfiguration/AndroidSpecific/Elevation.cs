@@ -6,7 +6,7 @@ namespace Xamarin.Forms.PlatformConfiguration.AndroidSpecific
 			BindableProperty.Create("Elevation", typeof(float?),
 				typeof(Elevation));
 
-		public static float? GetElevation(VisualElement element) 
+		public static float? GetElevation(VisualElement element)
 		{
 			return (float?)element.GetValue(ElevationProperty);
 		}
@@ -21,7 +21,7 @@ namespace Xamarin.Forms.PlatformConfiguration.AndroidSpecific
 			return GetElevation(config.Element);
 		}
 
-		public static IPlatformElementConfiguration<Android, VisualElement> SetElevation(this IPlatformElementConfiguration<Android, VisualElement> config, float? value) 
+		public static IPlatformElementConfiguration<Android, VisualElement> SetElevation(this IPlatformElementConfiguration<Android, VisualElement> config, float? value)
 		{
 			SetElevation(config.Element, value);
 			return config;

@@ -43,7 +43,7 @@
 				element.SetValue(PreferredStatusBarUpdateAnimationProperty, value);
 			else if (value == UIStatusBarAnimation.Slide)
 				element.SetValue(PreferredStatusBarUpdateAnimationProperty, value);
-			else 
+			else
 				element.SetValue(PreferredStatusBarUpdateAnimationProperty, value);
 		}
 
@@ -111,14 +111,14 @@
 			return config;
 		}
 
-		static readonly BindablePropertyKey SafeAreaInsetsPropertyKey = BindableProperty.CreateReadOnly(nameof(SafeAreaInsets), typeof(Thickness), typeof(Page), default(Thickness), propertyChanged: (bindable, oldValue, newValue) =>
-		{
-			var page = bindable as Xamarin.Forms.Page;
-			if (page.On<iOS>().UsingSafeArea())
-			{
-				page.Padding = (Thickness)newValue;
-			}
-		});
+		private static readonly BindablePropertyKey SafeAreaInsetsPropertyKey = BindableProperty.CreateReadOnly(nameof(SafeAreaInsets), typeof(Thickness), typeof(Page), default(Thickness), propertyChanged: (bindable, oldValue, newValue) =>
+		   {
+			   var page = bindable as Xamarin.Forms.Page;
+			   if (page.On<iOS>().UsingSafeArea())
+			   {
+				   page.Padding = (Thickness)newValue;
+			   }
+		   });
 
 		public static readonly BindableProperty SafeAreaInsetsProperty = SafeAreaInsetsPropertyKey.BindableProperty;
 
@@ -127,7 +127,7 @@
 			return (Thickness)element.GetValue(SafeAreaInsetsProperty);
 		}
 
-		static void SetSafeAreaInsets(BindableObject element, Thickness value)
+		private static void SetSafeAreaInsets(BindableObject element, Thickness value)
 		{
 			element.SetValue(SafeAreaInsetsPropertyKey, value);
 		}
@@ -143,6 +143,5 @@
 			SetSafeAreaInsets(config.Element, value);
 			return config;
 		}
-
 	}
 }

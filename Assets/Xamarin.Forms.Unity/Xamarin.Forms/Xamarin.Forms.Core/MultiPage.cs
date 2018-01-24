@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -21,10 +20,10 @@ namespace Xamarin.Forms
 
 		internal static readonly BindableProperty IndexProperty = BindableProperty.Create("Index", typeof(int), typeof(Page), -1);
 
-		readonly ElementCollection<T> _children;
-		readonly TemplatedItemsList<MultiPage<T>, T> _templatedItems;
+		private readonly ElementCollection<T> _children;
+		private readonly TemplatedItemsList<MultiPage<T>, T> _templatedItems;
 
-		T _current;
+		private T _current;
 
 		protected MultiPage()
 		{
@@ -188,7 +187,7 @@ namespace Xamarin.Forms
 			page.SetValue(IndexProperty, index);
 		}
 
-		void OnChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (Children.IsReadOnly)
 				return;
@@ -203,7 +202,7 @@ namespace Xamarin.Forms
 				CurrentPage = Children.FirstOrDefault();
 		}
 
-		void OnTemplatedItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void OnTemplatedItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			switch (e.Action)
 			{
@@ -309,9 +308,9 @@ namespace Xamarin.Forms
 			UpdateCurrentPage();
 		}
 
-		void Reset()
+		private void Reset()
 		{
-			List <Element> snapshot = InternalChildren.ToList();
+			List<Element> snapshot = InternalChildren.ToList();
 
 			InternalChildren.Clear();
 
@@ -348,7 +347,7 @@ namespace Xamarin.Forms
 			BatchCommit();
 		}
 
-		void UpdateCurrentPage()
+		private void UpdateCurrentPage()
 		{
 			if (ItemsSource != null)
 			{

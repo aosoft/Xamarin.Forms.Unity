@@ -5,14 +5,14 @@ namespace Xamarin.Forms.Xaml
 {
 	internal class NamescopingVisitor : IXamlNodeVisitor
 	{
-		readonly Dictionary<INode, INameScope> scopes = new Dictionary<INode, INameScope>();
+		private readonly Dictionary<INode, INameScope> scopes = new Dictionary<INode, INameScope>();
 
 		public NamescopingVisitor(HydrationContext context)
 		{
 			Values = context.Values;
 		}
 
-		Dictionary<INode, object> Values { get; set; }
+		private Dictionary<INode, object> Values { get; set; }
 
 		public TreeVisitingMode VisitingMode => TreeVisitingMode.TopDown;
 		public bool StopOnDataTemplate => false;
@@ -50,17 +50,17 @@ namespace Xamarin.Forms.Xaml
 			scopes[node] = scopes[parentNode];
 		}
 
-		static bool IsDataTemplate(INode node, INode parentNode)
+		private static bool IsDataTemplate(INode node, INode parentNode)
 		{
 			var parentElement = parentNode as IElementNode;
 			INode createContent;
 			if (parentElement != null && parentElement.Properties.TryGetValue(XmlName._CreateContent, out createContent) &&
-			    createContent == node)
+				createContent == node)
 				return true;
 			return false;
 		}
 
-		static bool IsStyle(INode node, INode parentNode)
+		private static bool IsStyle(INode node, INode parentNode)
 		{
 			var pnode = parentNode as ElementNode;
 			return pnode != null && pnode.XmlType.Name == "Style";

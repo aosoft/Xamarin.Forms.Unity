@@ -7,23 +7,23 @@ namespace Xamarin.Forms
 {
 	public partial class VisualElement
 	{
-		sealed class MergedStyle : IStyle
+		private sealed class MergedStyle : IStyle
 		{
 			////If the base type is one of these, stop registering dynamic resources further
 			////The last one (typeof(Element)) is a safety guard as we might be creating VisualElement directly in internal code
-			static readonly IList<Type> s_stopAtTypes = new List<Type> { typeof(View), typeof(Layout<>), typeof(VisualElement), typeof(Element) };
+			private static readonly IList<Type> s_stopAtTypes = new List<Type> { typeof(View), typeof(Layout<>), typeof(VisualElement), typeof(Element) };
 
-			IList<BindableProperty> _classStyleProperties;
+			private IList<BindableProperty> _classStyleProperties;
 
-			readonly List<BindableProperty> _implicitStyles = new List<BindableProperty>();
+			private readonly List<BindableProperty> _implicitStyles = new List<BindableProperty>();
 
-			IList<Style> _classStyles;
+			private IList<Style> _classStyles;
 
-			IStyle _implicitStyle;
+			private IStyle _implicitStyle;
 
-			IStyle _style;
+			private IStyle _style;
 
-			IList<string> _styleClass;
+			private IList<string> _styleClass;
 
 			public MergedStyle(Type targetType, BindableObject target)
 			{
@@ -53,13 +53,15 @@ namespace Xamarin.Forms
 
 					_styleClass = value;
 
-					if (_styleClass != null) {
-						_classStyleProperties = new List<BindableProperty> ();
-						foreach (var styleClass in _styleClass) {
-							var classStyleProperty = BindableProperty.Create ("ClassStyle", typeof(IList<Style>), typeof(VisualElement), default(IList<Style>),
+					if (_styleClass != null)
+					{
+						_classStyleProperties = new List<BindableProperty>();
+						foreach (var styleClass in _styleClass)
+						{
+							var classStyleProperty = BindableProperty.Create("ClassStyle", typeof(IList<Style>), typeof(VisualElement), default(IList<Style>),
 								propertyChanged: (bindable, oldvalue, newvalue) => ((VisualElement)bindable)._mergedStyle.OnClassStyleChanged());
-							_classStyleProperties.Add (classStyleProperty);
-							Target.OnSetDynamicResource (classStyleProperty, Forms.Style.StyleClassPrefix + styleClass);
+							_classStyleProperties.Add(classStyleProperty);
+							Target.OnSetDynamicResource(classStyleProperty, Forms.Style.StyleClassPrefix + styleClass);
 						}
 					}
 				}
@@ -67,13 +69,13 @@ namespace Xamarin.Forms
 
 			public BindableObject Target { get; }
 
-			IList<Style> ClassStyles
+			private IList<Style> ClassStyles
 			{
 				get { return _classStyles; }
 				set { SetStyle(ImplicitStyle, value, Style); }
 			}
 
-			IStyle ImplicitStyle
+			private IStyle ImplicitStyle
 			{
 				get { return _implicitStyle; }
 				set { SetStyle(value, ClassStyles, Style); }
@@ -99,12 +101,12 @@ namespace Xamarin.Forms
 				ImplicitStyle?.UnApply(bindable);
 			}
 
-			void OnClassStyleChanged()
+			private void OnClassStyleChanged()
 			{
-				ClassStyles = _classStyleProperties.Select (p => (Target.GetValue (p) as IList<Style>)?.FirstOrDefault (s => s.CanBeAppliedTo (TargetType))).ToList ();
+				ClassStyles = _classStyleProperties.Select(p => (Target.GetValue(p) as IList<Style>)?.FirstOrDefault(s => s.CanBeAppliedTo(TargetType))).ToList();
 			}
 
-			void OnImplicitStyleChanged()
+			private void OnImplicitStyleChanged()
 			{
 				var first = true;
 				foreach (BindableProperty implicitStyleProperty in _implicitStyles)
@@ -122,10 +124,11 @@ namespace Xamarin.Forms
 				}
 			}
 
-			void RegisterImplicitStyles()
+			private void RegisterImplicitStyles()
 			{
 				Type type = TargetType;
-				while (true) {
+				while (true)
+				{
 					BindableProperty implicitStyleProperty = BindableProperty.Create("ImplicitStyle", typeof(Style), typeof(VisualElement), default(Style),
 						 propertyChanged: (bindable, oldvalue, newvalue) => OnImplicitStyleChanged());
 					_implicitStyles.Add(implicitStyleProperty);
@@ -136,7 +139,7 @@ namespace Xamarin.Forms
 				}
 			}
 
-			void SetStyle(IStyle implicitStyle, IList<Style> classStyles, IStyle style)
+			private void SetStyle(IStyle implicitStyle, IList<Style> classStyles, IStyle style)
 			{
 				bool shouldReApplyStyle = implicitStyle != ImplicitStyle || classStyles != ClassStyles || Style != style;
 				bool shouldReApplyClassStyle = implicitStyle != ImplicitStyle || classStyles != ClassStyles;

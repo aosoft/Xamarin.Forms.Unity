@@ -2,7 +2,7 @@ using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
-	static class FontElement
+	internal static class FontElement
 	{
 		public static readonly BindableProperty FontProperty =
 			BindableProperty.Create("Font", typeof(Font), typeof(IFontElement), default(Font),
@@ -21,16 +21,17 @@ namespace Xamarin.Forms
 			BindableProperty.Create("FontAttributes", typeof(FontAttributes), typeof(IFontElement), FontAttributes.None,
 									propertyChanged: OnFontAttributesChanged);
 
-		static readonly BindableProperty CancelEventsProperty =
+		private static readonly BindableProperty CancelEventsProperty =
 			BindableProperty.Create("CancelEvents", typeof(bool), typeof(FontElement), false);
 
-		static bool GetCancelEvents(BindableObject bindable) => (bool)bindable.GetValue(CancelEventsProperty);
-		static void SetCancelEvents(BindableObject bindable, bool value)
+		private static bool GetCancelEvents(BindableObject bindable) => (bool)bindable.GetValue(CancelEventsProperty);
+
+		private static void SetCancelEvents(BindableObject bindable, bool value)
 		{
 			bindable.SetValue(CancelEventsProperty, value);
 		}
 
-		static void OnFontPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnFontPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			if (GetCancelEvents(bindable))
 				return;
@@ -38,11 +39,14 @@ namespace Xamarin.Forms
 			SetCancelEvents(bindable, true);
 
 			var font = (Font)newValue;
-			if (font == Font.Default) {
+			if (font == Font.Default)
+			{
 				bindable.ClearValue(FontFamilyProperty);
 				bindable.ClearValue(FontSizeProperty);
 				bindable.ClearValue(FontAttributesProperty);
-			} else {
+			}
+			else
+			{
 				bindable.SetValue(FontFamilyProperty, font.FontFamily);
 				if (font.UseNamedSize)
 					bindable.SetValue(FontSizeProperty, Device.GetNamedSize(font.NamedSize, bindable.GetType(), true));
@@ -53,7 +57,7 @@ namespace Xamarin.Forms
 			SetCancelEvents(bindable, false);
 		}
 
-		static void OnFontFamilyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnFontFamilyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			if (GetCancelEvents(bindable))
 				return;
@@ -74,7 +78,7 @@ namespace Xamarin.Forms
 			((IFontElement)bindable).OnFontFamilyChanged((string)oldValue, (string)newValue);
 		}
 
-		static void OnFontSizeChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnFontSizeChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			if (GetCancelEvents(bindable))
 				return;
@@ -95,12 +99,12 @@ namespace Xamarin.Forms
 			((IFontElement)bindable).OnFontSizeChanged((double)oldValue, (double)newValue);
 		}
 
-		static object FontSizeDefaultValueCreator(BindableObject bindable)
+		private static object FontSizeDefaultValueCreator(BindableObject bindable)
 		{
 			return ((IFontElement)bindable).FontSizeDefaultValueCreator();
 		}
 
-		static void OnFontAttributesChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnFontAttributesChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			if (GetCancelEvents(bindable))
 				return;

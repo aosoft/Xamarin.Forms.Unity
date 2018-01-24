@@ -1,5 +1,4 @@
-﻿using System;
-namespace Xamarin.Forms
+﻿namespace Xamarin.Forms
 {
 	public enum TabsStyle
 	{

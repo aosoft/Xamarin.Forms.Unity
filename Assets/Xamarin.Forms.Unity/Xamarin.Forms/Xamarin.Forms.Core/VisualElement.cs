@@ -15,11 +15,11 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty IsEnabledProperty = BindableProperty.Create("IsEnabled", typeof(bool), typeof(VisualElement), true);
 
-		static readonly BindablePropertyKey XPropertyKey = BindableProperty.CreateReadOnly("X", typeof(double), typeof(VisualElement), default(double));
+		private static readonly BindablePropertyKey XPropertyKey = BindableProperty.CreateReadOnly("X", typeof(double), typeof(VisualElement), default(double));
 
 		public static readonly BindableProperty XProperty = XPropertyKey.BindableProperty;
 
-		static readonly BindablePropertyKey YPropertyKey = BindableProperty.CreateReadOnly("Y", typeof(double), typeof(VisualElement), default(double));
+		private static readonly BindablePropertyKey YPropertyKey = BindableProperty.CreateReadOnly("Y", typeof(double), typeof(VisualElement), default(double));
 
 		public static readonly BindableProperty YProperty = YPropertyKey.BindableProperty;
 
@@ -31,12 +31,12 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty TranslationYProperty = BindableProperty.Create("TranslationY", typeof(double), typeof(VisualElement), 0d);
 
-		static readonly BindablePropertyKey WidthPropertyKey = BindableProperty.CreateReadOnly("Width", typeof(double), typeof(VisualElement), -1d,
+		private static readonly BindablePropertyKey WidthPropertyKey = BindableProperty.CreateReadOnly("Width", typeof(double), typeof(VisualElement), -1d,
 			coerceValue: (bindable, value) => double.IsNaN((double)value) ? 0d : value);
 
 		public static readonly BindableProperty WidthProperty = WidthPropertyKey.BindableProperty;
 
-		static readonly BindablePropertyKey HeightPropertyKey = BindableProperty.CreateReadOnly("Height", typeof(double), typeof(VisualElement), -1d,
+		private static readonly BindablePropertyKey HeightPropertyKey = BindableProperty.CreateReadOnly("Height", typeof(double), typeof(VisualElement), -1d,
 			coerceValue: (bindable, value) => double.IsNaN((double)value) ? 0d : value);
 
 		public static readonly BindableProperty HeightProperty = HeightPropertyKey.BindableProperty;
@@ -93,29 +93,29 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty IsFocusedProperty = IsFocusedPropertyKey.BindableProperty;
 
-		readonly Dictionary<Size, SizeRequest> _measureCache = new Dictionary<Size, SizeRequest>();
+		private readonly Dictionary<Size, SizeRequest> _measureCache = new Dictionary<Size, SizeRequest>();
 
-		readonly MergedStyle _mergedStyle;
+		private readonly MergedStyle _mergedStyle;
 
-		int _batched;
-		LayoutConstraint _computedConstraint;
+		private int _batched;
+		private LayoutConstraint _computedConstraint;
 
-		bool _isInNativeLayout;
+		private bool _isInNativeLayout;
 
-		bool _isNativeStateConsistent = true;
+		private bool _isNativeStateConsistent = true;
 
-		bool _isPlatformEnabled;
+		private bool _isPlatformEnabled;
 
-		double _mockHeight = -1;
+		private double _mockHeight = -1;
 
-		double _mockWidth = -1;
+		private double _mockWidth = -1;
 
-		double _mockX = -1;
+		private double _mockX = -1;
 
-		double _mockY = -1;
+		private double _mockY = -1;
 
-		ResourceDictionary _resources;
-		LayoutConstraint _selfConstraint;
+		private ResourceDictionary _resources;
+		private LayoutConstraint _selfConstraint;
 
 		internal VisualElement()
 		{
@@ -250,7 +250,7 @@ namespace Xamarin.Forms
 			set { SetValue(StyleProperty, value); }
 		}
 
-		[TypeConverter (typeof(ListStringTypeConverter))]
+		[TypeConverter(typeof(ListStringTypeConverter))]
 		public IList<string> StyleClass
 		{
 			get { return _mergedStyle.StyleClass; }
@@ -537,9 +537,6 @@ namespace Xamarin.Forms
 
 			if (includeMargins)
 			{
-				
-				
-
 				if (!margin.IsDefault)
 				{
 					result.Minimum = new Size(result.Minimum.Width + margin.HorizontalThickness, result.Minimum.Height + margin.VerticalThickness);
@@ -663,6 +660,7 @@ namespace Xamarin.Forms
 		{
 			InvalidateMeasureInternal(trigger);
 		}
+
 		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
 		{
 			_measureCache.Clear();
@@ -731,14 +729,14 @@ namespace Xamarin.Forms
 			_mockX = _mockY = _mockWidth = _mockHeight = -1;
 		}
 
-		void OnFocused()
+		private void OnFocused()
 		{
 			EventHandler<FocusEventArgs> focus = Focused;
 			if (focus != null)
 				focus(this, new FocusEventArgs(this, true));
 		}
 
-		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		private static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			var element = bindable as VisualElement;
 
@@ -753,7 +751,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		private static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			var constraint = LayoutConstraint.None;
 			var element = (VisualElement)bindable;
@@ -770,14 +768,14 @@ namespace Xamarin.Forms
 			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
 		}
 
-		void OnUnfocus()
+		private void OnUnfocus()
 		{
 			EventHandler<FocusEventArgs> unFocus = Unfocused;
 			if (unFocus != null)
 				unFocus(this, new FocusEventArgs(this, false));
 		}
 
-		void SetSize(double width, double height)
+		private void SetSize(double width, double height)
 		{
 			if (Width == width && Height == height)
 				return;

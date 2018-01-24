@@ -1,4 +1,3 @@
-
 namespace Xamarin.Forms
 {
 	public interface IElementConfiguration<out TElement> where TElement : Element

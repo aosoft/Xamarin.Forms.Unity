@@ -1,115 +1,113 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using UniRx;
+﻿using System.ComponentModel;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class EntryRenderer : ViewRenderer<Entry, UnityEngine.UI.InputField>
-	{
-		/*-----------------------------------------------------------------*/
-		#region Field
+    public class EntryRenderer : ViewRenderer<Entry, UnityEngine.UI.InputField>
+    {
+        /*-----------------------------------------------------------------*/
 
-		TextTracker _componentText;
+        #region Field
 
-		#endregion
+        private TextTracker _componentText;
 
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+        #endregion Field
 
-		protected override void Awake()
-		{
-			base.Awake();
+        /*-----------------------------------------------------------------*/
 
-			var inputField = Control;
-			if (inputField != null)
-			{
-				inputField.lineType = UnityEngine.UI.InputField.LineType.SingleLine;
-				inputField.OnValueChangedAsObservable()
-					.BlockReenter()
-					.Subscribe(value =>
-					{
-						var element = Element;
-						if (element != null)
-						{
-							element.Text = value;
-						}
-					}).AddTo(inputField);
+        #region MonoBehavior
 
-				_componentText = new TextTracker(inputField.textComponent);
-			}
-		}
+        protected override void Awake()
+        {
+            base.Awake();
 
-		#endregion
+            var inputField = Control;
+            if (inputField != null)
+            {
+                inputField.lineType = UnityEngine.UI.InputField.LineType.SingleLine;
+                inputField.OnValueChangedAsObservable()
+                    .BlockReenter()
+                    .Subscribe(value =>
+                    {
+                        var element = Element;
+                        if (element != null)
+                        {
+                            element.Text = value;
+                        }
+                    }).AddTo(inputField);
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+                _componentText = new TextTracker(inputField.textComponent);
+            }
+        }
 
-		protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
-		{
-			base.OnElementChanged(e);
+        #endregion MonoBehavior
 
-			if (e.NewElement != null)
-			{
-				base.OnElementChanged(e);
+        /*-----------------------------------------------------------------*/
 
-				if (e.NewElement != null)
-				{
-					//_isInitiallyDefault = Element.IsDefault();
+        #region Event Handler
 
-					UpdateText();
-					UpdateTextColor();
-					UpdateFont();
-				}
-			}
-		}
+        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        {
+            base.OnElementChanged(e);
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == Entry.TextProperty.PropertyName)
-			{
-				UpdateText();
-			}
-			else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
-			{
-				UpdateTextColor();
-			}
-			else if (e.PropertyName == Entry.FontSizeProperty.PropertyName ||
-				e.PropertyName == Entry.FontAttributesProperty.PropertyName)
-			{
-				UpdateFont();
-			}
+            if (e.NewElement != null)
+            {
+                base.OnElementChanged(e);
 
-			base.OnElementPropertyChanged(sender, e);
-		}
+                if (e.NewElement != null)
+                {
+                    //_isInitiallyDefault = Element.IsDefault();
 
-		#endregion
+                    UpdateText();
+                    UpdateTextColor();
+                    UpdateFont();
+                }
+            }
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Internals
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == Entry.TextProperty.PropertyName)
+            {
+                UpdateText();
+            }
+            else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
+            {
+                UpdateTextColor();
+            }
+            else if (e.PropertyName == Entry.FontSizeProperty.PropertyName ||
+                e.PropertyName == Entry.FontAttributesProperty.PropertyName)
+            {
+                UpdateFont();
+            }
 
-		void UpdateText()
-		{
-			var inputField = Control;
-			if (inputField != null)
-			{
-				inputField.text = Element.Text;
-			}
-		}
+            base.OnElementPropertyChanged(sender, e);
+        }
 
-		void UpdateTextColor()
-		{
-			_componentText.UpdateTextColor(Element.TextColor);
-		}
+        #endregion Event Handler
 
-		void UpdateFont()
-		{
-			_componentText.UpdateFont(Element);
-		}
+        /*-----------------------------------------------------------------*/
 
-		#endregion
-	}
+        #region Internals
+
+        private void UpdateText()
+        {
+            var inputField = Control;
+            if (inputField != null)
+            {
+                inputField.text = Element.Text;
+            }
+        }
+
+        private void UpdateTextColor()
+        {
+            _componentText.UpdateTextColor(Element.TextColor);
+        }
+
+        private void UpdateFont()
+        {
+            _componentText.UpdateFont(Element);
+        }
+
+        #endregion Internals
+    }
 }

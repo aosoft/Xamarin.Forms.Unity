@@ -3,11 +3,11 @@
 namespace Xamarin.Forms.Xaml
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	sealed class ProvideCompiledAttribute : Attribute
+	internal sealed class ProvideCompiledAttribute : Attribute
 	{
 		public string CompiledVersion { get; }
 
-		public ProvideCompiledAttribute (string compiledVersion)
+		public ProvideCompiledAttribute(string compiledVersion)
 		{
 			CompiledVersion = compiledVersion;
 		}

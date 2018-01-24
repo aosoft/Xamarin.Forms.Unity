@@ -11,9 +11,9 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty HasRenderLoopProperty = BindableProperty.Create("HasRenderLoop", typeof(bool), typeof(OpenGLView), default(bool));
 
-		readonly Lazy<PlatformConfigurationRegistry<OpenGLView>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<OpenGLView>> _platformConfigurationRegistry;
 
-		#endregion
+		#endregion Statics
 
 		public bool HasRenderLoop
 		{

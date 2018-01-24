@@ -8,8 +8,8 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class NavigationModel
 	{
-		readonly List<Page> _modalStack = new List<Page>();
-		readonly List<List<Page>> _navTree = new List<List<Page>>();
+		private readonly List<Page> _modalStack = new List<Page>();
+		private readonly List<List<Page>> _navTree = new List<List<Page>>();
 
 		public Page CurrentPage
 		{
@@ -168,7 +168,7 @@ namespace Xamarin.Forms.Internals
 			return found;
 		}
 
-		Page AncestorToRoot(Page ancestor)
+		private Page AncestorToRoot(Page ancestor)
 		{
 			Page result = ancestor;
 			while (!Application.IsApplicationOrNull(result.RealParent))

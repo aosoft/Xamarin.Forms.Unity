@@ -9,10 +9,10 @@ namespace Xamarin.Forms
 	[AcceptEmptyServiceProvider]
 	public sealed class PropertyCondition : Condition, IValueProvider
 	{
-		readonly BindableProperty _stateProperty;
+		private readonly BindableProperty _stateProperty;
 
-		BindableProperty _property;
-		object _triggerValue;
+		private BindableProperty _property;
+		private object _triggerValue;
 
 		public PropertyCondition()
 		{
@@ -70,7 +70,7 @@ namespace Xamarin.Forms
 			return (bool)bindable.GetValue(_stateProperty);
 		}
 
-		static IValueConverterProvider s_valueConverter = DependencyService.Get<IValueConverterProvider>();
+		private static IValueConverterProvider s_valueConverter = DependencyService.Get<IValueConverterProvider>();
 
 		internal override void SetUp(BindableObject bindable)
 		{
@@ -86,7 +86,7 @@ namespace Xamarin.Forms
 			bindable.PropertyChanged -= OnAttachedObjectPropertyChanged;
 		}
 
-		void OnAttachedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnAttachedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			var bindable = (BindableObject)sender;
 			var oldState = (bool)bindable.GetValue(_stateProperty);
@@ -101,7 +101,7 @@ namespace Xamarin.Forms
 				bindable.SetValue(_stateProperty, newstate);
 		}
 
-		void OnStatePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private void OnStatePropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			if ((bool)oldValue == (bool)newValue)
 				return;

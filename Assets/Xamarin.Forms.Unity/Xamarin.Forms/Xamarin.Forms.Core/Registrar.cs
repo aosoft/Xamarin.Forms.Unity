@@ -12,12 +12,13 @@ namespace Xamarin.Forms
 		internal static void RegisterAll(Type[] attrTypes) => Internals.Registrar.RegisterAll(attrTypes);
 	}
 }
+
 namespace Xamarin.Forms.Internals
 {
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class Registrar<TRegistrable> where TRegistrable : class
 	{
-		readonly Dictionary<Type, Type> _handlers = new Dictionary<Type, Type>();
+		private readonly Dictionary<Type, Type> _handlers = new Dictionary<Type, Type>();
 
 		public void Register(Type tview, Type trender)
 		{
@@ -56,7 +57,7 @@ namespace Xamarin.Forms.Internals
 				object handler = Activator.CreateInstance(handlerType, args);
 				return (TRegistrable)handler;
 			}
-			
+
 			return GetHandler(type);
 		}
 
@@ -127,7 +128,7 @@ namespace Xamarin.Forms.Internals
 			return GetHandlerType(type);
 		}
 
-		bool LookupHandlerType(Type viewType, out Type handlerType)
+		private bool LookupHandlerType(Type viewType, out Type handlerType)
 		{
 			Type type = viewType;
 

@@ -1,99 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using UniRx;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class ButtonRenderer : ViewRenderer<Button, UnityEngine.UI.Button>
-	{
-		/*-----------------------------------------------------------------*/
-		#region Field
+    public class ButtonRenderer : ViewRenderer<Button, UnityEngine.UI.Button>
+    {
+        /*-----------------------------------------------------------------*/
 
-		TextTracker _componentText;
+        #region Field
 
-		#endregion
+        private TextTracker _componentText;
 
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+        #endregion Field
 
-		protected override void Awake()
-		{
-			base.Awake();
+        /*-----------------------------------------------------------------*/
 
-			var button = Control;
-			if (button != null)
-			{
-				button.OnClickAsObservable()
-					.Subscribe(_ => (Element as IButtonController)?.SendClicked())
-					.AddTo(button);
-			}
+        #region MonoBehavior
 
-			_componentText = new TextTracker(button.GetComponentInChildren<UnityEngine.UI.Text>());
-		}
+        protected override void Awake()
+        {
+            base.Awake();
 
-		#endregion
+            var button = Control;
+            if (button != null)
+            {
+                button.OnClickAsObservable()
+                    .Subscribe(_ => (Element as IButtonController)?.SendClicked())
+                    .AddTo(button);
+            }
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+            _componentText = new TextTracker(button.GetComponentInChildren<UnityEngine.UI.Text>());
+        }
 
-		protected override void OnElementChanged(ElementChangedEventArgs<Button> e)
-		{
-			base.OnElementChanged(e);
+        #endregion MonoBehavior
 
-			if (e.NewElement != null)
-			{
-				//_isInitiallyDefault = Element.IsDefault();
+        /*-----------------------------------------------------------------*/
 
-				UpdateText();
-				UpdateTextColor();
-				UpdateFont();
-			}
-		}
+        #region Event Handler
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == Button.TextProperty.PropertyName)
-			{
-				UpdateText();
-			}
-			else if (e.PropertyName == Button.TextColorProperty.PropertyName)
-			{
-				UpdateTextColor();
-			}
-			else if (e.PropertyName == Button.FontSizeProperty.PropertyName ||
-				e.PropertyName == Button.FontAttributesProperty.PropertyName)
-			{
-				UpdateFont();
-			}
+        protected override void OnElementChanged(ElementChangedEventArgs<Button> e)
+        {
+            base.OnElementChanged(e);
 
-			base.OnElementPropertyChanged(sender, e);
-		}
+            if (e.NewElement != null)
+            {
+                //_isInitiallyDefault = Element.IsDefault();
 
-		#endregion
+                UpdateText();
+                UpdateTextColor();
+                UpdateFont();
+            }
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Internals
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == Button.TextProperty.PropertyName)
+            {
+                UpdateText();
+            }
+            else if (e.PropertyName == Button.TextColorProperty.PropertyName)
+            {
+                UpdateTextColor();
+            }
+            else if (e.PropertyName == Button.FontSizeProperty.PropertyName ||
+                e.PropertyName == Button.FontAttributesProperty.PropertyName)
+            {
+                UpdateFont();
+            }
 
-		void UpdateText()
-		{
-			_componentText.UpdateText(Element.Text);
-		}
+            base.OnElementPropertyChanged(sender, e);
+        }
 
-		void UpdateTextColor()
-		{
-			_componentText.UpdateTextColor(Element.TextColor);
-		}
+        #endregion Event Handler
 
-		void UpdateFont()
-		{
-			_componentText.UpdateFont(Element);
-		}
+        /*-----------------------------------------------------------------*/
 
-		#endregion
-	}
+        #region Internals
+
+        private void UpdateText()
+        {
+            _componentText.UpdateText(Element.Text);
+        }
+
+        private void UpdateTextColor()
+        {
+            _componentText.UpdateTextColor(Element.TextColor);
+        }
+
+        private void UpdateFont()
+        {
+            _componentText.UpdateFont(Element);
+        }
+
+        #endregion Internals
+    }
 }

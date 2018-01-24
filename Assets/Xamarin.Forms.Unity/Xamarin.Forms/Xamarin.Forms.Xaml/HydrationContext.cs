@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Xamarin.Forms.Xaml
 {
-	class HydrationContext
+	internal class HydrationContext
 	{
 		public HydrationContext()
 		{

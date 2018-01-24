@@ -11,9 +11,9 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class NavigationMenu : View, INavigationMenuController, IElementConfiguration<NavigationMenu>
 	{
-		readonly List<Page> _targets = new List<Page>();
+		private readonly List<Page> _targets = new List<Page>();
 
-		readonly Lazy<PlatformConfigurationRegistry<NavigationMenu>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<NavigationMenu>> _platformConfigurationRegistry;
 
 		public NavigationMenu()
 		{
@@ -72,7 +72,7 @@ namespace Xamarin.Forms.Internals
 			Navigation.PushAsync(target);
 		}
 
-		void VerifyTarget(Page target)
+		private void VerifyTarget(Page target)
 		{
 			if (target.Icon == null || string.IsNullOrWhiteSpace(target.Icon.File))
 				throw new Exception("Icon must be set for each page before adding them to a Navigation Menu");

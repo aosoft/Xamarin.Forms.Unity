@@ -1,114 +1,111 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms.Internals;
-using UnityEngine;
+﻿using System.ComponentModel;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class LabelRenderer : ViewRenderer<Label, UnityEngine.UI.Text>
-	{
-		/*-----------------------------------------------------------------*/
-		#region Field
+    public class LabelRenderer : ViewRenderer<Label, UnityEngine.UI.Text>
+    {
+        /*-----------------------------------------------------------------*/
 
-		TextTracker _componentText;
+        #region Field
 
-		#endregion
+        private TextTracker _componentText;
 
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+        #endregion Field
 
-		protected override void Awake()
-		{
-			base.Awake();
+        /*-----------------------------------------------------------------*/
 
-			_componentText = new TextTracker(Control);
-		}
+        #region MonoBehavior
 
-		#endregion
+        protected override void Awake()
+        {
+            base.Awake();
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+            _componentText = new TextTracker(Control);
+        }
 
-		protected override void OnElementChanged(ElementChangedEventArgs<Label> e)
-		{
-			base.OnElementChanged(e);
+        #endregion MonoBehavior
 
-			if (e.NewElement != null)
-			{
-				//_isInitiallyDefault = Element.IsDefault();
+        /*-----------------------------------------------------------------*/
 
-				UpdateText();
-				UpdateColor();
-				UpdateAlign();
-				UpdateFont();
-				UpdateLineBreakMode();
-			}
-		}
+        #region Event Handler
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == Label.TextProperty.PropertyName ||
-				e.PropertyName == Label.FormattedTextProperty.PropertyName)
-			{
-				UpdateText();
-			}
-			else if (e.PropertyName == Label.TextColorProperty.PropertyName)
-			{
-				UpdateColor();
-			}
-			else if (e.PropertyName == Label.HorizontalTextAlignmentProperty.PropertyName ||
-				e.PropertyName == Label.VerticalTextAlignmentProperty.PropertyName)
-			{
-				UpdateAlign();
-			}
-			else if (e.PropertyName == Label.FontSizeProperty.PropertyName ||
-				e.PropertyName == Label.FontAttributesProperty.PropertyName)
-			{
-				UpdateFont();
-			}
-			else if (e.PropertyName == Label.LineBreakModeProperty.PropertyName)
-			{
-				UpdateLineBreakMode();
-			}
+        protected override void OnElementChanged(ElementChangedEventArgs<Label> e)
+        {
+            base.OnElementChanged(e);
 
-			base.OnElementPropertyChanged(sender, e);
-		}
+            if (e.NewElement != null)
+            {
+                //_isInitiallyDefault = Element.IsDefault();
 
-		#endregion
+                UpdateText();
+                UpdateColor();
+                UpdateAlign();
+                UpdateFont();
+                UpdateLineBreakMode();
+            }
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Internals
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == Label.TextProperty.PropertyName ||
+                e.PropertyName == Label.FormattedTextProperty.PropertyName)
+            {
+                UpdateText();
+            }
+            else if (e.PropertyName == Label.TextColorProperty.PropertyName)
+            {
+                UpdateColor();
+            }
+            else if (e.PropertyName == Label.HorizontalTextAlignmentProperty.PropertyName ||
+                e.PropertyName == Label.VerticalTextAlignmentProperty.PropertyName)
+            {
+                UpdateAlign();
+            }
+            else if (e.PropertyName == Label.FontSizeProperty.PropertyName ||
+                e.PropertyName == Label.FontAttributesProperty.PropertyName)
+            {
+                UpdateFont();
+            }
+            else if (e.PropertyName == Label.LineBreakModeProperty.PropertyName)
+            {
+                UpdateLineBreakMode();
+            }
 
-		void UpdateText()
-		{
-			//_perfectSizeValid = false;
-			_componentText.UpdateText(Element.Text);
-		}
+            base.OnElementPropertyChanged(sender, e);
+        }
 
-		void UpdateColor()
-		{
-			_componentText.UpdateTextColor(Element.TextColor);
-		}
+        #endregion Event Handler
 
-		void UpdateFont()
-		{
-			_componentText.UpdateFont(Element);
-		}
+        /*-----------------------------------------------------------------*/
 
-		void UpdateLineBreakMode()
-		{
-			Control.horizontalOverflow = Element.LineBreakMode.ToUnityHorizontalWrapMode();
-		}
+        #region Internals
 
-		void UpdateAlign()
-		{
-			Control?.SetTextAlign(Element);
-		}
+        private void UpdateText()
+        {
+            //_perfectSizeValid = false;
+            _componentText.UpdateText(Element.Text);
+        }
 
-		#endregion
-	}
+        private void UpdateColor()
+        {
+            _componentText.UpdateTextColor(Element.TextColor);
+        }
+
+        private void UpdateFont()
+        {
+            _componentText.UpdateFont(Element);
+        }
+
+        private void UpdateLineBreakMode()
+        {
+            Control.horizontalOverflow = Element.LineBreakMode.ToUnityHorizontalWrapMode();
+        }
+
+        private void UpdateAlign()
+        {
+            Control?.SetTextAlign(Element);
+        }
+
+        #endregion Internals
+    }
 }

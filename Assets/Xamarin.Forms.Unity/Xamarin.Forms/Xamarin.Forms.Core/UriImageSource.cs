@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,14 +15,14 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty UriProperty = BindableProperty.Create("Uri", typeof(Uri), typeof(UriImageSource), default(Uri),
 			propertyChanged: (bindable, oldvalue, newvalue) => ((UriImageSource)bindable).OnUriChanged(), validateValue: (bindable, value) => value == null || ((Uri)value).IsAbsoluteUri);
 
-		static readonly IIsolatedStorageFile Store = Device.PlatformServices.GetUserStoreForApplication();
+		private static readonly IIsolatedStorageFile Store = Device.PlatformServices.GetUserStoreForApplication();
 
-		static readonly object s_syncHandle = new object();
-		static readonly Dictionary<string, LockingSemaphore> s_semaphores = new Dictionary<string, LockingSemaphore>();
+		private static readonly object s_syncHandle = new object();
+		private static readonly Dictionary<string, LockingSemaphore> s_semaphores = new Dictionary<string, LockingSemaphore>();
 
-		TimeSpan _cacheValidity = TimeSpan.FromDays(1);
+		private TimeSpan _cacheValidity = TimeSpan.FromDays(1);
 
-		bool _cachingEnabled = true;
+		private bool _cachingEnabled = true;
 
 		static UriImageSource()
 		{
@@ -97,19 +96,19 @@ namespace Xamarin.Forms
 			return $"Uri: {Uri}";
 		}
 
-		static string GetCacheKey(Uri uri)
+		private static string GetCacheKey(Uri uri)
 		{
 			return Device.PlatformServices.GetMD5Hash(uri.AbsoluteUri);
 		}
 
-		async Task<bool> GetHasLocallyCachedCopyAsync(string key, bool checkValidity = true)
+		private async Task<bool> GetHasLocallyCachedCopyAsync(string key, bool checkValidity = true)
 		{
 			DateTime now = DateTime.UtcNow;
 			DateTime? lastWriteTime = await GetLastWriteTimeUtcAsync(key).ConfigureAwait(false);
 			return lastWriteTime.HasValue && now - lastWriteTime.Value < CacheValidity;
 		}
 
-		static async Task<DateTime?> GetLastWriteTimeUtcAsync(string key)
+		private static async Task<DateTime?> GetLastWriteTimeUtcAsync(string key)
 		{
 			string path = Path.Combine(CacheName, key);
 			if (!await Store.GetFileExistsAsync(path).ConfigureAwait(false))
@@ -118,7 +117,7 @@ namespace Xamarin.Forms
 			return (await Store.GetLastWriteTimeAsync(path).ConfigureAwait(false)).UtcDateTime;
 		}
 
-		async Task<Stream> GetStreamAsync(Uri uri, CancellationToken cancellationToken = default(CancellationToken))
+		private async Task<Stream> GetStreamAsync(Uri uri, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
@@ -129,7 +128,7 @@ namespace Xamarin.Forms
 				{
 					stream = await Device.GetStreamAsync(uri, cancellationToken).ConfigureAwait(false);
 				}
-				catch (Exception ex) 
+				catch (Exception ex)
 				{
 					Log.Warning("Image Loading", $"Error getting stream for {Uri}: {ex}");
 					stream = null;
@@ -140,7 +139,7 @@ namespace Xamarin.Forms
 			return stream;
 		}
 
-		async Task<Stream> GetStreamAsyncUnchecked(string key, Uri uri, CancellationToken cancellationToken)
+		private async Task<Stream> GetStreamAsyncUnchecked(string key, Uri uri, CancellationToken cancellationToken)
 		{
 			if (await GetHasLocallyCachedCopyAsync(key).ConfigureAwait(false))
 			{
@@ -191,7 +190,7 @@ namespace Xamarin.Forms
 			return await Store.OpenFileAsync(Path.Combine(CacheName, key), Xamarin.Forms.Internals.FileMode.Open, Xamarin.Forms.Internals.FileAccess.Read).ConfigureAwait(false);
 		}
 
-		async Task<Stream> GetStreamFromCacheAsync(Uri uri, CancellationToken cancellationToken)
+		private async Task<Stream> GetStreamFromCacheAsync(Uri uri, CancellationToken cancellationToken)
 		{
 			string key = GetCacheKey(uri);
 			LockingSemaphore sem;
@@ -223,7 +222,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void OnUriChanged()
+		private void OnUriChanged()
 		{
 			if (CancellationTokenSource != null)
 				CancellationTokenSource.Cancel();

@@ -6,8 +6,8 @@ namespace Xamarin.Forms
 {
 	public partial class Grid
 	{
-		List<ColumnDefinition> _columns;
-		List<RowDefinition> _rows;
+		private List<ColumnDefinition> _columns;
+		private List<RowDefinition> _rows;
 
 		protected override void LayoutChildren(double x, double y, double width, double height)
 		{
@@ -83,7 +83,7 @@ namespace Xamarin.Forms
 			return result;
 		}
 
-		void AssignAbsoluteCells()
+		private void AssignAbsoluteCells()
 		{
 			for (var index = 0; index < _rows.Count; index++)
 			{
@@ -100,7 +100,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void CalculateAutoCells(double width, double height)
+		private void CalculateAutoCells(double width, double height)
 		{
 			// this require multiple passes. First process the 1-span, then 2, 3, ...
 			// And this needs to be run twice, just in case a lower-span column can be determined by a larger span
@@ -174,7 +174,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void CalculateStarCells(double width, double height, double totalStarsWidth, double totalStarsHeight)
+		private void CalculateStarCells(double width, double height, double totalStarsWidth, double totalStarsHeight)
 		{
 			double starColWidth = GetUnassignedWidth(width) / totalStarsWidth;
 			double starRowHeight = GetUnassignedHeight(height) / totalStarsHeight;
@@ -194,7 +194,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void ContractColumnsIfNeeded(double width, Func<ColumnDefinition, bool> predicate)
+		private void ContractColumnsIfNeeded(double width, Func<ColumnDefinition, bool> predicate)
 		{
 			double columnWidthSum = 0;
 			for (var index = 0; index < _columns.Count; index++)
@@ -239,7 +239,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void ContractRowsIfNeeded(double height, Func<RowDefinition, bool> predicate)
+		private void ContractRowsIfNeeded(double height, Func<RowDefinition, bool> predicate)
 		{
 			double columnSum = 0;
 			for (var index = 0; index < _columns.Count; index++)
@@ -281,7 +281,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void EnsureRowsColumnsInitialized()
+		private void EnsureRowsColumnsInitialized()
 		{
 			_columns = ColumnDefinitions == null ? new List<ColumnDefinition>() : ColumnDefinitions.ToList();
 			_rows = RowDefinitions == null ? new List<RowDefinition>() : RowDefinitions.ToList();
@@ -319,7 +319,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void ExpandLastAutoColumnIfNeeded(double width, bool expandToRequest)
+		private void ExpandLastAutoColumnIfNeeded(double width, bool expandToRequest)
 		{
 			for (var index = 0; index < InternalChildren.Count; index++)
 			{
@@ -344,7 +344,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void ExpandLastAutoRowIfNeeded(double height, bool expandToRequest)
+		private void ExpandLastAutoRowIfNeeded(double height, bool expandToRequest)
 		{
 			for (var index = 0; index < InternalChildren.Count; index++)
 			{
@@ -369,7 +369,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void MeasureAndContractStarredColumns(double width, double height, double totalStarsWidth)
+		private void MeasureAndContractStarredColumns(double width, double height, double totalStarsWidth)
 		{
 			double starColWidth;
 			starColWidth = MeasuredStarredColumns();
@@ -397,7 +397,7 @@ namespace Xamarin.Forms
 			ContractColumnsIfNeeded(width, c => c.Width.IsStar);
 		}
 
-		void MeasureAndContractStarredRows(double width, double height, double totalStarsHeight)
+		private void MeasureAndContractStarredRows(double width, double height, double totalStarsHeight)
 		{
 			double starRowHeight;
 			starRowHeight = MeasureStarredRows();
@@ -424,7 +424,7 @@ namespace Xamarin.Forms
 			ContractRowsIfNeeded(height, r => r.Height.IsStar);
 		}
 
-		double MeasuredStarredColumns()
+		private double MeasuredStarredColumns()
 		{
 			double starColWidth;
 			for (var iteration = 0; iteration < 2; iteration++)
@@ -474,7 +474,7 @@ namespace Xamarin.Forms
 			return starColWidth;
 		}
 
-		void MeasureGrid(double width, double height, bool requestSize = false)
+		private void MeasureGrid(double width, double height, bool requestSize = false)
 		{
 			EnsureRowsColumnsInitialized();
 
@@ -520,7 +520,7 @@ namespace Xamarin.Forms
 			ExpandLastAutoColumnIfNeeded(width, requestSize);
 		}
 
-		double MeasureStarredRows()
+		private double MeasureStarredRows()
 		{
 			double starRowHeight;
 			for (var iteration = 0; iteration < 2; iteration++)
@@ -573,7 +573,7 @@ namespace Xamarin.Forms
 			return starRowHeight;
 		}
 
-		void ZeroUnassignedCells()
+		private void ZeroUnassignedCells()
 		{
 			for (var index = 0; index < _columns.Count; index++)
 			{
@@ -591,21 +591,21 @@ namespace Xamarin.Forms
 
 		#region Helpers
 
-		static bool IsInColumn(BindableObject child, int column)
+		private static bool IsInColumn(BindableObject child, int column)
 		{
 			int childColumn = GetColumn(child);
 			int span = GetColumnSpan(child);
 			return childColumn <= column && column < childColumn + span;
 		}
 
-		static bool IsInRow(BindableObject child, int row)
+		private static bool IsInRow(BindableObject child, int row)
 		{
 			int childRow = GetRow(child);
 			int span = GetRowSpan(child);
 			return childRow <= row && row < childRow + span;
 		}
 
-		int NumberOfUnsetColumnWidth(BindableObject child)
+		private int NumberOfUnsetColumnWidth(BindableObject child)
 		{
 			var n = 0;
 			int index = GetColumn(child);
@@ -616,7 +616,7 @@ namespace Xamarin.Forms
 			return n;
 		}
 
-		int NumberOfUnsetRowHeight(BindableObject child)
+		private int NumberOfUnsetRowHeight(BindableObject child)
 		{
 			var n = 0;
 			int index = GetRow(child);
@@ -627,7 +627,7 @@ namespace Xamarin.Forms
 			return n;
 		}
 
-		double GetAssignedColumnWidth(BindableObject child)
+		private double GetAssignedColumnWidth(BindableObject child)
 		{
 			var actual = 0d;
 			int index = GetColumn(child);
@@ -638,7 +638,7 @@ namespace Xamarin.Forms
 			return actual;
 		}
 
-		double GetAssignedRowHeight(BindableObject child)
+		private double GetAssignedRowHeight(BindableObject child)
 		{
 			var actual = 0d;
 			int index = GetRow(child);
@@ -649,7 +649,7 @@ namespace Xamarin.Forms
 			return actual;
 		}
 
-		ColumnDefinition GetLastAutoColumn(BindableObject child)
+		private ColumnDefinition GetLastAutoColumn(BindableObject child)
 		{
 			int index = GetColumn(child);
 			int span = GetColumnSpan(child);
@@ -659,7 +659,7 @@ namespace Xamarin.Forms
 			return null;
 		}
 
-		RowDefinition GetLastAutoRow(BindableObject child)
+		private RowDefinition GetLastAutoRow(BindableObject child)
 		{
 			int index = GetRow(child);
 			int span = GetRowSpan(child);
@@ -669,7 +669,7 @@ namespace Xamarin.Forms
 			return null;
 		}
 
-		double GetUnassignedHeight(double heightRequest)
+		private double GetUnassignedHeight(double heightRequest)
 		{
 			double assigned = (_rows.Count - 1) * RowSpacing;
 			for (var i = 0; i < _rows.Count; i++)
@@ -681,7 +681,7 @@ namespace Xamarin.Forms
 			return heightRequest - assigned;
 		}
 
-		double GetUnassignedWidth(double widthRequest)
+		private double GetUnassignedWidth(double widthRequest)
 		{
 			double assigned = (_columns.Count - 1) * ColumnSpacing;
 			for (var i = 0; i < _columns.Count; i++)
@@ -693,6 +693,6 @@ namespace Xamarin.Forms
 			return widthRequest - assigned;
 		}
 
-		#endregion
+		#endregion Helpers
 	}
 }

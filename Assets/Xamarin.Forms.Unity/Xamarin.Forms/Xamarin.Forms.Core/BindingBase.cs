@@ -6,10 +6,10 @@ namespace Xamarin.Forms
 {
 	public abstract class BindingBase
 	{
-		static readonly ConditionalWeakTable<IEnumerable, CollectionSynchronizationContext> SynchronizedCollections = new ConditionalWeakTable<IEnumerable, CollectionSynchronizationContext>();
+		private static readonly ConditionalWeakTable<IEnumerable, CollectionSynchronizationContext> SynchronizedCollections = new ConditionalWeakTable<IEnumerable, CollectionSynchronizationContext>();
 
-		BindingMode _mode = BindingMode.Default;
-		string _stringFormat;
+		private BindingMode _mode = BindingMode.Default;
+		private string _stringFormat;
 
 		internal BindingBase()
 		{

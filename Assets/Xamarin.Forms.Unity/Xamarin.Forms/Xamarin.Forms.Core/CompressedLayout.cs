@@ -15,7 +15,7 @@ namespace Xamarin.Forms
 		public static void SetIsHeadless(BindableObject bindable, bool value)
 			=> bindable.SetValue(IsHeadlessProperty, value);
 
-		static void OnIsHeadlessPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnIsHeadlessPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var ve = bindable as IVisualElementController;
 			if (ve == null)
@@ -24,7 +24,7 @@ namespace Xamarin.Forms
 				throw new InvalidOperationException("IsHeadless can not be modified when the view is rendered");
 		}
 
-		static readonly BindablePropertyKey HeadlessOffsetPropertyKey =
+		private static readonly BindablePropertyKey HeadlessOffsetPropertyKey =
 			BindableProperty.CreateReadOnly("HeadlessOffset", typeof(Point), typeof(CompressedLayout), default(Point));
 
 		[EditorBrowsable(EditorBrowsableState.Never)]

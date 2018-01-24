@@ -19,10 +19,10 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty BoundsConstraintProperty = BindableProperty.CreateAttached("BoundsConstraint", typeof(BoundsConstraint), typeof(RelativeLayout), null);
 
-		readonly RelativeElementCollection _children;
+		private readonly RelativeElementCollection _children;
 
-		IEnumerable<View> _childrenInSolveOrder;
-		readonly Lazy<PlatformConfigurationRegistry<RelativeLayout>> _platformConfigurationRegistry;
+		private IEnumerable<View> _childrenInSolveOrder;
+		private readonly Lazy<PlatformConfigurationRegistry<RelativeLayout>> _platformConfigurationRegistry;
 
 		public RelativeLayout()
 		{
@@ -30,7 +30,7 @@ namespace Xamarin.Forms
 			_children = new RelativeElementCollection(InternalChildren, this);
 			_children.Parent = this;
 
-			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<RelativeLayout>>(() => 
+			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<RelativeLayout>>(() =>
 				new PlatformConfigurationRegistry<RelativeLayout>(this));
 		}
 
@@ -44,7 +44,7 @@ namespace Xamarin.Forms
 			get { return _children; }
 		}
 
-		IEnumerable<View> ChildrenInSolveOrder
+		private IEnumerable<View> ChildrenInSolveOrder
 		{
 			get
 			{
@@ -82,14 +82,14 @@ namespace Xamarin.Forms
 			}
 		}
 
-		static void ConstraintChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void ConstraintChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			View view = bindable as View;
 
 			(view?.Parent as RelativeLayout)?.UpdateBoundsConstraint(view);
 		}
 
-		void UpdateBoundsConstraint(View view)
+		private void UpdateBoundsConstraint(View view)
 		{
 			if (GetBoundsConstraint(view) == null)
 				return; // Bounds constraint hasn't been calculated yet, no need to update just yet
@@ -213,7 +213,7 @@ namespace Xamarin.Forms
 			return new SizeRequest(new Size(boundsRectangle.Right, boundsRectangle.Bottom));
 		}
 
-		bool CanSolveView(View view, Dictionary<View, bool> solveTable)
+		private bool CanSolveView(View view, Dictionary<View, bool> solveTable)
 		{
 			BoundsConstraint boundsConstraint = GetBoundsConstraint(view);
 			var parents = new List<View>();
@@ -246,7 +246,7 @@ namespace Xamarin.Forms
 			return true;
 		}
 
-		void CreateBoundsFromConstraints(View view, Constraint xConstraint, Constraint yConstraint, Constraint widthConstraint, Constraint heightConstraint)
+		private void CreateBoundsFromConstraints(View view, Constraint xConstraint, Constraint yConstraint, Constraint widthConstraint, Constraint heightConstraint)
 		{
 			var parents = new List<View>();
 
@@ -294,7 +294,7 @@ namespace Xamarin.Forms
 			SetBoundsConstraint(view, bounds);
 		}
 
-		static Rectangle SolveView(View view)
+		private static Rectangle SolveView(View view)
 		{
 			BoundsConstraint boundsConstraint = GetBoundsConstraint(view);
 
@@ -317,7 +317,7 @@ namespace Xamarin.Forms
 			void Add(T view, Constraint xConstraint = null, Constraint yConstraint = null, Constraint widthConstraint = null, Constraint heightConstraint = null);
 		}
 
-		class RelativeElementCollection : ElementCollection<View>, IRelativeList<View>
+		private class RelativeElementCollection : ElementCollection<View>, IRelativeList<View>
 		{
 			public RelativeElementCollection(ObservableCollection<Element> inner, RelativeLayout parent) : base(inner)
 			{

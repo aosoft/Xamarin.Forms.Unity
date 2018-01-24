@@ -7,9 +7,9 @@ namespace Xamarin.Forms
 {
 	internal class LockingSemaphore
 	{
-		static readonly Task Completed = Task.FromResult(true);
-		readonly Queue<TaskCompletionSource<bool>> _waiters = new Queue<TaskCompletionSource<bool>>();
-		int _currentCount;
+		private static readonly Task Completed = Task.FromResult(true);
+		private readonly Queue<TaskCompletionSource<bool>> _waiters = new Queue<TaskCompletionSource<bool>>();
+		private int _currentCount;
 
 		public LockingSemaphore(int initialCount)
 		{

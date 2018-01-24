@@ -5,7 +5,7 @@ namespace Xamarin.Forms
 {
 	internal class ReadOnlyCastingList<T, TFrom> : IReadOnlyList<T> where T : class where TFrom : class
 	{
-		readonly IList<TFrom> _list;
+		private readonly IList<TFrom> _list;
 
 		public ReadOnlyCastingList(IList<TFrom> list)
 		{

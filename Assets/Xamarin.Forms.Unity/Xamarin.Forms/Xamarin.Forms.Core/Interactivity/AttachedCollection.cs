@@ -6,7 +6,7 @@ namespace Xamarin.Forms
 {
 	internal class AttachedCollection<T> : ObservableCollection<T>, ICollection<T>, IAttachedObject where T : BindableObject, IAttachedObject
 	{
-		readonly List<WeakReference> _associatedObjects = new List<WeakReference>();
+		private readonly List<WeakReference> _associatedObjects = new List<WeakReference>();
 
 		public AttachedCollection()
 		{

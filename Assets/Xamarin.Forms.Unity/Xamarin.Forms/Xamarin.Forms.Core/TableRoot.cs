@@ -18,14 +18,14 @@ namespace Xamarin.Forms
 
 		internal event EventHandler<ChildCollectionChangedEventArgs> SectionCollectionChanged;
 
-		void ChildCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+		private void ChildCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
 		{
 			EventHandler<ChildCollectionChangedEventArgs> handler = SectionCollectionChanged;
 			if (handler != null)
 				handler(this, new ChildCollectionChangedEventArgs(notifyCollectionChangedEventArgs));
 		}
 
-		void ChildPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		private void ChildPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
 			if (propertyChangedEventArgs.PropertyName == TitleProperty.PropertyName)
 			{
@@ -33,7 +33,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void SetupEvents()
+		private void SetupEvents()
 		{
 			CollectionChanged += (sender, args) =>
 			{

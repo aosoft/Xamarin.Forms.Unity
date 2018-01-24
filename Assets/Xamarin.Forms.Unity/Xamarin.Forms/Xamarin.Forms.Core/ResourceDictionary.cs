@@ -1,26 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Linq;
-using System.Reflection;
-using Xamarin.Forms.Internals;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
 	public class ResourceDictionary : IResourceDictionary, IDictionary<string, object>
 	{
-		static ConditionalWeakTable<Type, ResourceDictionary> s_instances = new ConditionalWeakTable<Type, ResourceDictionary>();
-		readonly Dictionary<string, object> _innerDictionary = new Dictionary<string, object>();
-		ResourceDictionary _mergedInstance;
-		Type _mergedWith;
+		private static ConditionalWeakTable<Type, ResourceDictionary> s_instances = new ConditionalWeakTable<Type, ResourceDictionary>();
+		private readonly Dictionary<string, object> _innerDictionary = new Dictionary<string, object>();
+		private ResourceDictionary _mergedInstance;
+		private Type _mergedWith;
 
-		[TypeConverter (typeof(TypeTypeConverter))]
-		public Type MergedWith {
+		[TypeConverter(typeof(TypeTypeConverter))]
+		public Type MergedWith
+		{
 			get { return _mergedWith; }
-			set {
+			set
+			{
 				if (_mergedWith == value)
 					return;
 
@@ -36,10 +38,14 @@ namespace Xamarin.Forms
 			}
 		}
 
-		ICollection<ResourceDictionary> _mergedDictionaries;
-		public ICollection<ResourceDictionary> MergedDictionaries {
-			get {
-				if (_mergedDictionaries == null) {
+		private ICollection<ResourceDictionary> _mergedDictionaries;
+
+		public ICollection<ResourceDictionary> MergedDictionaries
+		{
+			get
+			{
+				if (_mergedDictionaries == null)
+				{
 					var col = new ObservableCollection<ResourceDictionary>();
 					col.CollectionChanged += MergedDictionaries_CollectionChanged;
 					_mergedDictionaries = col;
@@ -48,9 +54,9 @@ namespace Xamarin.Forms
 			}
 		}
 
-		IList<ResourceDictionary> _collectionTrack;
+		private IList<ResourceDictionary> _collectionTrack;
 
-		void MergedDictionaries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void MergedDictionaries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			// Move() isn't exposed by ICollection
 			if (e.Action == NotifyCollectionChangedAction.Move)
@@ -58,7 +64,8 @@ namespace Xamarin.Forms
 
 			_collectionTrack = _collectionTrack ?? new List<ResourceDictionary>();
 			// Collection has been cleared
-			if (e.Action == NotifyCollectionChangedAction.Reset) {
+			if (e.Action == NotifyCollectionChangedAction.Reset)
+			{
 				foreach (var dictionary in _collectionTrack)
 					dictionary.ValuesChanged -= Item_ValuesChanged;
 
@@ -90,7 +97,7 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void Item_ValuesChanged(object sender, ResourcesChangedEventArgs e)
+		private void Item_ValuesChanged(object sender, ResourcesChangedEventArgs e)
 		{
 			OnValuesChanged(e.Values.ToArray());
 		}
@@ -192,8 +199,10 @@ namespace Xamarin.Forms
 			return _innerDictionary.GetEnumerator();
 		}
 
-		internal IEnumerable<KeyValuePair<string, object>> MergedResources {
-			get {
+		internal IEnumerable<KeyValuePair<string, object>> MergedResources
+		{
+			get
+			{
 				if (MergedDictionaries != null)
 					foreach (var r in MergedDictionaries.Reverse().SelectMany(x => x.MergedResources))
 						yield return r;
@@ -212,7 +221,7 @@ namespace Xamarin.Forms
 				|| (MergedDictionaries != null && TryGetMergedDictionaryValue(key, out value));
 		}
 
-		bool TryGetMergedDictionaryValue(string key, out object value)
+		private bool TryGetMergedDictionaryValue(string key, out object value)
 		{
 			foreach (var dictionary in MergedDictionaries.Reverse())
 				if (dictionary.TryGetValue(key, out value))
@@ -243,18 +252,18 @@ namespace Xamarin.Forms
 			}
 		}
 
-		void OnValueChanged(string key, object value)
+		private void OnValueChanged(string key, object value)
 		{
 			OnValuesChanged(new KeyValuePair<string, object>(key, value));
 		}
 
-		void OnValuesChanged(params KeyValuePair<string, object>[] values)
+		private void OnValuesChanged(params KeyValuePair<string, object>[] values)
 		{
 			if (values == null || values.Length == 0)
 				return;
 			ValuesChanged?.Invoke(this, new ResourcesChangedEventArgs(values));
 		}
 
-		event EventHandler<ResourcesChangedEventArgs> ValuesChanged;
+		private event EventHandler<ResourcesChangedEventArgs> ValuesChanged;
 	}
 }

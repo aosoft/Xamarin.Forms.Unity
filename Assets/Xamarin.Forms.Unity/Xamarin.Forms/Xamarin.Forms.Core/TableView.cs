@@ -2,8 +2,8 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using Xamarin.Forms.Platform;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.Platform;
 
 namespace Xamarin.Forms
 {
@@ -15,13 +15,13 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty HasUnevenRowsProperty = BindableProperty.Create("HasUnevenRows", typeof(bool), typeof(TableView), false);
 
-		readonly Lazy<PlatformConfigurationRegistry<TableView>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<TableView>> _platformConfigurationRegistry;
 
-		readonly TableSectionModel _tableModel;
+		private readonly TableSectionModel _tableModel;
 
-		TableIntent _intent = TableIntent.Data;
+		private TableIntent _intent = TableIntent.Data;
 
-		TableModel _model;
+		private TableModel _model;
 
 		public TableView() : this(null)
 		{
@@ -91,9 +91,9 @@ namespace Xamarin.Forms
 			}
 		}
 
-		ITableModel ITableViewController.Model 
+		ITableModel ITableViewController.Model
 		{
-			get 
+			get
 			{
 				return Model;
 			}
@@ -133,19 +133,19 @@ namespace Xamarin.Forms
 			return _platformConfigurationRegistry.Value.On<T>();
 		}
 
-		void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			OnModelChanged();
 		}
 
-		void OnSectionCollectionChanged(object sender, ChildCollectionChangedEventArgs childCollectionChangedEventArgs)
+		private void OnSectionCollectionChanged(object sender, ChildCollectionChangedEventArgs childCollectionChangedEventArgs)
 		{
 			if (childCollectionChangedEventArgs.Args.NewItems != null)
 				childCollectionChangedEventArgs.Args.NewItems.Cast<Cell>().ForEach(cell => cell.Parent = this);
 			OnModelChanged();
 		}
 
-		void OnTableModelRootPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnTableModelRootPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == TableSectionBase.TitleProperty.PropertyName)
 				OnModelChanged();
@@ -153,10 +153,10 @@ namespace Xamarin.Forms
 
 		internal class TableSectionModel : TableModel
 		{
-			static readonly BindableProperty PathProperty = BindableProperty.Create("Path", typeof(Tuple<int, int>), typeof(Cell), null);
+			private static readonly BindableProperty PathProperty = BindableProperty.Create("Path", typeof(Tuple<int, int>), typeof(Cell), null);
 
-			readonly TableView _parent;
-			TableRoot _root;
+			private readonly TableView _parent;
+			private TableRoot _root;
 
 			public TableSectionModel(TableView tableParent, TableRoot tableRoot)
 			{
@@ -220,13 +220,13 @@ namespace Xamarin.Forms
 				return (Tuple<int, int>)item.GetValue(PathProperty);
 			}
 
-			void ApplyEvents(TableRoot tableRoot)
+			private void ApplyEvents(TableRoot tableRoot)
 			{
 				tableRoot.CollectionChanged += _parent.CollectionChanged;
 				tableRoot.SectionCollectionChanged += _parent.OnSectionCollectionChanged;
 			}
 
-			void RemoveEvents(TableRoot tableRoot)
+			private void RemoveEvents(TableRoot tableRoot)
 			{
 				if (tableRoot == null)
 					return;
@@ -235,7 +235,7 @@ namespace Xamarin.Forms
 				tableRoot.SectionCollectionChanged -= _parent.OnSectionCollectionChanged;
 			}
 
-			static void SetPath(Cell item, Tuple<int, int> index)
+			private static void SetPath(Cell item, Tuple<int, int> index)
 			{
 				if (item == null)
 					return;

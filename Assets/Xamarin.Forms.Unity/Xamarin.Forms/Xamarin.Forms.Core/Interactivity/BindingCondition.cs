@@ -7,10 +7,10 @@ namespace Xamarin.Forms
 	[AcceptEmptyServiceProvider]
 	public sealed class BindingCondition : Condition, IValueProvider
 	{
-		readonly BindableProperty _boundProperty;
+		private readonly BindableProperty _boundProperty;
 
-		BindingBase _binding;
-		object _triggerValue;
+		private BindingBase _binding;
+		private object _triggerValue;
 
 		public BindingCondition()
 		{
@@ -67,9 +67,9 @@ namespace Xamarin.Forms
 			bindable.ClearValue(_boundProperty);
 		}
 
-		static IValueConverterProvider s_valueConverter = DependencyService.Get<IValueConverterProvider>();
+		private static IValueConverterProvider s_valueConverter = DependencyService.Get<IValueConverterProvider>();
 
-		bool EqualsToValue(object other)
+		private bool EqualsToValue(object other)
 		{
 			if ((other == Value) || (other != null && other.Equals(Value)))
 				return true;
@@ -83,7 +83,7 @@ namespace Xamarin.Forms
 			return (other == converted) || (other != null && other.Equals(converted));
 		}
 
-		void OnBoundPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private void OnBoundPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			bool oldState = EqualsToValue(oldValue);
 			bool newState = EqualsToValue(newValue);

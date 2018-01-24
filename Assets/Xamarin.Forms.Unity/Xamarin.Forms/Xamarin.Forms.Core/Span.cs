@@ -8,31 +8,36 @@ namespace Xamarin.Forms
 	[ContentProperty("Text")]
 	public sealed class Span : INotifyPropertyChanged, IFontElement
 	{
-		class BindableSpan : BindableObject, IFontElement
+		private class BindableSpan : BindableObject, IFontElement
 		{
-			Span _span;
+			private Span _span;
+
 			public BindableSpan(Span span)
 			{
 				_span = span;
 			}
 
-			public Font Font {
+			public Font Font
+			{
 				get { return (Font)GetValue(FontElement.FontProperty); }
 				set { SetValue(FontElement.FontProperty, value); }
 			}
 
-			public FontAttributes FontAttributes {
+			public FontAttributes FontAttributes
+			{
 				get { return (FontAttributes)GetValue(FontElement.FontAttributesProperty); }
 				set { SetValue(FontElement.FontAttributesProperty, value); }
 			}
 
-			public string FontFamily {
+			public string FontFamily
+			{
 				get { return (string)GetValue(FontElement.FontFamilyProperty); }
 				set { SetValue(FontElement.FontFamilyProperty, value); }
 			}
 
 			[TypeConverter(typeof(FontSizeConverter))]
-			public double FontSize {
+			public double FontSize
+			{
 				get { return (double)GetValue(FontElement.FontSizeProperty); }
 				set { SetValue(FontElement.FontSizeProperty, value); }
 			}
@@ -59,13 +64,13 @@ namespace Xamarin.Forms
 			}
 		}
 
-		Color _backgroundColor;
+		private Color _backgroundColor;
 
-		BindableObject _fontElement;
+		private BindableObject _fontElement;
 
-		Color _foregroundColor;
+		private Color _foregroundColor;
 
-		string _text;
+		private string _text;
 
 		public Span()
 		{
@@ -85,7 +90,8 @@ namespace Xamarin.Forms
 		}
 
 		[Obsolete("Font is obsolete as of version 1.3.0. Please use the Font properties directly.")]
-		public Font Font {
+		public Font Font
+		{
 			get { return (Font)_fontElement.GetValue(FontElement.FontProperty); }
 			set { _fontElement.SetValue(FontElement.FontProperty, value); }
 		}
@@ -135,7 +141,7 @@ namespace Xamarin.Forms
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChangedEventHandler handler = PropertyChanged;
 			if (handler != null)

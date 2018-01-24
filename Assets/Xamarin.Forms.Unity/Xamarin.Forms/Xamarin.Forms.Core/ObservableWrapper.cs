@@ -9,7 +9,7 @@ namespace Xamarin.Forms
 {
 	internal class ObservableWrapper<TTrack, TRestrict> : IList<TRestrict>, INotifyCollectionChanged where TTrack : Element where TRestrict : TTrack
 	{
-		readonly ObservableCollection<TTrack> _list;
+		private readonly ObservableCollection<TTrack> _list;
 
 		public ObservableWrapper(ObservableCollection<TTrack> list)
 		{
@@ -148,7 +148,7 @@ namespace Xamarin.Forms
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-		void ListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private void ListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			NotifyCollectionChangedEventHandler handler = CollectionChanged;
 			if (handler == null)
@@ -167,6 +167,7 @@ namespace Xamarin.Forms
 					int outerIndex = ToOuterIndex(e.NewStartingIndex);
 					handler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, e.NewItems, outerIndex));
 					break;
+
 				case NotifyCollectionChangedAction.Move:
 					if (e.NewStartingIndex == -1 || e.OldStartingIndex == -1 || e.NewItems.Count > 1)
 						goto case NotifyCollectionChangedAction.Reset;
@@ -179,6 +180,7 @@ namespace Xamarin.Forms
 					int outerNewIndex = ToOuterIndex(e.NewStartingIndex);
 					handler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, e.NewItems, outerNewIndex, outerOldIndex));
 					break;
+
 				case NotifyCollectionChangedAction.Remove:
 					if (e.OldStartingIndex == -1 || e.OldItems.Count > 1)
 						goto case NotifyCollectionChangedAction.Reset;
@@ -191,6 +193,7 @@ namespace Xamarin.Forms
 					var args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removedItem, outerRemovedIndex);
 					handler(this, args);
 					break;
+
 				case NotifyCollectionChangedAction.Replace:
 					if (e.NewStartingIndex == -1 || e.OldStartingIndex == -1 || e.NewItems.Count > 1)
 						goto case NotifyCollectionChangedAction.Reset;
@@ -212,15 +215,17 @@ namespace Xamarin.Forms
 					var replaceArgs = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, newReplaceItem, oldReplaceItem, index);
 					handler(this, replaceArgs);
 					break;
+
 				case NotifyCollectionChangedAction.Reset:
 					handler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 					break;
+
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
 
-		int ToInnerIndex(int outterIndex)
+		private int ToInnerIndex(int outterIndex)
 		{
 			var outerIndex = 0;
 			int innerIndex;
@@ -238,7 +243,7 @@ namespace Xamarin.Forms
 			return innerIndex;
 		}
 
-		int ToOuterIndex(int innerIndex)
+		private int ToOuterIndex(int innerIndex)
 		{
 			var outerIndex = 0;
 			for (var index = 0; index < innerIndex; index++)

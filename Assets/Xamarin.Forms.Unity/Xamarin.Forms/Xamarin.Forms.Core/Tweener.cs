@@ -31,9 +31,9 @@ namespace Xamarin.Forms
 {
 	internal class Tweener
 	{
-		long _lastMilliseconds;
+		private long _lastMilliseconds;
 
-		int _timer;
+		private int _timer;
 
 		public Tweener(uint length)
 		{

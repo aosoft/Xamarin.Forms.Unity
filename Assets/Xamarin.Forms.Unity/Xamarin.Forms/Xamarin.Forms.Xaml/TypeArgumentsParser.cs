@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace Xamarin.Forms.Xaml
 {
-	static class TypeArgumentsParser
+	internal static class TypeArgumentsParser
 	{
 		public static IList<XmlType> ParseExpression(string expression, IXmlNamespaceResolver resolver, IXmlLineInfo lineInfo)
 		{
@@ -16,7 +16,7 @@ namespace Xamarin.Forms.Xaml
 			return typeList;
 		}
 
-		static XmlType Parse(string match, ref string remaining, IXmlNamespaceResolver resolver, IXmlLineInfo lineinfo)
+		private static XmlType Parse(string match, ref string remaining, IXmlNamespaceResolver resolver, IXmlLineInfo lineinfo)
 		{
 			remaining = null;
 			int parensCount = 0;
@@ -53,12 +53,15 @@ namespace Xamarin.Forms.Xaml
 				return null;
 
 			string prefix, name;
-			if (split.Length == 2) {
-				prefix = split [0];
-				name = split [1];
-			} else {
+			if (split.Length == 2)
+			{
+				prefix = split[0];
+				name = split[1];
+			}
+			else
+			{
 				prefix = "";
-				name = split [0];
+				name = split[0];
 			}
 
 			var namespaceuri = resolver.LookupNamespace(prefix);

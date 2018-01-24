@@ -17,7 +17,7 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty MarginProperty = BindableProperty.Create("Margin", typeof(Thickness), typeof(View), default(Thickness), propertyChanged: MarginPropertyChanged);
 
-		readonly ObservableCollection<IGestureRecognizer> _gestureRecognizers = new ObservableCollection<IGestureRecognizer>();
+		private readonly ObservableCollection<IGestureRecognizer> _gestureRecognizers = new ObservableCollection<IGestureRecognizer>();
 
 		protected internal View()
 		{
@@ -32,10 +32,12 @@ namespace Xamarin.Forms
 							item.Parent = this;
 						}
 						break;
+
 					case NotifyCollectionChangedAction.Remove:
 						foreach (IElement item in args.OldItems.OfType<IElement>())
 							item.Parent = null;
 						break;
+
 					case NotifyCollectionChangedAction.Replace:
 						foreach (IElement item in args.NewItems.OfType<IElement>())
 						{
@@ -45,6 +47,7 @@ namespace Xamarin.Forms
 						foreach (IElement item in args.OldItems.OfType<IElement>())
 							item.Parent = null;
 						break;
+
 					case NotifyCollectionChangedAction.Reset:
 						foreach (IElement item in _gestureRecognizers.OfType<IElement>())
 							item.Parent = this;
@@ -99,12 +102,12 @@ namespace Xamarin.Forms
 			base.OnBindingContextChanged();
 		}
 
-		static void MarginPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void MarginPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			((View)bindable).InvalidateMeasureInternal(InvalidationTrigger.MarginChanged);
 		}
 
-		void ValidateGesture(IGestureRecognizer gesture)
+		private void ValidateGesture(IGestureRecognizer gesture)
 		{
 			if (gesture == null)
 				return;

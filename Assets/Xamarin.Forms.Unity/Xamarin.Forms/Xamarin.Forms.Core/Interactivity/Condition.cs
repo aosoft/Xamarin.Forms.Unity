@@ -4,9 +4,9 @@ namespace Xamarin.Forms
 {
 	public abstract class Condition
 	{
-		Action<BindableObject, bool, bool> _conditionChanged;
+		private Action<BindableObject, bool, bool> _conditionChanged;
 
-		bool _isSealed;
+		private bool _isSealed;
 
 		internal Condition()
 		{
@@ -46,6 +46,7 @@ namespace Xamarin.Forms
 		}
 
 		internal abstract void SetUp(BindableObject bindable);
+
 		internal abstract void TearDown(BindableObject bindable);
 	}
 }

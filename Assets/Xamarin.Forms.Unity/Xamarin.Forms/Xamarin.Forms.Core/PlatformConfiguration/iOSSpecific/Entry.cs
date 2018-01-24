@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
+﻿namespace Xamarin.Forms.PlatformConfiguration.iOSSpecific
 {
 	using FormsElement = Forms.Entry;
 

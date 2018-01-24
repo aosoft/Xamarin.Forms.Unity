@@ -18,7 +18,7 @@ namespace Xamarin.Forms
 		public static readonly BindableProperty HorizontalTextAlignmentProperty = BindableProperty.Create("HorizontalTextAlignment", typeof(TextAlignment), typeof(EntryCell), TextAlignment.Start,
 			propertyChanged: OnHorizontalTextAlignmentPropertyChanged);
 
-		[Obsolete("XAlignProperty is obsolete as of version 2.0.0. Please use HorizontalTextAlignmentProperty instead.")] 
+		[Obsolete("XAlignProperty is obsolete as of version 2.0.0. Please use HorizontalTextAlignmentProperty instead.")]
 		public static readonly BindableProperty XAlignProperty = HorizontalTextAlignmentProperty;
 
 		public TextAlignment HorizontalTextAlignment
@@ -57,7 +57,7 @@ namespace Xamarin.Forms
 			set { SetValue(TextProperty, value); }
 		}
 
-		[Obsolete("XAlign is obsolete as of version 2.0.0. Please use HorizontalTextAlignment instead.")] 
+		[Obsolete("XAlign is obsolete as of version 2.0.0. Please use HorizontalTextAlignment instead.")]
 		public TextAlignment XAlign
 		{
 			get { return (TextAlignment)GetValue(XAlignProperty); }
@@ -74,7 +74,7 @@ namespace Xamarin.Forms
 				handler(this, EventArgs.Empty);
 		}
 
-		static void OnHorizontalTextAlignmentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		private static void OnHorizontalTextAlignmentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
 			var label = (EntryCell)bindable;
 #pragma warning disable 0618 // retain until XAlign removed

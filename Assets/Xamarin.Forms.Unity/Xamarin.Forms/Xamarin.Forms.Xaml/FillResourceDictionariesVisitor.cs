@@ -1,19 +1,16 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Xamarin.Forms.Internals;
-using Xamarin.Forms.Xaml.Internals;
 
 namespace Xamarin.Forms.Xaml
 {
-	class FillResourceDictionariesVisitor : IXamlNodeVisitor
+	internal class FillResourceDictionariesVisitor : IXamlNodeVisitor
 	{
 		public FillResourceDictionariesVisitor(HydrationContext context)
 		{
 			Context = context;
 		}
 
-		HydrationContext Context { get; }
+		private HydrationContext Context { get; }
 		Dictionary<INode, object> Values => Context.Values;
 
 		public TreeVisitingMode VisitingMode => TreeVisitingMode.TopDown;
@@ -38,9 +35,11 @@ namespace Xamarin.Forms.Xaml
 			var value = Values[node];
 			XmlName propertyName;
 			//Set RD to VE
-			if (typeof(ResourceDictionary).IsAssignableFrom(Context.Types[node]) && ApplyPropertiesVisitor.TryGetPropertyName(node, parentNode, out propertyName)) {
+			if (typeof(ResourceDictionary).IsAssignableFrom(Context.Types[node]) && ApplyPropertiesVisitor.TryGetPropertyName(node, parentNode, out propertyName))
+			{
 				if ((propertyName.LocalName == "Resources" ||
-					 propertyName.LocalName.EndsWith(".Resources", StringComparison.Ordinal)) && value is ResourceDictionary) {
+					 propertyName.LocalName.EndsWith(".Resources", StringComparison.Ordinal)) && value is ResourceDictionary)
+				{
 					var source = Values[parentNode];
 					ApplyPropertiesVisitor.SetPropertyValue(source, propertyName, value, Context.RootElement, node, Context, node);
 					return;

@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
 	public static class DependencyService
 	{
-		static bool s_initialized;
+		private static bool s_initialized;
 
-		static readonly List<Type> DependencyTypes = new List<Type>();
-		static readonly Dictionary<Type, DependencyData> DependencyImplementations = new Dictionary<Type, DependencyData>();
+		private static readonly List<Type> DependencyTypes = new List<Type>();
+		private static readonly Dictionary<Type, DependencyData> DependencyImplementations = new Dictionary<Type, DependencyData>();
 
 		public static T Get<T>(DependencyFetchTarget fetchTarget = DependencyFetchTarget.GlobalInstance) where T : class
 		{
@@ -57,12 +56,12 @@ namespace Xamarin.Forms
 			DependencyImplementations[targetType] = new DependencyData { ImplementorType = implementorType };
 		}
 
-		static Type FindImplementor(Type target)
+		private static Type FindImplementor(Type target)
 		{
 			return DependencyTypes.FirstOrDefault(t => target.IsAssignableFrom(t));
 		}
 
-		static void Initialize()
+		private static void Initialize()
 		{
 			if (s_initialized)
 			{
@@ -107,7 +106,7 @@ namespace Xamarin.Forms
 			s_initialized = true;
 		}
 
-		class DependencyData
+		private class DependencyData
 		{
 			public object GlobalInstance { get; set; }
 

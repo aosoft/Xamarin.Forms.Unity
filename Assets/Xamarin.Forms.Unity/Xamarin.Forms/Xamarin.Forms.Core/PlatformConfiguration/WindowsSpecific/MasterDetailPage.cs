@@ -1,5 +1,3 @@
-using System;
-
 namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 {
 	using FormsElement = Forms.MasterDetailPage;
@@ -26,7 +24,7 @@ namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 		{
 			return (CollapseStyle)config.Element.GetValue(CollapseStyleProperty);
 		}
-		
+
 		public static IPlatformElementConfiguration<Windows, FormsElement> SetCollapseStyle(
 			this IPlatformElementConfiguration<Windows, FormsElement> config, CollapseStyle value)
 		{
@@ -41,7 +39,7 @@ namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 			return config;
 		}
 
-		#endregion
+		#endregion CollapsedStyle
 
 		#region CollapsedPaneWidth
 
@@ -71,6 +69,6 @@ namespace Xamarin.Forms.PlatformConfiguration.WindowsSpecific
 			return config;
 		}
 
-		#endregion
+		#endregion CollapsedPaneWidth
 	}
 }

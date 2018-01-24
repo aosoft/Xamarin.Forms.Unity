@@ -6,7 +6,7 @@ namespace Xamarin.Forms
 {
 	public class DefinitionCollection<T> : IList<T>, ICollection<T> where T : IDefinition
 	{
-		readonly List<T> _internalList = new List<T>();
+		private readonly List<T> _internalList = new List<T>();
 
 		internal DefinitionCollection()
 		{
@@ -83,7 +83,7 @@ namespace Xamarin.Forms
 			get { return _internalList[index]; }
 			set
 			{
-				if(index < _internalList.Count && index >= 0 && _internalList[index] != null)
+				if (index < _internalList.Count && index >= 0 && _internalList[index] != null)
 					_internalList[index].SizeChanged -= OnItemSizeChanged;
 
 				_internalList[index] = value;
@@ -102,7 +102,7 @@ namespace Xamarin.Forms
 
 		public event EventHandler ItemSizeChanged;
 
-		void OnItemSizeChanged(object sender, EventArgs e)
+		private void OnItemSizeChanged(object sender, EventArgs e)
 		{
 			EventHandler eh = ItemSizeChanged;
 			if (eh != null)

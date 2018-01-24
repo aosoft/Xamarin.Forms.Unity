@@ -12,7 +12,7 @@ namespace Xamarin.Forms
 			return new Uri(value, UriKind.RelativeOrAbsolute);
 		}
 
-		bool CanConvert(Type type)
+		private bool CanConvert(Type type)
 		{
 			if (type == typeof(string))
 				return true;

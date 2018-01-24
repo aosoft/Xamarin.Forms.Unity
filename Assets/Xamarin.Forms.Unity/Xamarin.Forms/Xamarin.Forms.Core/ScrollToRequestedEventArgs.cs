@@ -50,6 +50,7 @@ namespace Xamarin.Forms
 		public bool ShouldAnimate { get; private set; }
 
 		internal object Group { get; private set; }
+
 		object ITemplatedItemsListScrollToRequestedEventArgs.Group
 		{
 			get
@@ -59,6 +60,7 @@ namespace Xamarin.Forms
 		}
 
 		internal object Item { get; private set; }
+
 		object ITemplatedItemsListScrollToRequestedEventArgs.Item
 		{
 			get
@@ -66,6 +68,5 @@ namespace Xamarin.Forms
 				return Item;
 			}
 		}
-
 	}
 }

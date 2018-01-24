@@ -21,12 +21,12 @@ namespace Xamarin.Forms.Xaml
 			XmlName.xDataType
 		};
 
-		Dictionary<INode, object> Values
+		private Dictionary<INode, object> Values
 		{
 			get { return Context.Values; }
 		}
 
-		HydrationContext Context { get; }
+		private HydrationContext Context { get; }
 
 		public TreeVisitingMode VisitingMode => TreeVisitingMode.BottomUp;
 		public bool StopOnDataTemplate => false;
@@ -70,7 +70,7 @@ namespace Xamarin.Forms.Xaml
 		{
 		}
 
-		INode ParseExpression(ref string expression, IXmlNamespaceResolver nsResolver, IXmlLineInfo xmlLineInfo, INode node,
+		private INode ParseExpression(ref string expression, IXmlNamespaceResolver nsResolver, IXmlLineInfo xmlLineInfo, INode node,
 			INode parentNode)
 		{
 			if (expression.StartsWith("{}", StringComparison.Ordinal))
@@ -88,14 +88,14 @@ namespace Xamarin.Forms.Xaml
 				throw new Exception("Expression did not end in '}'");
 
 			var serviceProvider = new XamlServiceProvider(node, Context);
-			serviceProvider.Add(typeof (IXmlNamespaceResolver), nsResolver);
+			serviceProvider.Add(typeof(IXmlNamespaceResolver), nsResolver);
 
 			return new MarkupExpansionParser().Parse(match, ref expression, serviceProvider);
 		}
 
 		public class MarkupExpansionParser : MarkupExpressionParser, IExpressionParser<INode>
 		{
-			IElementNode node;
+			private IElementNode node;
 
 			object IExpressionParser.Parse(string match, ref string remaining, IServiceProvider serviceProvider)
 			{
@@ -104,11 +104,11 @@ namespace Xamarin.Forms.Xaml
 
 			public INode Parse(string match, ref string remaining, IServiceProvider serviceProvider)
 			{
-				var nsResolver = serviceProvider.GetService(typeof (IXmlNamespaceResolver)) as IXmlNamespaceResolver;
+				var nsResolver = serviceProvider.GetService(typeof(IXmlNamespaceResolver)) as IXmlNamespaceResolver;
 				if (nsResolver == null)
 					throw new ArgumentException();
 				IXmlLineInfo xmlLineInfo = null;
-				var xmlLineInfoProvider = serviceProvider.GetService(typeof (IXmlLineInfoProvider)) as IXmlLineInfoProvider;
+				var xmlLineInfoProvider = serviceProvider.GetService(typeof(IXmlLineInfoProvider)) as IXmlLineInfoProvider;
 				if (xmlLineInfoProvider != null)
 					xmlLineInfo = xmlLineInfoProvider.XmlLineInfo;
 
@@ -129,7 +129,7 @@ namespace Xamarin.Forms.Xaml
 				}
 
 				Type type;
-				var typeResolver = serviceProvider.GetService(typeof (IXamlTypeResolver)) as IXamlTypeResolver;
+				var typeResolver = serviceProvider.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
 				if (typeResolver == null)
 					type = null;
 				else
@@ -137,7 +137,7 @@ namespace Xamarin.Forms.Xaml
 					//The order of lookup is to look for the Extension-suffixed class name first and then look for the class name without the Extension suffix.
 					if (!typeResolver.TryResolve(match + "Extension", out type) && !typeResolver.TryResolve(match, out type))
 					{
-						var lineInfoProvider = serviceProvider.GetService(typeof (IXmlLineInfoProvider)) as IXmlLineInfoProvider;
+						var lineInfoProvider = serviceProvider.GetService(typeof(IXmlLineInfoProvider)) as IXmlLineInfoProvider;
 						var lineInfo = (lineInfoProvider != null) ? lineInfoProvider.XmlLineInfo : new XmlLineInfo();
 						throw new XamlParseException(String.Format("MarkupExtension not found for {0}", match), lineInfo);
 					}
@@ -169,7 +169,7 @@ namespace Xamarin.Forms.Xaml
 
 			protected override void SetPropertyValue(string prop, string strValue, object value, IServiceProvider serviceProvider)
 			{
-				var nsResolver = serviceProvider.GetService(typeof (IXmlNamespaceResolver)) as IXmlNamespaceResolver;
+				var nsResolver = serviceProvider.GetService(typeof(IXmlNamespaceResolver)) as IXmlNamespaceResolver;
 
 				var childnode = value as INode ?? new ValueNode(strValue, nsResolver);
 				childnode.Parent = node;

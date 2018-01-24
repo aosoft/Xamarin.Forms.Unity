@@ -25,15 +25,15 @@ namespace Xamarin.Forms
 				}
 			});
 
-		static readonly BindablePropertyKey CanGoBackPropertyKey = BindableProperty.CreateReadOnly("CanGoBack", typeof(bool), typeof(WebView), false);
+		private static readonly BindablePropertyKey CanGoBackPropertyKey = BindableProperty.CreateReadOnly("CanGoBack", typeof(bool), typeof(WebView), false);
 
 		public static readonly BindableProperty CanGoBackProperty = CanGoBackPropertyKey.BindableProperty;
 
-		static readonly BindablePropertyKey CanGoForwardPropertyKey = BindableProperty.CreateReadOnly("CanGoForward", typeof(bool), typeof(WebView), false);
+		private static readonly BindablePropertyKey CanGoForwardPropertyKey = BindableProperty.CreateReadOnly("CanGoForward", typeof(bool), typeof(WebView), false);
 
 		public static readonly BindableProperty CanGoForwardProperty = CanGoForwardPropertyKey.BindableProperty;
 
-		readonly Lazy<PlatformConfigurationRegistry<WebView>> _platformConfigurationRegistry;
+		private readonly Lazy<PlatformConfigurationRegistry<WebView>> _platformConfigurationRegistry;
 
 		public WebView()
 		{
@@ -41,7 +41,7 @@ namespace Xamarin.Forms
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		bool IWebViewController.CanGoBack 
+		bool IWebViewController.CanGoBack
 		{
 			get { return CanGoBack; }
 			set { SetValue(CanGoBackPropertyKey, value); }
@@ -53,7 +53,7 @@ namespace Xamarin.Forms
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		bool IWebViewController.CanGoForward 
+		bool IWebViewController.CanGoForward
 		{
 			get { return CanGoForward; }
 			set { SetValue(CanGoForwardPropertyKey, value); }
@@ -123,7 +123,8 @@ namespace Xamarin.Forms
 			OnPropertyChanged(SourceProperty.PropertyName);
 		}
 
-		event EventHandler<EvalRequested> IWebViewController.EvalRequested {
+		event EventHandler<EvalRequested> IWebViewController.EvalRequested
+		{
 			add { EvalRequested += value; }
 			remove { EvalRequested -= value; }
 		}

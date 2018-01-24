@@ -1,52 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using UnityEngine;
-using Xamarin.Forms.Internals;
-using UniRx;
+﻿using UnityEngine;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	/// <summary>
-	/// Xamarin.Forms の PlatformRenderer 実装。
-	/// 通常の実装と異なり、ルートの Canvas に AddComponent する想定。
-	/// Root Canvas は UnityFormsApplicationActivity に指定しておく。
-	/// </summary>
-	[DisallowMultipleComponent]
-	[RequireComponent(typeof(Canvas))]
-	public class PlatformRenderer : MonoBehaviour
-	{
-		/*-----------------------------------------------------------------*/
-		#region Private Field
+    /// <summary>
+    /// Xamarin.Forms の PlatformRenderer 実装。
+    /// 通常の実装と異なり、ルートの Canvas に AddComponent する想定。
+    /// Root Canvas は UnityFormsApplicationActivity に指定しておく。
+    /// </summary>
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(Canvas))]
+    public class PlatformRenderer : MonoBehaviour
+    {
+        /*-----------------------------------------------------------------*/
 
-		Canvas _canvas;
-		RectTransform _rectTransform;
+        #region Private Field
 
-		#endregion
+        private Canvas _canvas;
+        private RectTransform _rectTransform;
 
-		/*-----------------------------------------------------------------*/
-		#region MonoBehavior
+        #endregion Private Field
 
-		private void Awake()
-		{
-			_canvas = GetComponent<Canvas>();
-			_rectTransform = GetComponent<RectTransform>();
-		}
+        /*-----------------------------------------------------------------*/
 
-		private void OnDestroy()
-		{
-		}
+        #region MonoBehavior
 
-		#endregion
+        private void Awake()
+        {
+            _canvas = GetComponent<Canvas>();
+            _rectTransform = GetComponent<RectTransform>();
+        }
 
-		/*-----------------------------------------------------------------*/
-		#region Public Method
+        private void OnDestroy()
+        {
+        }
 
-		#endregion
+        #endregion MonoBehavior
 
-		/*-----------------------------------------------------------------*/
-		#region Event Handler
+        /*-----------------------------------------------------------------*/
 
-		#endregion
-	}
+        /*-----------------------------------------------------------------*/
+    }
 }

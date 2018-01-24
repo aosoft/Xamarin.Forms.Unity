@@ -10,8 +10,8 @@ namespace Xamarin.Forms.Internals
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class ToolbarTracker
 	{
-		int _masterDetails;
-		Page _target;
+		private int _masterDetails;
+		private Page _target;
 
 		public IEnumerable<Page> AdditionalTargets { get; set; }
 
@@ -55,13 +55,13 @@ namespace Xamarin.Forms.Internals
 
 		public event EventHandler CollectionChanged;
 
-		void EmitCollectionChanged()
+		private void EmitCollectionChanged()
 		{
 			if (CollectionChanged != null)
 				CollectionChanged(this, EventArgs.Empty);
 		}
 
-		IEnumerable<ToolbarItem> GetCurrentToolbarItems(Page page)
+		private IEnumerable<ToolbarItem> GetCurrentToolbarItems(Page page)
 		{
 			var result = new List<ToolbarItem>();
 			result.AddRange(page.ToolbarItems);
@@ -100,7 +100,7 @@ namespace Xamarin.Forms.Internals
 			return result;
 		}
 
-		void OnChildAdded(object sender, ElementEventArgs eventArgs)
+		private void OnChildAdded(object sender, ElementEventArgs eventArgs)
 		{
 			var page = eventArgs.Element as Page;
 			if (page == null)
@@ -109,7 +109,7 @@ namespace Xamarin.Forms.Internals
 			RegisterChildPage(page);
 		}
 
-		void OnChildRemoved(object sender, ElementEventArgs eventArgs)
+		private void OnChildRemoved(object sender, ElementEventArgs eventArgs)
 		{
 			var page = eventArgs.Element as Page;
 			if (page == null)
@@ -118,12 +118,12 @@ namespace Xamarin.Forms.Internals
 			UnregisterChildPage(page);
 		}
 
-		void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+		private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
 		{
 			EmitCollectionChanged();
 		}
 
-		void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
 			if (propertyChangedEventArgs.PropertyName == NavigationPage.CurrentPageProperty.PropertyName || propertyChangedEventArgs.PropertyName == MasterDetailPage.IsPresentedProperty.PropertyName ||
 				propertyChangedEventArgs.PropertyName == "Detail" || propertyChangedEventArgs.PropertyName == "Master")
@@ -132,7 +132,7 @@ namespace Xamarin.Forms.Internals
 			}
 		}
 
-		void RegisterChildPage(Page page)
+		private void RegisterChildPage(Page page)
 		{
 			if (page is MasterDetailPage)
 				_masterDetails++;
@@ -141,7 +141,7 @@ namespace Xamarin.Forms.Internals
 			page.PropertyChanged += OnPropertyChanged;
 		}
 
-		void TrackTarget(Page page)
+		private void TrackTarget(Page page)
 		{
 			if (page == null)
 				return;
@@ -157,7 +157,7 @@ namespace Xamarin.Forms.Internals
 			page.PropertyChanged += OnPropertyChanged;
 		}
 
-		void UnregisterChildPage(Page page)
+		private void UnregisterChildPage(Page page)
 		{
 			if (page is MasterDetailPage)
 				_masterDetails--;
@@ -166,7 +166,7 @@ namespace Xamarin.Forms.Internals
 			page.PropertyChanged -= OnPropertyChanged;
 		}
 
-		void UntrackTarget(Page page)
+		private void UntrackTarget(Page page)
 		{
 			if (page == null)
 				return;
