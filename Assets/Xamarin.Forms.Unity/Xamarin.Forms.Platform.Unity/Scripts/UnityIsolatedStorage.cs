@@ -31,7 +31,7 @@ namespace Xamarin.Forms.Platform.Unity
 			return Task.Run<DateTimeOffset>(() => new DateTimeOffset(File.GetLastWriteTime(path)));
 		}
 
-		public Task<Stream> OpenFileAsync(string path, Internals.FileMode mode, Internals.FileAccess access)
+		public Task<Stream> OpenFileAsync(string path, FileMode mode, FileAccess access)
 		{
 			return Task.Run<Stream>(() =>
 			{
@@ -40,27 +40,27 @@ namespace Xamarin.Forms.Platform.Unity
 
 				switch (mode)
 				{
-					case Internals.FileMode.CreateNew:
+					case FileMode.CreateNew:
 						mode2 = System.IO.FileMode.CreateNew;
 						break;
 
-					case Internals.FileMode.Create:
+					case FileMode.Create:
 						mode2 = System.IO.FileMode.Create;
 						break;
 
-					case Internals.FileMode.Truncate:
+					case FileMode.Truncate:
 						mode2 = System.IO.FileMode.Truncate;
 						break;
 
-					case Internals.FileMode.OpenOrCreate:
+					case FileMode.OpenOrCreate:
 						mode2 = System.IO.FileMode.OpenOrCreate;
 						break;
 
-					case Internals.FileMode.Append:
+					case FileMode.Append:
 						mode2 = System.IO.FileMode.Append;
 						break;
 
-					case Internals.FileMode.Open:
+					case FileMode.Open:
 						mode2 = System.IO.FileMode.Open;
 						break;
 
@@ -70,14 +70,14 @@ namespace Xamarin.Forms.Platform.Unity
 
 				switch (access)
 				{
-					case Internals.FileAccess.Read:
+					case FileAccess.Read:
 						access2 = System.IO.FileAccess.Read;
 						break;
-					case Internals.FileAccess.Write:
+					case FileAccess.Write:
 						access2 = System.IO.FileAccess.Write;
 						break;
 
-					case Internals.FileAccess.ReadWrite:
+					case FileAccess.ReadWrite:
 						access2 = System.IO.FileAccess.ReadWrite;
 						break;
 
@@ -89,7 +89,7 @@ namespace Xamarin.Forms.Platform.Unity
 			});
 		}
 
-		public Task<Stream> OpenFileAsync(string path, Internals.FileMode mode, Internals.FileAccess access, Internals.FileShare share)
+		public Task<Stream> OpenFileAsync(string path, FileMode mode, FileAccess access, FileShare share)
 		{
 			return OpenFileAsync(path, mode, access);
 		}

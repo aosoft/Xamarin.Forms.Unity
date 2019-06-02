@@ -69,6 +69,11 @@ namespace Xamarin.Forms.Platform.Unity
 			return 10.0;
 		}
 
+		public SizeRequest GetNativeSize(VisualElement view, double widthConstraint, double heightConstraint)
+		{
+			return Platform.GetNativeSize(view, widthConstraint, heightConstraint);
+		}
+
 		public Task<Stream> GetStreamAsync(Uri uri, CancellationToken cancellationToken)
 		{
 			return null;
