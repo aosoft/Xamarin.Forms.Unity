@@ -9,7 +9,7 @@ using UniRx;
 
 namespace Xamarin.Forms.Platform.Unity
 {
-	public class Platform : IPlatform, IDisposable, INavigation
+	public class Platform : IDisposable, INavigation
 	{
 		/*-----------------------------------------------------------------*/
 		#region Private Field
@@ -112,8 +112,6 @@ namespace Xamarin.Forms.Platform.Unity
 			if (newPage == _currentPage)
 				return;
 
-			newPage.Platform = this;
-
 			if (_currentPage != null)
 			{
 				Page previousPage = _currentPage;
@@ -183,7 +181,7 @@ namespace Xamarin.Forms.Platform.Unity
 		/*-----------------------------------------------------------------*/
 		#region IPlatform
 
-		public SizeRequest GetNativeSize(VisualElement view, double widthConstraint, double heightConstraint)
+		public static SizeRequest GetNativeSize(VisualElement view, double widthConstraint, double heightConstraint)
 		{
 			//	暫定
 			var viewRenderer = GetRenderer(view);

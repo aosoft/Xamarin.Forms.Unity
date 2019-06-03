@@ -1,4 +1,0 @@
-root = true
-
-[*.{cs,xaml}]
-indent_style = tab

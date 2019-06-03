@@ -42,7 +42,7 @@ public partial class Page1 : ContentPage
 </ContentPage>
 ");
 #else
-		var grid = new Grid();
+		var grid = new Xamarin.Forms.Grid();
 		grid.RowDefinitions.Add(new RowDefinition());
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
 		grid.RowDefinitions.Add(new RowDefinition { Height = 32 });
@@ -50,7 +50,7 @@ public partial class Page1 : ContentPage
 
 		var sv = new ScrollView();
 		grid.Children.Add(sv, 0, 0);
-		var gridsv = new Grid();
+		var gridsv = new Xamarin.Forms.Grid();
 		for (int i = 0; i < 100; i++)
 		{
 			gridsv.RowDefinitions.Add(new RowDefinition { Height = 24 });
@@ -59,7 +59,7 @@ public partial class Page1 : ContentPage
 		sv.Content = gridsv;
 
 		{
-			var grid2 = new Grid();
+			var grid2 = new Xamarin.Forms.Grid();
 			grid2.ColumnDefinitions.Add(new ColumnDefinition());
 			grid2.ColumnDefinitions.Add(new ColumnDefinition());
 
@@ -82,7 +82,7 @@ public partial class Page1 : ContentPage
 		}
 
 		{
-			var grid2 = new Grid();
+			var grid2 = new Xamarin.Forms.Grid();
 			grid2.ColumnDefinitions.Add(new ColumnDefinition());
 			grid2.ColumnDefinitions.Add(new ColumnDefinition());
 
